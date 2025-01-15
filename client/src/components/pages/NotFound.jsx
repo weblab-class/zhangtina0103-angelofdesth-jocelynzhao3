@@ -1,3 +1,7 @@
+import "../../utilities.css";
+import "./NotFound.css";
+
+
 import React from "react";
 
 const NotFound = () => {
