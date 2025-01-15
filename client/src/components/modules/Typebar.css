@@ -1,0 +1,26 @@
+/* Flexbox layout for the typing bar */
+.type-bar-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.target-text {
+  margin-bottom: 10px; /* Space between prompt and input box */
+  word-wrap: break-word;
+}
+
+.typed-text {
+  flex-grow: 1; /* Make sure the input field grows if needed */
+  padding: 10px;
+  font-size: 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
