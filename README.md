@@ -1,3 +1,4 @@
+
 # How to code a webapp with this skeleton
 
 ## Initial setup
@@ -53,6 +54,7 @@ Post on Piazza if you run into any issues
 - Change the Server CLIENT_ID to the same CLIENT_ID (auth.js)
 - Change the Database SRV (mongoConnectionURL) for Atlas (server.js). You got this in the MongoDB setup. remember to replace <password> and <dbname> (should be no < or > in your SRV) (From: https://bit.ly/mongo-setup)
 - Change the Database Name for MongoDB to whatever you put in the SRV to replace <dbname> (server.js)
+Angeline: ABOVE ARE ALL DONE 
 - (Optional) Add a favicon to your website at the path client/dist/favicon.ico
 - (Optional) Update website title in client/dist/index.html
 - (Optional) Update this README file ;)
