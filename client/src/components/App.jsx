@@ -9,6 +9,10 @@ import { socket } from "../client-socket";
 
 import { get, post } from "../utilities";
 
+// to use styles, import the necessary CSS files
+import "../utilities.css";
+import "./App.css";
+
 export const UserContext = createContext(null);
 
 /**
@@ -48,9 +52,11 @@ const App = () => {
   };
 
   return (
-    <UserContext.Provider value={authContextValue}>
-      <Outlet />
-    </UserContext.Provider>
+    <div className="App-container">
+      <UserContext.Provider value={authContextValue}>
+        <Outlet />
+      </UserContext.Provider>
+    </div>
   );
 };
 

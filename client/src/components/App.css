@@ -1,0 +1,10 @@
+.App-container {
+  display: flex;
+  justify-content: center; /* Horizontally centers the content */
+  align-items: center; /* Vertically centers the content */
+  width: 100%;
+  max-width: 960px;
+  padding: 1rem;
+  margin: auto;
+  box-sizing: border-box;
+}

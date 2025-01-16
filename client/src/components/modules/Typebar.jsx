@@ -3,7 +3,7 @@ import "./TypeBar.css";
 
 const TypeBar = () => {
   // Example target text
-  const targetText = "The quick brown fox jumps over the lazy dog.";
+  const targetText = "Word to translate here";
 
   // State for the user's typed input
   const [typedText, setTypedText] = useState("");
@@ -11,24 +11,6 @@ const TypeBar = () => {
   // Function to handle the change in input
   const handleInputChange = (event) => {
     setTypedText(event.target.value);
-  };
-
-  // Calculate typing accuracy
-  const calculateAccuracy = () => {
-    const totalLength = targetText.length;
-    const matchedLength = typedText.split("").reduce((acc, char, idx) => {
-      return char === targetText[idx] ? acc + 1 : acc;
-    }, 0);
-
-    return (matchedLength / totalLength) * 100;
-  };
-
-  // Function to render the typing accuracy color
-  const getAccuracyColor = () => {
-    const accuracy = calculateAccuracy();
-    if (accuracy === 100) return "green";
-    if (accuracy >= 75) return "yellow";
-    return "red";
   };
 
   return (

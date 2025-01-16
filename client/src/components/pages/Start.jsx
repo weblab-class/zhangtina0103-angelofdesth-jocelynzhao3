@@ -3,9 +3,12 @@ import "./Start.css";
 
 import { Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
-import TypeBar from "../modules/Typebar";
+import { useContext } from "react";
+import { UserContext } from "../App";
 
 const Start = (props) => {
+  const userContext = useContext(UserContext);
+
   return (
     <div>
       <div>
@@ -21,9 +24,9 @@ const Start = (props) => {
       <Link to="/battle/" className="NavBar-link u-inlineBlock">
         Go to battle!
       </Link>
-      <div>
-        <TypeBar />
-      </div>
+      <span>
+        <p>To play this game... [insert instructions here]</p>
+      </span>
     </div>
   );
 };
