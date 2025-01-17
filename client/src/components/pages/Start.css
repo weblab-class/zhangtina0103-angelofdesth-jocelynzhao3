@@ -1,0 +1,61 @@
+.google-login-container {
+  display: inline-block;
+  margin: 16px 0;
+}
+
+.google-login-container > div {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.logout-button {
+  background-color: #1a1a1a;
+  color: white;
+  border: 1px solid #333;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.logout-button:hover {
+  background-color: #333;
+}
+
+.battle-button {
+  display: block;
+  margin: 16px 0;
+  padding: 12px 24px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.battle-button:hover {
+  background-color: #357abd;
+}
+
+.battle-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.signin-prompt {
+  display: block;
+  margin: 16px 0;
+  color: #ff4444;
+  font-size: 16px;
+  text-align: center;
+}
+
+.battle-link {
+  display: block;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
