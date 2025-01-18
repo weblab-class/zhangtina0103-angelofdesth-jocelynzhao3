@@ -1,3 +1,5 @@
+const gameLogic = require("./game-logic");
+
 let io;
 
 const userToSocketMap = {}; // maps user ID to socket object
@@ -35,6 +37,13 @@ module.exports = {
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
         removeUser(user, socket);
+      });
+      socket.on("cards", (card) => {
+        console.log("I have received the card", card);
+        // update later to game logic 
+        // const user = getUserFromSocketID(socket.id);
+        // console.log(user);
+        // gameLogic.playerTakeCard(user.googleid, card);
       });
     });
   },

@@ -9,12 +9,28 @@ const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 };
 
-/** Game state */
-const gameState = {
-  playerID: string,
-  oppID: string,
-  playerHP: Number,
-  oppHP: Number,
+/** Game state 
+gameState = {
+  p1: string,
+  p2: string,
+  p1HP: Number,
+  p2HP: Number,
+  cards: [{}]
 };
 
+card = {
+  prompt: string, 
+  target: string, 
+  effect: string
+}
+**/
+
 /** Game logic */
+const playerTakeCard = (player, card) => {
+  console.log("The player", player, "has taken the card", card)
+};
+
+
+module.exports = {
+  playerTakeCard,
+}
