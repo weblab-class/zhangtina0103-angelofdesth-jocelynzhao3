@@ -59,3 +59,26 @@
   margin-top: 16px;
   margin-bottom: 16px;
 }
+
+.instructions-container {
+  max-width: 800px;
+  margin: 32px auto;
+  padding: 24px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.instructions-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
+.instructions-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #444;
+  margin: 0;
+}

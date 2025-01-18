@@ -63,9 +63,15 @@ const Start = (props) => {
       {!userContext.userId && (
         <div className="signin-prompt">Please sign in to start battling!</div>
       )}
-      <span>
-        <p>To play this game... [insert instructions here]</p>
-      </span>
+      <div className="instructions-container">
+        <h2 className="instructions-title">How to Play</h2>
+        <p className="instructions-text">
+          To play this game translate the displayed words into the language of your choice. Each
+          word has a corresponding spell to damage your opponent or heal yourself. Accuracy and
+          speed matter, so be quick but correct! Your opponent can take the card if they type the
+          correct answer faster than you!
+        </p>
+      </div>
     </div>
   );
 };
