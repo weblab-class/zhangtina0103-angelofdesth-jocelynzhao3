@@ -1,0 +1,38 @@
+.Battle-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.Battle-header {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.Battle-spell {
+  width: 100%;
+  max-width: 600px;
+}
+
+.Battle-typebar {
+  width: 100%;
+  max-width: 600px;
+}
+
+.Battle-finish {
+  margin-top: auto;
+}
+
+.Battle-finish .NavBar-link {
+  padding: 0.5rem 1rem;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  text-decoration: none;
+  color: black;
+  transition: background-color 0.2s;
+}
+
+.Battle-finish .NavBar-link:hover {
+  background-color: #e0e0e0;
+}

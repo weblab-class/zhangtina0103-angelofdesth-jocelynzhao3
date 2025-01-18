@@ -10,7 +10,8 @@
 const express = require("express");
 
 // import models so we can interact with the database
-const User = require("./models/user");
+const User = require("./user");
+const Word = require("./models/word");
 
 // import authentication library
 const auth = require("./auth");
@@ -42,6 +43,21 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 // | write your API methods below!|
 // |------------------------------|
+
+//grab a word from the database filtered by language
+router.get("/word", (req, res) => {
+  Word.aggregate([
+    { $match: { language: req.query.language } },
+    { $sample: { size: 1 } }
+  ])
+    .then((words) => {
+      res.send(words[0]);
+    })
+    .catch((err) => {
+      console.log(`Failed to get random word: ${err}`);
+      res.status(500).send(err);
+    });
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./TypeBar.css";
 
-const TypeBar = () => {
+const TypeBar = (props) => {
   // Example target text
   const targetText = "Word to translate here";
 
@@ -29,6 +29,12 @@ const TypeBar = () => {
           className="typed-text"
           placeholder="Start typing..."
         />
+      </div>
+      <div className="type-bar">
+        {/* Translated Text */}
+        <div className="translated-text">
+          <span>Correct translation: {props.english}</span>
+        </div>
       </div>
     </div>
   );

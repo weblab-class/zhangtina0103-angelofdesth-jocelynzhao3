@@ -4,8 +4,8 @@ const WordSchema = new mongoose.Schema({
   language: String,
   word: String,
   english: String,
-  difficulty: Number,
+  difficulty: Number, // 1-4
 });
 
 // compile model from schema
-module.exports = mongoose.model("user", WordSchema);
+module.exports = mongoose.model("word", WordSchema);
