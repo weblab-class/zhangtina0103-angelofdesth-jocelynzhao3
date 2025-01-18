@@ -38,7 +38,7 @@ const Start = (props) => {
     <div>
       <div className="google-login-container">
         {userContext.userId ? (
-          <button 
+          <button
             onClick={handleSignOut}
             className="NavBar-link NavBar-login u-inlineBlock logout-button"
           >
@@ -57,17 +57,11 @@ const Start = (props) => {
           />
         )}
       </div>
-      <button
-        onClick={handleBattleClick}
-        disabled={!userContext.userId}
-        className="battle-button"
-      >
+      <button onClick={handleBattleClick} disabled={!userContext.userId} className="battle-button">
         Go to battle!
       </button>
       {!userContext.userId && (
-        <div className="signin-prompt">
-          Please sign in to start battling!
-        </div>
+        <div className="signin-prompt">Please sign in to start battling!</div>
       )}
       <span>
         <p>To play this game... [insert instructions here]</p>
