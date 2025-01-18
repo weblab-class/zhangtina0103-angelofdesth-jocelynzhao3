@@ -3,7 +3,7 @@ import "./Typebar.css";
 import { takeCard } from "../../client-socket";
 
 /**
-Typebar is where we put in our prompt. 
+Typebar is where we put in our prompt.
 
 Proptypes:
   @param {Card} cards are the cards that we are displaying
@@ -12,22 +12,22 @@ Proptypes:
 const TypeBar = (props) => {
   // Example target text
   const prompt = "Word to translate here";
-  const targets = props.cards.map((card) => card.target)
+  const targets = props.cards.map((card) => card.target);
 
   // State for the user's typed input
   const [typedText, setTypedText] = useState("");
 
   // Function to handle the change in input
   const handleInputChange = (event) => {
-    const userInput = event.target.value; 
+    const userInput = event.target.value;
     setTypedText(userInput);
-    if (targets.includes(userInput)){
+    if (targets.includes(userInput)) {
       console.log("you got the right word");
       const card = props.cards[targets.findIndex((word) => word === userInput)];
       console.log(card);
       takeCard(card);
       setTypedText("");
-    };
+    }
   };
 
   return (
@@ -47,6 +47,12 @@ const TypeBar = (props) => {
           placeholder="Start typing..."
           autoFocus
         />
+      </div>
+      <div className="type-bar">
+        {/* Translated Text */}
+        <div className="translated-text">
+          <span>Correct translation: {props.english}</span>
+        </div>
       </div>
     </div>
   );

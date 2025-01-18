@@ -63,6 +63,9 @@ const Start = (props) => {
       {!userContext.userId && (
         <div className="signin-prompt">Please sign in to start battling!</div>
       )}
+      <div>
+        <p>Language toggle: Spanish</p>
+      </div>
       <div className="instructions-container">
         <h2 className="instructions-title">How to Play</h2>
         <p className="instructions-text">
