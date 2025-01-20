@@ -28,6 +28,11 @@ const removeUser = (user, socket) => {
   delete socketToUserMap[socket.id];
 };
 
+// GAME STUFF 
+const newGame = (p1, language) => { // starts the game with the player and a hardcoded lobby name, which is a bot
+  gameLogic.newGame("hardcodedlobbyname", p1, "bot", language);
+}
+
 module.exports = {
   init: (http) => {
     io = require("socket.io")(http);
@@ -43,7 +48,7 @@ module.exports = {
         // update later to game logic 
         // const user = getUserFromSocketID(socket.id);
         // console.log(user);
-        // gameLogic.playerTakeCard(user.googleid, card);
+        gameLogic.playerTakeCard("hardcodedlobbyname", card.userId, card.card);
       });
     });
   },
@@ -54,5 +59,8 @@ module.exports = {
   getSocketFromUserID: getSocketFromUserID,
   getUserFromSocketID: getUserFromSocketID,
   getSocketFromSocketID: getSocketFromSocketID,
+
+  newGame: newGame,
+
   getIo: () => io,
 };

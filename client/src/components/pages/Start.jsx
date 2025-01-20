@@ -6,7 +6,7 @@ import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../App";
 import { LanguageContext } from "../App";
-import { get } from "../../utilities";
+import { get, post } from "../../utilities";
 
 const Start = (props) => {
   const userContext = useContext(UserContext);
@@ -32,6 +32,7 @@ const Start = (props) => {
 
   const handleBattleClick = () => {
     if (userContext.userId) {
+      post("/api/startGame", {playerId: userContext.userId, language: LanguageContext.language});
       navigate("/battle/");
     }
   };

@@ -27,7 +27,9 @@ const TypeBar = (props) => {
     setTypedText(userInput);
     if (targets.includes(userInput)) {
       console.log("you got the right word");
-      const card = props.cards[targets.findIndex((word) => word === userInput)];
+      // once we have a list of three cards, then we will use this to identify which card we picked
+      // const card = props.cards[targets.findIndex((word) => word === userInput)];
+      const card = props.cards
       console.log(card); // TODO: delete later, this provides card answer
       // function to update card stack
       takeCard(card, userContext.userId); // game state updater

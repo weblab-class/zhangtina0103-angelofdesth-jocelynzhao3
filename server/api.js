@@ -45,6 +45,10 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 
 //grab a word from the database filtered by language
+router.post("/startGame", (req, res) => {
+  socketManager.newGame(req.query.playerId, req.query.language);
+});
+
 router.get("/word", (req, res) => {
   Word.aggregate([{ $match: { language: req.query.language } }, { $sample: { size: 1 } }])
     .then((words) => {
