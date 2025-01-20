@@ -52,7 +52,7 @@ router.post("/startGame", (req, res) => {
 router.get("/word", (req, res) => {
   Word.aggregate([
     { $match: { language: req.query.language } },
-    { $sample: { size: 1 } }, // Get exactly 3 random words - they'll be unique
+    { $sample: { size: 1 } }, // Get exactly 1 random word - they'll be unique
   ])
     .then((words) => {
       res.send(words); // Send all 3 words
