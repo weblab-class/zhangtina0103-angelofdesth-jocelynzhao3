@@ -8,3 +8,13 @@
   margin: auto;
   box-sizing: border-box;
 }
+
+/* Allow Battle page to break out of container */
+.App-container.battle-page {
+  max-width: none;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}

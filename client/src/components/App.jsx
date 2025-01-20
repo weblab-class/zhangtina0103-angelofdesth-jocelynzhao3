@@ -20,12 +20,15 @@ export const UserContext = createContext(null);
  */
 const App = () => {
   const [userId, setUserId] = useState(undefined);
+  const [userName, setUserName] = useState(undefined);
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
+      console.log("Whoami response:", user);
       if (user._id) {
-        // they are registed in the database, and currently logged in.
         setUserId(user._id);
+        setUserName(user.name);
+        console.log("Set user data:", { id: user._id, name: user.name });
       }
     });
   }, []);
@@ -35,21 +38,27 @@ const App = () => {
     const decodedCredential = jwt_decode(userToken);
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
+      console.log("Login response:", user);
       setUserId(user._id);
+      setUserName(user.name);
       post("/api/initsocket", { socketid: socket.id });
     });
   };
 
   const handleLogout = () => {
     setUserId(undefined);
+    setUserName(undefined);
     post("/api/logout");
   };
 
   const authContextValue = {
     userId,
+    userName,
     handleLogin,
     handleLogout,
   };
+
+  console.log("Current auth context:", authContextValue);
 
   return (
     <div className="App-container">

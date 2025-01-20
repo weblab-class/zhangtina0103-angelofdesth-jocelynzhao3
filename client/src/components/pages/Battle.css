@@ -1,35 +1,212 @@
 .Battle-container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  padding: 2rem;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background: #0a0a1f; /* Dark futuristic background */
 }
 
-.Battle-players {
+.Battle-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+/* Status bar containing HP bars and timer */
+.Battle-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  height: 40px;
+  background: rgba(16, 16, 32, 0.9);
+  z-index: 2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+.Battle-hp-container {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+.Battle-hp-bar {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.Battle-hp-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.Battle-hp-fill.enemy-hp {
+  background: linear-gradient(90deg, #00ff9d, #00ffcc);
+  box-shadow: 0 0 15px rgba(0, 255, 157, 0.5);
+}
+
+.Battle-hp-fill.player-hp {
+  background: linear-gradient(90deg, #00ccff, #00ffff);
+  box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+}
+
+.Battle-hp-text {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  font-weight: bold;
+  z-index: 1;
+  font-family: 'Courier New', monospace;
+}
+
+.Battle-timer {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #00ffff;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+  min-width: 120px;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  font-family: 'Courier New', monospace;
+  border-left: 1px solid rgba(0, 255, 255, 0.2);
+  border-right: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+/* Canvas styles */
+.Battle-canvas {
+  position: fixed;
+  top: 40px; /* Height of the status bar */
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 40px);
+  z-index: 1;
+  background: #0a0a1f;
+}
+
+/* Avatars section */
+.Battle-avatars {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 2rem;
-  width: 100%;
-  padding: 0 2rem;
+  padding: 1rem 2rem;
+  z-index: 2;
+  pointer-events: none;
+  box-sizing: border-box;
 }
 
-.Battle-gameplay {
+.Battle-avatar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
+  gap: 0.5rem;
+}
+
+.Battle-avatar-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(0, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2),
+              inset 0 0 20px rgba(0, 255, 255, 0.1);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+}
+
+img.Battle-avatar-circle {
+  object-fit: cover;
+  padding: 0;
+  background: none;
+  transition: transform 0.3s ease;
+}
+
+img.Battle-avatar-circle:hover {
+  transform: scale(1.1);
+}
+
+.Battle-avatar-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  font-family: 'Courier New', monospace;
+}
+
+.Battle-gameplay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 1rem;
+  z-index: 2;
+  background: linear-gradient(transparent, rgba(0, 0, 32, 0.9));
+  box-sizing: border-box;
 }
 
 .Battle-spell {
-  width: 100%;
-  max-width: 600px;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.Battle-spell:hover {
+  background: rgba(0, 255, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
 }
 
 .Battle-typebar {
@@ -42,14 +219,17 @@
 }
 
 .Battle-finish .NavBar-link {
+  background: rgba(0, 255, 255, 0.1);
+  color: #fff;
   padding: 0.5rem 1rem;
-  background-color: #f0f0f0;
   border-radius: 4px;
   text-decoration: none;
-  color: black;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
 .Battle-finish .NavBar-link:hover {
-  background-color: #e0e0e0;
+  background: rgba(0, 255, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
 }

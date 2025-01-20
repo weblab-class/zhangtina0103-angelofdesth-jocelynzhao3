@@ -2,41 +2,27 @@
 import React from "react";
 import "./Player.css";
 
-const Player = ({ name, avatarUrl, currentHP, maxHP }) => {
-  const hpPercentage = (currentHP / maxHP) * 100;
-  const firstLetter = name ? name.charAt(0).toUpperCase() : "?";
-
+/**
+ * Player component for battle page
+ *
+ * Proptypes
+ * @param {Object} player - Player object containing:
+ *   @param {string} player.name - player's name from UserInfo schema
+ *   @param {string} player.picture - player's Google profile picture URL from UserInfo schema
+ *   @param {number} player.hp - player's current HP in the game
+ *   @param {number} player.elo - player's ELO rating from UserInfo schema (optional)
+ */
+const Player = ({ player }) => {
   return (
-    <div className="Player-container">
-      <div className="Player-avatar">
-        {avatarUrl ? (
-          <img 
-            src={avatarUrl}
-            alt={`${name}'s avatar`}
-            className="Player-avatar-image"
-          />
-        ) : (
-          <div style={{ 
-            fontSize: "2rem", 
-            fontWeight: "bold",
-            color: "#666"
-          }}>
-            {firstLetter}
-          </div>
-        )}
-      </div>
-      <div className="Player-info">
-        <div className="Player-name">{name}</div>
-        <div className="Player-hp-container">
-          <div 
-            className="Player-hp-bar" 
-            style={{ width: `${hpPercentage}%` }}
-          />
-          <div className="Player-hp-text">
-            {currentHP} / {maxHP} HP
-          </div>
+    <div className="Battle-avatar">
+      {player.picture ? (
+        <img src={player.picture} alt={player.name} className="Battle-avatar-circle" />
+      ) : (
+        <div className="Battle-avatar-circle">
+          {player.name ? player.name.charAt(0).toUpperCase() : "?"}
         </div>
-      </div>
+      )}
+      <div className="Battle-avatar-name">{player.name || "Loading..."}</div>
     </div>
   );
 };
