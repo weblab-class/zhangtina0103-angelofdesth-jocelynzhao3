@@ -1,14 +1,10 @@
 .Player-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 1rem 1.5rem;
-  background-color: #f5f5f5;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  min-width: 250px;
-  transition: all 0.3s ease;
+  gap: 0.5rem;
+  transition: all 0.6s ease;
+  pointer-events: auto;
 }
 
 .Player-container:hover {
@@ -16,24 +12,62 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Continuous glow animation for avatar */
+@keyframes avatarGlow {
+  0% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.3); }
+  50% { box-shadow: 0 0 35px rgba(0, 255, 255, 0.4); }
+  100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.3); }
+}
+
+@keyframes textGlow {
+  0% { text-shadow: 0 0 15px rgba(0, 255, 255, 0.4); }
+  50% { text-shadow: 0 0 25px rgba(0, 255, 255, 0.5); }
+  100% { text-shadow: 0 0 15px rgba(0, 255, 255, 0.4); }
+}
+
 .Player-avatar {
-  background-color: #e0e0e0;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 2px solid rgba(0, 255, 255, 0.4);
   overflow: hidden;
-  border: 2px solid #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  flex-shrink: 0;
+  transition: all 0.6s ease;
+  animation: avatarGlow 3s infinite;
+  position: relative;
+  cursor: pointer;
+}
+
+.Player-avatar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.2) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.Player-avatar:hover {
+  border-color: rgba(0, 255, 255, 0.8);
+  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.6);
+}
+
+.Player-avatar:hover::after {
+  opacity: 1;
 }
 
 .Player-avatar-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: all 0.6s ease;
+}
+
+.Player-avatar:hover .Player-avatar-image {
+  filter: brightness(1.3);
 }
 
 .Player-info {
@@ -47,15 +81,24 @@
 .Player-name {
   font-weight: bold;
   font-size: 1.1rem;
-  color: #333;
-  margin-bottom: 0.25rem;
+  color: #4dffff;
+  font-family: 'Courier New', monospace;
+  animation: textGlow 3s infinite;
+  transition: all 0.6s ease;
+  cursor: pointer;
+}
+
+.Player-name:hover {
+  color: #80ffff;
+  transform: scale(1.05);
+  text-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
 }
 
 .Player-stats {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  width: 100%;
+  gap: 0.5rem;
+  transition: all 0.6s ease;
 }
 
 .Player-hp-container {
@@ -70,11 +113,20 @@
 }
 
 .Player-hp-bar {
+  width: 100px;
+  height: 8px;
+  background: rgba(0, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.6s ease;
+  border: 1px solid rgba(0, 255, 255, 0.4);
+}
+
+.Player-hp-fill {
   height: 100%;
-  transition: all 0.3s ease;
-  position: absolute;
-  left: 0;
-  top: 0;
+  background: linear-gradient(90deg, #00ffff, #4dffff);
+  transition: all 0.6s ease;
+  animation: avatarGlow 3s infinite;
 }
 
 .Player-hp-text {
@@ -90,10 +142,16 @@
 }
 
 .Player-hp-percentage {
-  font-weight: bold;
-  font-size: 0.9rem;
-  color: #666;
   min-width: 3.5rem;
   text-align: right;
   flex-shrink: 0;
+  color: #4dffff;
+  font-family: 'Courier New', monospace;
+  animation: textGlow 3s infinite;
+  transition: all 0.6s ease;
+}
+
+.Player-hp-percentage:hover {
+  color: #80ffff;
+  text-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
 }

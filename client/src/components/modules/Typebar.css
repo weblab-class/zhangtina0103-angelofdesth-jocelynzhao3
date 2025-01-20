@@ -7,20 +7,61 @@
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 20px;
   box-sizing: border-box;
 }
 
 .target-text {
   margin-bottom: 10px; /* Space between prompt and input box */
   word-wrap: break-word;
+  color: #4dffff;
+  font-family: "Courier New", monospace;
+  font-size: 1.2rem;
+  text-align: center;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+  letter-spacing: 1px;
+  transition: all 0.6s ease;
+}
+
+.target-text:hover {
+  color: #80ffff;
+  text-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+  transform: scale(1.02);
 }
 
 .typed-text {
-  flex-grow: 1; /* Make sure the input field grows if needed */
-  padding: 10px;
+  width: 100%;
+  padding: 12px 15px;
   font-size: 1.2rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  font-family: "Courier New", monospace;
+  color: #fff;
+  background: rgba(0, 255, 255, 0.15);
+  border: 2px solid rgba(0, 255, 255, 0.4);
+  border-radius: 6px;
+  box-shadow: inset 0 0 15px rgba(0, 255, 255, 0.2);
+  transition: all 0.6s ease;
+  outline: none;
   box-sizing: border-box;
+}
+
+.typed-text::placeholder {
+  color: rgba(0, 255, 255, 0.6);
+  transition: all 0.6s ease;
+}
+
+.typed-text:hover {
+  border-color: rgba(0, 255, 255, 0.8);
+  box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.4);
+  background: rgba(0, 255, 255, 0.3);
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.typed-text:hover::placeholder {
+  color: rgba(0, 255, 255, 0.8);
+}
+
+.typed-text:focus {
+  border-color: rgba(0, 255, 255, 0.7);
+  box-shadow: inset 0 0 25px rgba(0, 255, 255, 0.3);
+  background: rgba(0, 255, 255, 0.25);
 }
