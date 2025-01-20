@@ -3,6 +3,7 @@ import "./Battle.css";
 import { drawCanvas } from "../../canvasManager.js";
 import Spell from "../modules/Spell";
 import TypeBar from "../modules/Typebar";
+import Player from "../modules/Player";
 
 import { Link } from "react-router-dom";
 import { get } from "../../utilities";
@@ -22,6 +23,9 @@ const hardcodedCards = [
 
 const Battle = (props) => {
   const [newWord, setNewWord] = useState(null);
+  const [playerHP, setPlayerHP] = useState(100);
+  const [opponentHP, setOpponentHP] = useState(100);
+
   useEffect(() => {
     get("/api/word", { language: "Spanish" }).then((word) => {
       // hard code langauge for now
@@ -31,13 +35,26 @@ const Battle = (props) => {
 
   return (
     <div className="Battle-container">
-      <p>You have reached the battle page</p>
-      <div>
-        <TypeBar cards={hardcodedCards} />
+      <div className="Battle-players">
+        <Player
+          name="Opponent"
+          avatarUrl="/default-avatar.png"
+          currentHP={opponentHP}
+          maxHP={100}
+        />
+        <Player
+          name={props.userName || "Player"}
+          avatarUrl={props.userAvatar || "/default-avatar.png"}
+          currentHP={playerHP}
+          maxHP={100}
+        />
       </div>
-      <Link to="/end/" className="NavBar-link u-inlineBlock">
-        Finish battle
-      </Link>
+      <div className="Battle-gameplay">
+        <TypeBar cards={hardcodedCards} />
+        <Link to="/end/" className="NavBar-link u-inlineBlock">
+          Finish battle
+        </Link>
+      </div>
     </div>
   );
 };

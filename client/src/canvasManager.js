@@ -1,5 +1,3 @@
 let canvas;
 
-export const drawCanvas = (drawState, canvasRef) => {
-    
-};
+export const drawCanvas = (drawState, canvasRef) => {};
