@@ -5,12 +5,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../App";
+import { LanguageContext } from "../App";
 import { get } from "../../utilities";
 
 const Start = (props) => {
   const userContext = useContext(UserContext);
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
+  const { language, setLanguage } = useContext(LanguageContext);
 
   useEffect(() => {
     if (userContext.userId) {
@@ -36,35 +38,59 @@ const Start = (props) => {
 
   return (
     <div>
-      <div className="google-login-container">
-        {userContext.userId ? (
-          <button
-            onClick={handleSignOut}
-            className="NavBar-link NavBar-login u-inlineBlock logout-button"
+      <div className="start-battle-container">
+        <div className="google-login-container">
+          {userContext.userId ? (
+            <button
+              onClick={handleSignOut}
+              className="NavBar-link NavBar-login u-inlineBlock logout-button"
+            >
+              Sign out {userName}
+            </button>
+          ) : (
+            <GoogleLogin
+              onSuccess={userContext.handleLogin}
+              onFailure={(err) => console.log(err)}
+              useOneTap
+              type="standard"
+              theme="filled_black"
+              shape="rectangular"
+              locale="en"
+              text="signin_with"
+            />
+          )}
+        </div>
+        <div>
+          <label htmlFor="language-select">Choose a language:</label>
+          <select
+            name="language"
+            id="language-select"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
           >
-            Sign out {userName}
-          </button>
-        ) : (
-          <GoogleLogin
-            onSuccess={userContext.handleLogin}
-            onFailure={(err) => console.log(err)}
-            useOneTap
-            type="standard"
-            theme="filled_black"
-            shape="rectangular"
-            locale="en"
-            text="signin_with"
-          />
+            {/* language value becomes empty string when selected, add more lan */}
+            <option value="">Select a language...</option>
+            <option value="Spanish">Spanish</option>
+            <option value="German">German</option>
+            <option value="Chinese">Chinese</option>
+          </select>
+        </div>
+        <button
+          onClick={handleBattleClick}
+          disabled={!userContext.userId || !language}
+          className="battle-button"
+        >
+          Go to battle!
+        </button>
+        {!userContext.userId && (
+          <div className="signin-prompt">Please sign in to start battling!</div>
+        )}
+        {userContext.userId && !language && (
+          <div className="signin-prompt">Please select a language to start battling!</div>
         )}
       </div>
-      <button onClick={handleBattleClick} disabled={!userContext.userId} className="battle-button">
-        Go to battle!
-      </button>
-      {!userContext.userId && (
-        <div className="signin-prompt">Please sign in to start battling!</div>
-      )}
       <div>
-        <p>Language toggle: Spanish</p>
+        <p className="profile-section">Make profile section here, need conditional rendering </p>
       </div>
       <div className="instructions-container">
         <h2 className="instructions-title">How to Play</h2>

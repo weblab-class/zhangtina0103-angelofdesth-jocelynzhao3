@@ -6,7 +6,9 @@ import TypeBar from "../modules/Typebar";
 
 import { Link } from "react-router-dom";
 import { get } from "../../utilities";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+
+import { LanguageContext } from "../App";
 
 /**
  * Proptypes
@@ -21,20 +23,27 @@ const hardcodedCards = [
 ];
 
 const Battle = (props) => {
+  const { language } = useContext(LanguageContext);
+
   const [newWord, setNewWord] = useState(null);
+
   useEffect(() => {
-    get("/api/word", { language: "Spanish" }).then((word) => {
-      // hard code langauge for now
-      setNewWord(word);
-    });
-  }, []);
+    if (language) {
+      // Only fetch word if language is selected
+      get("/api/word", { language: language }).then((word) => {
+        setNewWord(word);
+      });
+    }
+  }, [language]);
+
+  console.log("newWord ", newWord);
 
   return (
     <div className="Battle-container">
       <p>You have reached the battle page</p>
-      <div>
-        <TypeBar cards={hardcodedCards} />
-      </div>
+      <p>Your info and HP = 100</p>
+      <p>Your opponent info and HP = 100</p>
+      <div>{newWord ? <TypeBar cards={newWord} /> : <p>Loading word...</p>}</div>
       <Link to="/end/" className="NavBar-link u-inlineBlock">
         Finish battle
       </Link>

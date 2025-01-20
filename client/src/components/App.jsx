@@ -14,12 +14,14 @@ import "../utilities.css";
 import "./App.css";
 
 export const UserContext = createContext(null);
+export const LanguageContext = createContext(null);
 
 /**
  * Define the "App" component
  */
 const App = () => {
   const [userId, setUserId] = useState(undefined);
+  const [language, setLanguage] = useState(""); // Initialize as empty string
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
@@ -54,7 +56,9 @@ const App = () => {
   return (
     <div className="App-container">
       <UserContext.Provider value={authContextValue}>
-        <Outlet />
+        <LanguageContext.Provider value={{ language, setLanguage }}>
+          <Outlet />
+        </LanguageContext.Provider>
       </UserContext.Provider>
     </div>
   );

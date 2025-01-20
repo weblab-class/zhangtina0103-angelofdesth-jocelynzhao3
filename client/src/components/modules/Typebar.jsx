@@ -11,8 +11,8 @@ Proptypes:
 
 const TypeBar = (props) => {
   // Example target text
-  const prompt = "Word to translate here";
-  const targets = props.cards.map((card) => card.target);
+  const prompt = "Word to translate: " + props.cards.word;
+  const targets = [props.cards.english];
 
   // State for the user's typed input
   const [typedText, setTypedText] = useState("");
@@ -24,7 +24,7 @@ const TypeBar = (props) => {
     if (targets.includes(userInput)) {
       console.log("you got the right word");
       const card = props.cards[targets.findIndex((word) => word === userInput)];
-      console.log(card);
+      console.log(card); // TODO: delete later, this provides card answer
       takeCard(card);
       setTypedText("");
     }
@@ -47,12 +47,6 @@ const TypeBar = (props) => {
           placeholder="Start typing..."
           autoFocus
         />
-      </div>
-      <div className="type-bar">
-        {/* Translated Text */}
-        <div className="translated-text">
-          <span>Correct translation: {props.english}</span>
-        </div>
       </div>
     </div>
   );
