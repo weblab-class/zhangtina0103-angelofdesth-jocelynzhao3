@@ -34,10 +34,16 @@ const Battle = (props) => {
     }
   };
 
-  const handleTyping = (text) => {
+  const handleTyping = async (text) => {
     setTypedText(text);
-    // Find the index of the matched word
-    const matchIndex = displayedWords.findIndex((word) => word.english === text);
+    
+    // Normalize input text: trim spaces and convert to lowercase
+    const normalizedInput = text.trim().toLowerCase();
+    
+    // Find the index of the matched word, with case-insensitive comparison
+    const matchIndex = displayedWords.findIndex(
+      (word) => word.english.trim().toLowerCase() === normalizedInput
+    );
 
     if (matchIndex !== -1) {
       const matchedWord = displayedWords[matchIndex];
@@ -46,14 +52,20 @@ const Battle = (props) => {
       // Update game state
       takeCard(matchedWord, userContext.userId);
 
-      // Remove the matched word
-      setDisplayedWords((prev) => prev.filter((_, i) => i !== matchIndex));
+      // Get new word from API
+      const newWords = await get("/api/word", { language: language });
+      if (newWords && newWords.length > 0) {
+        const newWord = newWords[0];
+        // Replace word at the same index
+        setDisplayedWords((prev) => {
+          const newWords = [...prev];
+          newWords[matchIndex] = newWord;
+          return newWords;
+        });
+      }
 
       // Clear input
       setTypedText("");
-
-      // Fetch a new word to replace the matched one
-      fetchNewWord();
     }
   };
 
