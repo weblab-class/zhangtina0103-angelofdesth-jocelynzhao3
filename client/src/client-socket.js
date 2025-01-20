@@ -7,7 +7,8 @@ socket.on("connect", () => {
   post("/api/initsocket", { socketid: socket.id });
 });
 
-/** Tells server that player has taken a card**/
-export const takeCard = (card) => {
-  socket.emit("cards", card);
+/** Tells server which player took wha card**/
+/** use this to modify game state later */
+export const takeCard = (card, userId) => {
+  socket.emit("cards", { card, userId });
 };

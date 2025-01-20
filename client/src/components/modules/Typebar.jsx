@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./Typebar.css";
 import { takeCard } from "../../client-socket";
+import { UserContext } from "../App";
 
 /**
 Typebar is where we put in our prompt.
@@ -10,6 +11,9 @@ Proptypes:
 **/
 
 const TypeBar = (props) => {
+  // Idenify the user
+  const userContext = useContext(UserContext);
+
   // Example target text
   const prompt = "Word to translate: " + props.cards.word;
   const targets = [props.cards.english];
@@ -25,7 +29,8 @@ const TypeBar = (props) => {
       console.log("you got the right word");
       const card = props.cards[targets.findIndex((word) => word === userInput)];
       console.log(card); // TODO: delete later, this provides card answer
-      takeCard(card);
+      // function to update card stack
+      takeCard(card, userContext.userId); // game state updater
       setTypedText("");
     }
   };
@@ -47,6 +52,10 @@ const TypeBar = (props) => {
           placeholder="Start typing..."
           autoFocus
         />
+        <div>
+          {/* Remove this later */}
+          <p>Difficulty: {props.cards.difficulty}</p>
+        </div>
       </div>
     </div>
   );
