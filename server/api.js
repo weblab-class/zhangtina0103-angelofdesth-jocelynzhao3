@@ -46,12 +46,15 @@ router.post("/initsocket", (req, res) => {
 
 //grab a word from the database filtered by language
 router.get("/word", (req, res) => {
-  Word.aggregate([{ $match: { language: req.query.language } }, { $sample: { size: 1 } }])
+  Word.aggregate([
+    { $match: { language: req.query.language } },
+    { $sample: { size: 1 } }, // Get exactly 3 random words - they'll be unique
+  ])
     .then((words) => {
-      res.send(words[0]);
+      res.send(words); // Send all 3 words
     })
     .catch((err) => {
-      console.log(`Failed to get random word: ${err}`);
+      console.log(`Failed to get random words: ${err}`);
       res.status(500).send(err);
     });
 });
