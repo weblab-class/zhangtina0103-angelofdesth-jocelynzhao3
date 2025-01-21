@@ -11,6 +11,7 @@ import { takeCard } from "../../client-socket";
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { LanguageContext } from "../App";
 import { UserContext } from "../App.jsx";
+import { socket } from "../../client-socket.js";
 
 const hardcodedCards = [
   { prompt: "Salz", target: "salt", effect: "deal 10 damage" },
@@ -23,14 +24,25 @@ const Battle = (props) => {
   const { language } = useContext(LanguageContext);
   const canvasRef = useRef(null);
   const [gameState, setGameState] = useState({
+    lobby: "hardcodedlobbyname",
+    language: null,
     p1: "",
     p2: "Enemy",
     p1HP: 100,
     p2HP: 100,
-    cards: hardcodedCards,
-    timeLeft: 300,
-    p1Picture: props.picture,
+    displayCards: hardcodedCards,
   });
+  // gets the Game state on mount
+  useEffect(() => {
+    socket.on("update", (update) => {
+      console.log("I have received the update", update);
+      setGameState(update);
+    });
+    return () => {
+      socket.off("update");
+    }
+  }, []);
+
 
   // Add class to App container when component mounts
   useEffect(() => {
@@ -49,6 +61,7 @@ const Battle = (props) => {
   }, []);
 
   // Get user's name and picture when component mounts
+  // TO DO this should be backend, nto front end 
   useEffect(() => {
     const getUserData = async () => {
       if (userContext && userContext.userId) {
@@ -57,7 +70,6 @@ const Battle = (props) => {
         if (userData._id) {
           setGameState((prevState) => ({
             ...prevState,
-            p1: userData.name,
             p1Picture: userData.picture,
           }));
         }
@@ -112,11 +124,11 @@ const Battle = (props) => {
           </div>
         </div>
 
-        {/* Timer */}
-        <div className="Battle-timer">
+        {/* Timer angeline: off for now cuz I don't have that saved in game state yet*/}
+        {/* <div className="Battle-timer">
           {Math.floor(gameState.timeLeft / 60)}:
           {(gameState.timeLeft % 60).toString().padStart(2, "0")}
-        </div>
+        </div> */}
 
         {/* Enemy HP (Right) */}
         <div className="Battle-hp-container">
@@ -155,7 +167,12 @@ const Battle = (props) => {
       </div>
 
       <div className="Battle-gameplay">
-        <TypeBar cards={gameState.cards} />
+        <p style={{color: "white"}}> The words are: 
+          {gameState.displayCards[0].word}, {gameState.displayCards[0].english}
+          {gameState.displayCards[1].word}, {gameState.displayCards[1].english}
+          {gameState.displayCards[2].word}, {gameState.displayCards[2].english} 
+        </p>
+        <TypeBar cards={gameState.displayCards} />
         <Link to="/end/" className="NavBar-link u-inlineBlock">
           Finish battle
         </Link>

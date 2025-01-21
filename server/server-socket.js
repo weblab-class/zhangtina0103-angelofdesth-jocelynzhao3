@@ -35,16 +35,17 @@ const newGame = (p1, language) => { // starts the game with the player and a har
 
 const sendGameState = (lobby) => {
   const game = gameLogic.getGameFromLobby.get(lobby);
+  console.log(game)
   io.emit("update", game);
 };
 
 const startRunningGame = (lobby) => {
   setInterval(() => {
     sendGameState(lobby);
-  }, 1000 / 60); // 60 frames per second
+  }, 1000 / 1); // 60 frames per second
 };
 
-startRunningGame("hardcodedlobby");
+startRunningGame("hardcodedlobbyname");
 
 module.exports = {
   init: (http) => {
@@ -58,9 +59,6 @@ module.exports = {
       });
       socket.on("cards", (card) => {
         console.log("I have received the card", card);
-        // update later to game logic 
-        // const user = getUserFromSocketID(socket.id);
-        // console.log(user);
         gameLogic.playerTakeCard("hardcodedlobbyname", card.userId, card.card);
       });
     });
