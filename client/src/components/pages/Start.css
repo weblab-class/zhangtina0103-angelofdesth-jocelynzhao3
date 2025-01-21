@@ -1,6 +1,78 @@
+/* Add cyberpunk background and container */
+.Start-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background: #0a0a1f;
+  font-family: "Open Sans", sans-serif;
+}
+
+.Start-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 1rem;
+  z-index: 10;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.Start-content {
+  text-align: center;
+  padding: 2rem;
+  padding-top: 4rem;
+  border-radius: 10px;
+  animation: contentFade 1s ease-in;
+  width: 100%;
+  max-width: 90vw;
+  margin: 0 auto;
+}
+
+.Start-title {
+  font-size: 8rem;
+  font-weight: 900;
+  color: #4dffff;
+  text-shadow: 0 0 25px rgba(0, 255, 255, 0.6), 0 0 45px rgba(0, 255, 255, 0.4),
+    0 0 65px rgba(0, 255, 255, 0.2);
+  font-family: "Orbitron", sans-serif;
+  margin-bottom: 3rem;
+  animation: textGlow 3s infinite;
+  letter-spacing: 4px;
+  line-height: 1.2;
+  transform: perspective(500px) rotateX(5deg);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.Start-title:hover {
+  color: #fff;
+  text-shadow: 0 0 35px rgba(0, 255, 255, 0.8), 
+               0 0 55px rgba(0, 255, 255, 0.6),
+               0 0 75px rgba(0, 255, 255, 0.4),
+               0 0 95px rgba(0, 255, 255, 0.2);
+  transform: perspective(500px) rotateX(5deg) scale(1.05);
+  letter-spacing: 6px;
+}
+
 .google-login-container {
-  display: inline-block;
-  margin: 16px 0;
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+  animation: fadeIn 1s ease-in;
 }
 
 .google-login-container > div {
@@ -10,48 +82,73 @@
 }
 
 .logout-button {
-  background-color: #1a1a1a;
-  color: white;
-  border: 1px solid #333;
-  padding: 8px 16px;
-  border-radius: 4px;
+  background: rgba(0, 255, 255, 0.1);
+  color: #4dffff;
+  border: 2px solid rgba(0, 255, 255, 0.4);
+  padding: 10px 20px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.2s;
+  font-size: 1rem;
+  font-family: "Orbitron", sans-serif;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  white-space: nowrap;
+  letter-spacing: 1px;
 }
 
 .logout-button:hover {
-  background-color: #333;
+  background: rgba(0, 255, 255, 0.2);
+  border-color: rgba(0, 255, 255, 0.8);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+  transform: scale(1.05);
+  color: #fff;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
 }
 
 .battle-button {
   display: block;
-  margin: 16px 0;
-  padding: 12px 24px;
-  background-color: #4a90e2;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 18px;
+  margin: 2rem auto;
+  padding: 18px 60px;
+  background: rgba(0, 255, 255, 0.1);
+  color: #4dffff;
+  border: 2px solid rgba(0, 255, 255, 0.4);
+  border-radius: 8px;
+  font-size: 2rem;
+  font-family: "Orbitron", sans-serif;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+  animation: buttonPulse 3s infinite;
+  letter-spacing: 1px;
+  min-width: 320px;
 }
 
 .battle-button:hover {
-  background-color: #357abd;
+  background: rgba(0, 255, 255, 0.2);
+  border-color: rgba(0, 255, 255, 0.8);
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.4);
+  transform: scale(1.05);
+  color: #fff;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
 }
 
 .battle-button:disabled {
-  background-color: #cccccc;
+  background: rgba(128, 128, 128, 0.1);
+  border-color: rgba(128, 128, 128, 0.4);
+  color: #888;
   cursor: not-allowed;
+  text-shadow: none;
+  animation: none;
 }
 
 .signin-prompt {
   display: block;
-  margin: 16px 0;
-  color: #ff4444;
-  font-size: 16px;
-  text-align: center;
+  margin: 1rem 0;
+  color: #4dffff;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.2rem;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
 .battle-link {
@@ -61,24 +158,204 @@
 }
 
 .instructions-container {
-  max-width: 800px;
-  margin: 32px auto;
-  padding: 24px;
-  background-color: #f5f5f5;
+  margin: 1rem auto 2rem;
+  max-width: 700px;
+  background: rgba(0, 255, 255, 0.05);
+  border: 2px solid rgba(0, 255, 255, 0.2);
   border-radius: 8px;
-  text-align: center;
+  padding: 1.2rem 2rem;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+  animation: glowPulse 3s infinite;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 140px;
+}
+
+.instructions-container:hover {
+  background: rgba(0, 255, 255, 0.1);
+  border-color: rgba(0, 255, 255, 0.6);
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+  transform: scale(1.02);
+}
+
+.instructions-container:hover .instructions-title {
+  color: #fff;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+}
+
+.instructions-container:hover .instructions-text {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
 }
 
 .instructions-title {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 16px;
-  font-weight: bold;
+  font-size: 1.6rem;
+  font-family: "Orbitron", sans-serif;
+  font-weight: 700;
+  color: #4dffff;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+  margin: 0 0 0.8rem 0;
+  letter-spacing: 1px;
+  text-align: center;
 }
 
 .instructions-text {
-  font-size: 16px;
-  line-height: 1.6;
-  color: #444;
+  font-size: 1rem;
+  font-family: "Orbitron", sans-serif;
+  line-height: 1.5;
+  color: #fff;
   margin: 0;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+  text-align: center;
+  max-width: 95%;
+}
+
+/* Neon text highlights */
+.highlight-cyan {
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+}
+
+.highlight-purple {
+  color: #ff00ff;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+}
+
+.highlight-green {
+  color: #00ff9d;
+  text-shadow: 0 0 10px rgba(0, 255, 157, 0.7);
+}
+
+.highlight-pink {
+  color: #ff69b4;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.7);
+}
+
+.highlight-blue {
+  color: #00ccff;
+  text-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+}
+
+.highlight-yellow {
+  color: #ffff00;
+  text-shadow: 0 0 10px rgba(255, 255, 0, 0.7);
+}
+
+.highlight-orange {
+  color: #ffa500;
+  text-shadow: 0 0 10px rgba(255, 165, 0, 0.7);
+}
+
+.highlight-red {
+  color: #ff4444;
+  text-shadow: 0 0 10px rgba(255, 68, 68, 0.7);
+}
+
+/* Hover effects for highlights */
+.highlight-cyan:hover,
+.highlight-purple:hover,
+.highlight-green:hover,
+.highlight-pink:hover,
+.highlight-blue:hover,
+.highlight-yellow:hover,
+.highlight-orange:hover,
+.highlight-red:hover {
+  filter: brightness(1.2);
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .Start-title {
+    font-size: 6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .Start-title {
+    font-size: 4rem;
+    letter-spacing: 2px;
+  }
+
+  .Start-content {
+    padding-top: 5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .Start-title {
+    font-size: 3rem;
+    letter-spacing: 1px;
+  }
+
+  .logout-button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+
+  .Start-content {
+    padding: 1rem;
+    padding-top: 4rem;
+  }
+}
+
+/* Animations */
+@keyframes textGlow {
+  0%,
+  100% {
+    text-shadow: 0 0 25px rgba(0, 255, 255, 0.6), 0 0 45px rgba(0, 255, 255, 0.4),
+      0 0 65px rgba(0, 255, 255, 0.2);
+    transform: perspective(500px) rotateX(5deg) scale(1);
+  }
+  50% {
+    text-shadow: 0 0 35px rgba(0, 255, 255, 0.7), 0 0 55px rgba(0, 255, 255, 0.5),
+      0 0 75px rgba(0, 255, 255, 0.3);
+    transform: perspective(500px) rotateX(5deg) scale(1.05);
+  }
+}
+
+@keyframes buttonPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+  }
+}
+
+@keyframes contentFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+    border-color: rgba(0, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.3);
+  }
 }
