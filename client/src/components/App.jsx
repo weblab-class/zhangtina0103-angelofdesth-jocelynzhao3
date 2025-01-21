@@ -14,6 +14,7 @@ import "../utilities.css";
 import "./App.css";
 
 export const UserContext = createContext(null);
+export const UserInfoContext = createContext(null);
 export const LanguageContext = createContext(null);
 
 /**
@@ -21,6 +22,7 @@ export const LanguageContext = createContext(null);
  */
 const App = () => {
   const [userId, setUserId] = useState(undefined);
+  const [userInfo, setUserInfo] = useState(null);
   const [language, setLanguage] = useState(""); // Initialize as empty string
 
   useEffect(() => {
@@ -31,6 +33,16 @@ const App = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (userId) {
+      get("/api/userinfo").then((userInfo) => {
+        setUserInfo(userInfo);
+      });
+    } else {
+      setUserInfo(null);
+    }
+  }, [userId]);
 
   const handleLogin = (credentialResponse) => {
     const userToken = credentialResponse.credential;
@@ -57,7 +69,9 @@ const App = () => {
     <div className="App-container">
       <UserContext.Provider value={authContextValue}>
         <LanguageContext.Provider value={{ language, setLanguage }}>
-          <Outlet />
+          <UserInfoContext.Provider value={{ userInfo, setUserInfo }}>
+            <Outlet />
+          </UserInfoContext.Provider>
         </LanguageContext.Provider>
       </UserContext.Provider>
     </div>

@@ -6,6 +6,7 @@ import NotFound from "./components/pages/NotFound";
 import Battle from "./components/pages/Battle";
 import BattleEnd from "./components/pages/BattleEnd";
 import Start from "./components/pages/Start";
+import PVP from "./components/pages/PVP";
 
 import {
   createBrowserRouter,
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
       battling is unique */}
       <Route path="/end/" element={<BattleEnd />} />
       {/*  todo: add userid later in the url so the battle end screen is unique */}
+      <Route path="/pvp/" element={<PVP />} />
     </Route>
   )
 );

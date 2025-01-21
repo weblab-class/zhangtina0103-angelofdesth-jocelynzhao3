@@ -44,6 +44,21 @@ router.post("/initsocket", (req, res) => {
 // | write your API methods below!|
 // |------------------------------|
 
+//grab user info
+router.get("/userinfo", (req, res) => {
+  if (!req.user) {
+    // not logged in
+    return res.send({});
+  }
+
+  res.send({
+    name: req.user.name,
+    googleid: req.user.googleid,
+    elo: req.user.elo,
+    log: req.user.log,
+  });
+});
+
 //grab a word from the database filtered by language
 router.get("/word", (req, res) => {
   Word.aggregate([
