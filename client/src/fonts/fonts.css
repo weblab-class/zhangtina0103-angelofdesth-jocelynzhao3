@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "Aerglo";
+  src: url("./Aerglo-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Codec";
+  src: url("./Codec-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}

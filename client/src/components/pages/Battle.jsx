@@ -156,6 +156,9 @@ const Battle = (props) => {
 
       <div className="Battle-gameplay">
         <TypeBar cards={gameState.cards} />
+        <div className="language-display">
+          Debug area: language= <span className="language-text">{language}</span>
+        </div>
         <Link to="/end/" className="NavBar-link u-inlineBlock">
           Finish battle
         </Link>

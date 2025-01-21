@@ -14,6 +14,7 @@ import "../utilities.css";
 import "./App.css";
 
 export const UserContext = createContext(null);
+export const UserInfoContext = createContext(null);
 export const LanguageContext = createContext(null);
 
 /**
@@ -21,16 +22,18 @@ export const LanguageContext = createContext(null);
  */
 const App = () => {
   const [userId, setUserId] = useState(undefined);
-  const [userName, setUserName] = useState(undefined);
+  const [userInfo, setUserInfo] = useState(null);
   const [language, setLanguage] = useState(""); // Initialize as empty string
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
-      console.log("Whoami response:", user);
       if (user._id) {
+        // they are registed in the database, and currently logged in.
         setUserId(user._id);
-        setUserName(user.name);
-        console.log("Set user data:", { id: user._id, name: user.name });
+        setUserInfo(user); // Set user info directly from whoami response
+      } else {
+        setUserId(undefined);
+        setUserInfo(null);
       }
     });
   }, []);
@@ -40,33 +43,31 @@ const App = () => {
     const decodedCredential = jwt_decode(userToken);
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
-      console.log("Login response:", user);
       setUserId(user._id);
-      setUserName(user.name);
+      setUserInfo(user); // Set user info directly from login response
       post("/api/initsocket", { socketid: socket.id });
     });
   };
 
   const handleLogout = () => {
     setUserId(undefined);
-    setUserName(undefined);
+    setUserInfo(null);
     post("/api/logout");
   };
 
   const authContextValue = {
     userId,
-    userName,
     handleLogin,
     handleLogout,
   };
-
-  console.log("Current auth context:", authContextValue);
 
   return (
     <div className="App-container">
       <UserContext.Provider value={authContextValue}>
         <LanguageContext.Provider value={{ language, setLanguage }}>
-          <Outlet />
+          <UserInfoContext.Provider value={{ userInfo, setUserInfo }}>
+            <Outlet />
+          </UserInfoContext.Provider>
         </LanguageContext.Provider>
       </UserContext.Provider>
     </div>
