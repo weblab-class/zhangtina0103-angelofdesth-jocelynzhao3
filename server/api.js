@@ -46,7 +46,8 @@ router.post("/initsocket", (req, res) => {
 
 //grab a word from the database filtered by language
 router.post("/startGame", (req, res) => {
-  socketManager.newGame(req.query.playerId, req.query.language);
+  socketManager.newGame(req.body.playerId, req.body.language);
+  res.send({});
 });
 
 router.get("/word", (req, res) => {

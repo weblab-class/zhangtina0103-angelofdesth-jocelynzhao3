@@ -33,6 +33,19 @@ const newGame = (p1, language) => { // starts the game with the player and a har
   gameLogic.newGame("hardcodedlobbyname", p1, "bot", language);
 }
 
+const sendGameState = (lobby) => {
+  const game = gameLogic.getGameFromLobby.get(lobby);
+  io.emit("update", game);
+};
+
+const startRunningGame = (lobby) => {
+  setInterval(() => {
+    sendGameState(lobby);
+  }, 1000 / 60); // 60 frames per second
+};
+
+startRunningGame("hardcodedlobby");
+
 module.exports = {
   init: (http) => {
     io = require("socket.io")(http);

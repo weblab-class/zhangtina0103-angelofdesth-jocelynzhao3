@@ -32,8 +32,9 @@ const Start = (props) => {
 
   const handleBattleClick = () => {
     if (userContext.userId) {
-      post("/api/startGame", {playerId: userContext.userId, language: LanguageContext.language});
-      navigate("/battle/");
+      post("/api/startGame", {playerId: userContext.userId, language: language}).then(
+        navigate("/battle/")
+      );
     }
   };
 
