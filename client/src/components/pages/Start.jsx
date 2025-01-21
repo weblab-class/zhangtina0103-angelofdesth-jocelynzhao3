@@ -50,7 +50,7 @@ const Start = (props) => {
         </div>
       )}
       <div className="Start-content">
-        <h1 className="Start-title">Battle Lingo</h1>
+        <h1 className="Start-title"> Battle Lingo </h1>
         <div className="google-login-container">
           {!userContext.userId && (
             <GoogleLogin
@@ -83,7 +83,6 @@ const Start = (props) => {
         <div>
           {userContext.userId && (
             <div className="language-selector-container">
-              <label htmlFor="language-select">Choose a language:</label>
               <select
                 name="language"
                 id="language-select"

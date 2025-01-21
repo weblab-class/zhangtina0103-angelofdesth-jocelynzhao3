@@ -1,7 +1,6 @@
 import "../../utilities.css";
 import "./Battle.css";
 import { drawCanvas } from "../../canvasManager.js";
-import Spell from "../modules/Spell";
 import TypeBar from "../modules/Typebar";
 import Player from "../modules/Player";
 
@@ -31,6 +30,29 @@ const Battle = (props) => {
     timeLeft: 300,
     p1Picture: props.picture,
   });
+
+  const [typedText, setTypedText] = useState(""); // Track user input
+
+  const handleTyping = (text) => {
+    setTypedText(text);
+
+    // Normalize input text: trim spaces and convert to lowercase
+    const normalizedInput = text.trim().toLowerCase();
+
+    // Find the index of the matched word, with case-insensitive comparison
+    const matchIndex = gameState.cards.findIndex(
+      (word) => word.english.trim().toLowerCase() === normalizedInput
+    );
+
+    if (matchIndex !== -1) {
+      const matchedWord = gameState.cards[matchIndex];
+      console.log("Match found!", matchedWord);
+      takeCard(matchedWord, userContext.userId); // fix later
+    }
+
+    // Clear input
+    setTypedText("");
+  };
 
   // Add class to App container when component mounts
   useEffect(() => {
@@ -155,9 +177,12 @@ const Battle = (props) => {
       </div>
 
       <div className="Battle-gameplay">
-        <TypeBar cards={gameState.cards} />
+        <TypeBar onType={handleTyping} typedText={typedText} />
         <div className="language-display">
           Debug area: language= <span className="language-text">{language}</span>
+        </div>
+        <div className="language-display">
+          Debug area: typedText= <span className="language-text">{typedText}</span>
         </div>
         <Link to="/end/" className="NavBar-link u-inlineBlock">
           Finish battle
