@@ -42,7 +42,7 @@ const sendGameState = (lobby) => {
 const startRunningGame = (lobby) => {
   setInterval(() => {
     sendGameState(lobby);
-  }, 1000 / 1); // 60 frames per second
+  }, 1000 / 60); // 60 frames per second
 };
 
 startRunningGame("hardcodedlobbyname");
