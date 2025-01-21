@@ -56,7 +56,7 @@ router.get("/word", (req, res) => {
     { $sample: { size: 1 } }, // Get exactly 1 random word - they'll be unique
   ])
     .then((words) => {
-      res.send(words); // Send all 3 words
+      res.send(words); // send word
     })
     .catch((err) => {
       console.log(`Failed to get random words: ${err}`);
