@@ -43,8 +43,7 @@ const Battle = (props) => {
           console.log("Game over");
           navigate("/end/");
         }
-        
-      } 
+      }
     });
     return () => {
       socket.off("update");
@@ -209,9 +208,9 @@ const Battle = (props) => {
         <div className="language-display">
           Debug area: typedText= <span className="language-text">{typedText}</span>
         </div>
-        <Link to="/end/" className="NavBar-link u-inlineBlock">
-          Finish battle
-        </Link>
+        {/* <Link to="/end/" className="NavBar-link u-inlineBlock">
+          Quit - TODO needs to tell server to end the game
+        </Link> */}
       </div>
     </div>
   );
