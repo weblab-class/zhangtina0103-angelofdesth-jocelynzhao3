@@ -203,6 +203,8 @@ const Battle = (props) => {
           {gameState.displayCards[0].word}, {gameState.displayCards[0].english}
           {gameState.displayCards[1].word}, {gameState.displayCards[1].english}
           {gameState.displayCards[2].word}, {gameState.displayCards[2].english}
+          The effects are:
+          {gameState.effect}
         </p>
         <TypeBar onType={handleTyping} typedText={typedText} disable={isFrozen} />
         <div className="language-display">
