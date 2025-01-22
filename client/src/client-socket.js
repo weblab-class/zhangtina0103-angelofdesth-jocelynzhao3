@@ -13,4 +13,4 @@ export const takeCard = (card, userId) => {
   socket.emit("cards", { card, userId });
 };
 
-socket.on("freeze", disableTyping);
+//socket.on("freeze", disableTyping);

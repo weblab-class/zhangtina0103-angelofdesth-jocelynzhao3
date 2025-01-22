@@ -87,7 +87,7 @@ const newGame = async (lobby, p1, p2, language) => {
 };
 
 // function for adding/subtracting hp
-const doEffect = (effectName, game, takenCard, multiplier = 1) => {
+const doEffect = (effectName, multiplier = 1) => {
   if (effectName === "attack") {
     if (game.p2HP > takenCard.effect.amount) {
       game.p2HP = game.p2HP - multiplier * takenCard.effect.amount;
@@ -121,13 +121,14 @@ const playerTakeCard = async (lobby, player, cardIndex) => {
   }
 
   if (takenCard.effect.type === "attack" || takenCard.effect.type === "heal") {
-    doEffect(takenCard.effect.type, game, takenCard);
+    doEffect(takenCard.effect.type);
   } else if (takenCard.effect.type === "lifesteal") {
     // do attack and heal
-    doEffect("attack", game, takenCard);
-    doEffect("heal", game, takenCard);
+    doEffect("attack");
+    doEffect("heal");
   } else if (takenCard.effect.type === "freeze") {
     // p1 can't type for 5 seconds
+    console.log("You can't type right now!");
   } else {
     console.log(
       "There is an issue with the card type! Expected damage/heal but got",
