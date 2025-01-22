@@ -28,10 +28,11 @@ const removeUser = (user, socket) => {
   delete socketToUserMap[socket.id];
 };
 
-// GAME STUFF 
-const newGame = (p1, language) => { // starts the game with the player and a hardcoded lobby name, which is a bot
+// GAME STUFF
+const newGame = (p1, language) => {
+  // starts the game with the player and a hardcoded lobby name, which is a bot
   gameLogic.newGame("hardcodedlobbyname", p1, "bot", language);
-}
+};
 
 const sendGameState = (lobby) => {
   const game = gameLogic.getGameFromLobby.get(lobby);
@@ -46,6 +47,13 @@ const startRunningGame = (lobby) => {
 };
 
 startRunningGame("hardcodedlobbyname");
+
+// freeze typing box
+const freezeTyping = () => {
+  if (card.userId !== game.p1) {
+    io.emit("freeze", game.p1);
+  }
+};
 
 module.exports = {
   init: (http) => {
