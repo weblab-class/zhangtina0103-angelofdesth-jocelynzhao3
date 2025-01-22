@@ -35,7 +35,7 @@ const newGame = (p1, language) => { // starts the game with the player and a har
 
 const sendGameState = (lobby) => {
   const game = gameLogic.getGameFromLobby.get(lobby);
-  console.log(game)
+  console.log(game);
   io.emit("update", game);
 };
 

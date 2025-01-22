@@ -34,8 +34,10 @@ const Battle = (props) => {
   // gets the Game state on mount
   useEffect(() => {
     socket.on("update", (update) => {
-      console.log("I have received the update", update);
-      setGameState(update);
+      if (update) {
+        console.log("I have received the update", update);
+        setGameState(update);
+      }
     });
     return () => {
       socket.off("update");
@@ -51,18 +53,19 @@ const Battle = (props) => {
     const normalizedInput = text.trim().toLowerCase();
 
     // Find the index of the matched word, with case-insensitive comparison
-    const matchIndex = gameState.cards.findIndex(
+    const matchIndex = gameState.displayCards.findIndex(
       (word) => word.english.trim().toLowerCase() === normalizedInput
     );
 
     if (matchIndex !== -1) {
-      const matchedWord = gameState.cards[matchIndex];
-      console.log("Match found!", matchedWord);
-      takeCard(matchedWord, userContext.userId); // fix later
+      const matchedWord = gameState.displayCards[matchIndex];
+      console.log("Match found!", matchedWord); // FOR THE SAKE OF DEBUGGING this is here, but we don't actually need to find the card 
+      setTypedText("");
+      takeCard(matchIndex, userContext.userId); // fix later
     }
 
     // Clear input
-    setTypedText("");
+    
   };
 
   // Add class to App container when component mounts

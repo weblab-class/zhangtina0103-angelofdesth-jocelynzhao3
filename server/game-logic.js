@@ -81,22 +81,24 @@ const newGame = async (lobby, p1, p2, language) => {
   }
 };
 
-const playerTakeCard = (lobby, player, cardIndex) => {
+const playerTakeCard = async (lobby, player, cardIndex) => {
   const game = getGameFromLobby.get(lobby);
   console.log(game);
+  const takenCard = game.displayCards[cardIndex];
+  console.log("I have received the card", takenCard);
   
   // does the effect of the card: 
   // for now, we have hardcoded the player to be player 1
-  if (card.type === "damage") {
-    game.p2HP = game.p2HP - card.amount;
-  } else if (card.type === "heal") {
-    if (game.p1HP < 100 - card.amount) { // does not allow overheal
-      game.p1HP = game.p1HP + card.amount;
+  if (takenCard.effect.type === "damage") {
+    game.p2HP = game.p2HP - takenCard.effect.amount;
+  } else if (takenCard.effect.type === "heal") {
+    if (game.p1HP < 100 - takenCard.amount) { // does not allow overheal
+      game.p1HP = game.p1HP + takenCard.effect.amount;
     } else {
       game.p1HP = 100; 
     };
   } else {
-    console.log("There is an issue with the card type! Expected damage/heal but got", card.type);
+    console.log("There is an issue with the card type! Expected damage/heal but got", takenCard.type);
   };
 
   // checks if the game is complete with the new updated hps
@@ -110,7 +112,7 @@ const playerTakeCard = (lobby, player, cardIndex) => {
 
   // removes the card and replaces it with a new card
   const card = game.displayCards[cardIndex];
-  let replacement = newCard(game.language); 
+  let replacement = await newCard(game.language); 
   replacement.effect = card.effect;
   game.displayCards[cardIndex] = replacement; 
   console.log("new cards are now", game.displayCards);
