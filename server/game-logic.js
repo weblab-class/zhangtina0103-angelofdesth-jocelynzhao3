@@ -42,7 +42,7 @@ const newCard = (language) => {
         english: word[0].english,
         effect: {
           type: possibleEffects[getRandomInt(0, possibleEffects.length - 1)],
-          amount: 10 + 1.25 * word[0].difficulty,
+          amount: Math.floor(10 + 1.25 * word[0].difficulty),
         },
         difficulty: word[0].difficulty,
       };
