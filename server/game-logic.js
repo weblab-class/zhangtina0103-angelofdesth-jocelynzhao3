@@ -54,7 +54,7 @@ const newCard = (language) => {
 };
 
 const newGame = async (lobby, p1, p2, language) => {
-  if (getGameFromLobby.get(lobby)) {
+  if (activeGames.get(lobby)) {
     console.log("This game already exists! Nothing added.");
   } else {
     game = {
@@ -86,26 +86,8 @@ const newGame = async (lobby, p1, p2, language) => {
   }
 };
 
-// function for adding/subtracting hp
-const doEffect = (effectName, game, takenCard, multiplier = 1) => {
-  if (effectName === "attack") {
-    if (game.p2HP > takenCard.effect.amount) {
-      game.p2HP = game.p2HP - multiplier * takenCard.effect.amount;
-    } else {
-      game.p2HP = 0;
-    }
-  } else if (effectName === "heal") {
-    if (game.p1HP < 100 - takenCard.amount) {
-      // does not allow overheal
-      game.p1HP = game.p1HP + multiplier * takenCard.effect.amount;
-    } else {
-      game.p1HP = 100;
-    }
-  }
-};
-
 const playerTakeCard = async (lobby, player, cardIndex) => {
-  const game = getGameFromLobby.get(lobby);
+  const game = activeGames.get(lobby);
   console.log(game);
   const takenCard = game.displayCards[cardIndex];
   console.log("I have received the card", takenCard);
@@ -137,10 +119,10 @@ const playerTakeCard = async (lobby, player, cardIndex) => {
   }
 
   // checks if the game is complete with the new updated hps
-  if (game.p1HP <= 0) {
+  if (game.p1HP === 0) {
     game.winner = game.p2;
     console.log("p2 wins");
-  } else if (game.p2HP <= 0) {
+  } else if (game.p2HP === 0) {
     game.winner = game.p1;
     console.log("p1 wins");
   }
@@ -157,7 +139,7 @@ const playerTakeCard = async (lobby, player, cardIndex) => {
 // const botTakesCard
 
 module.exports = {
-  getGameFromLobby,
+  activeGames,
   newGame,
   playerTakeCard,
 };

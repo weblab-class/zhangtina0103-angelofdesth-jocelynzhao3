@@ -29,7 +29,7 @@ const Start = (props) => {
     }
   }, [userContext.userId]);
 
-  const handleBattleClick = () => {
+  const handleBattleClick = () => { // TODO: put player name in here too?
     if (userContext.userId) {
       post("/api/startGame", { playerId: userContext.userId, language: language }).then(
         navigate("/battle/")
@@ -50,7 +50,7 @@ const Start = (props) => {
         </div>
       )}
       <div className="Start-content">
-        <h1 className="Start-title"> Battle Lingo </h1>
+        <h1 className="Start-title"> BattleLingo </h1>
         <div className="google-login-container">
           {!userContext.userId && (
             <GoogleLogin

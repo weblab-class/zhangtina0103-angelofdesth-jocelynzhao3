@@ -4,7 +4,7 @@ import { drawCanvas } from "../../canvasManager.js";
 import TypeBar from "../modules/Typebar";
 import Player from "../modules/Player";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { get, post } from "../../utilities";
 import { takeCard } from "../../client-socket";
 import React, { useState, useEffect, useContext, useRef } from "react";
@@ -19,6 +19,7 @@ const hardcodedCards = [
 ];
 
 const Battle = (props) => {
+  const navigate = useNavigate();
   const userContext = useContext(UserContext);
   const { language } = useContext(LanguageContext);
   const canvasRef = useRef(null);
@@ -31,7 +32,7 @@ const Battle = (props) => {
 
   const [gameState, setGameState] = useState({
     lobby: "hardcodedlobbyname",
-    language: null,
+    language: language,
     p1: "",
     p2: "Enemy",
     p1HP: 100,
@@ -42,8 +43,13 @@ const Battle = (props) => {
   useEffect(() => {
     socket.on("update", (update) => {
       if (update) {
-        console.log("I have received the update", update);
-        setGameState(update);
+        if (update !== "over") {
+          console.log("I have received the update", update);
+          setGameState(update);
+        } else {
+          console.log("Game over");
+          navigate("/end/");
+        }
       }
     });
     return () => {
@@ -68,10 +74,8 @@ const Battle = (props) => {
       const matchedWord = gameState.displayCards[matchIndex];
       console.log("Match found!", matchedWord); // FOR THE SAKE OF DEBUGGING this is here, but we don't actually need to find the card
       setTypedText("");
-      takeCard(matchIndex, userContext.userId); // fix later
+      takeCard(matchIndex, userContext.userId); 
     }
-
-    // Clear input
   };
 
   // Add class to App container when component mounts
@@ -91,7 +95,7 @@ const Battle = (props) => {
   }, []);
 
   // Get user's name and picture when component mounts
-  // TO DO this should be backend, nto front end
+  // TO DO this should be backend, not front end
   useEffect(() => {
     const getUserData = async () => {
       if (userContext && userContext.userId) {
@@ -211,9 +215,9 @@ const Battle = (props) => {
         <div className="language-display">
           Debug area: typedText= <span className="language-text">{typedText}</span>
         </div>
-        <Link to="/end/" className="NavBar-link u-inlineBlock">
-          Finish battle
-        </Link>
+        {/* <Link to="/end/" className="NavBar-link u-inlineBlock">
+          Quit - TODO needs to tell server to end the game
+        </Link> */}
       </div>
     </div>
   );
