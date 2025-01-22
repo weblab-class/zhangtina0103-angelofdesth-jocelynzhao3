@@ -10,10 +10,7 @@ const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 };
 
-const activeGames = [];
-const getGameFromLobby = new Map();
-
-
+const activeGames = new Map();
 
 /**
 
@@ -45,7 +42,7 @@ const newCard = (language) => {
 };
 
 const newGame = async (lobby, p1, p2, language) => {
-  if (getGameFromLobby.get(lobby)) {
+  if (activeGames.get(lobby)) {
     console.log("This game already exists! Nothing added.");
   }
   else {
@@ -73,16 +70,34 @@ const newGame = async (lobby, p1, p2, language) => {
   card3.effect = {type: "heal", amount: 5};
   game.displayCards.push(card3);
 
-  activeGames.push(game);
-  getGameFromLobby.set(game.lobby, game);
+  activeGames.set(lobby, game);
 
   console.log("new game started with params", game); 
   console.log("current active games are", activeGames);
   }
 };
 
+const checkWin = (game) => {
+  if (game.p1HP === 0 || game.p2HP === 0) {
+    if (game.p1HP === 0) {
+      game.winner = game.p2;
+      console.log("p2 wins");
+    } else {
+      game.winner = game.p1;
+      console.log("p1 wins");
+    }
+  }
+}
+
+const handleGameEnd = (game) => {
+    activeGames.delete(game.lobby);
+    // TO DO (jocelyn): here is where we save the game to the database
+    // the params passed in is just the game state (of the form above)
+    // you can add whatever else type of cleanup you think needs to happen once a game is over
+}
+
 const playerTakeCard = async (lobby, player, cardIndex) => {
-  const game = getGameFromLobby.get(lobby);
+  const game = activeGames.get(lobby);
   console.log(game);
   const takenCard = game.displayCards[cardIndex];
   console.log("I have received the card", takenCard);
@@ -102,13 +117,7 @@ const playerTakeCard = async (lobby, player, cardIndex) => {
   };
 
   // checks if the game is complete with the new updated hps
-  if (game.p1HP === 0) {
-    game.winner = game.p2;
-    console.log("p2 wins");
-  } else if (game.p2HP === 0) {
-    game.winner = game.p1;
-    console.log("p1 wins");
-  }
+  checkWin(game);
 
   // removes the card and replaces it with a new card
   const card = game.displayCards[cardIndex];
@@ -121,7 +130,8 @@ const playerTakeCard = async (lobby, player, cardIndex) => {
 
 
 module.exports = {
-  getGameFromLobby,
+  activeGames,
   newGame,
   playerTakeCard,
+  handleGameEnd,
 }

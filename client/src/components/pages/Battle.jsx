@@ -36,9 +36,15 @@ const Battle = (props) => {
   useEffect(() => {
     socket.on("update", (update) => {
       if (update) {
-        console.log("I have received the update", update);
-        setGameState(update);
-      }
+        if (update !== "over") {
+          console.log("I have received the update", update);
+          setGameState(update);
+        } else {
+          console.log("Game over");
+          navigate("/end/");
+        }
+        
+      } 
     });
     return () => {
       socket.off("update");
@@ -114,13 +120,6 @@ const Battle = (props) => {
 
     return () => clearInterval(timer);
   }, []);
-
-  useEffect(() => {
-    if (gameState.winner) {
-      // winner is no longer null
-      navigate("/end/");
-    }
-  }, [gameState.winner]);
 
   useEffect(() => {
     const handleResize = () => {

@@ -33,15 +33,22 @@ const newGame = (p1, language) => { // starts the game with the player and a har
   gameLogic.newGame("hardcodedlobbyname", p1, "bot", language);
 }
 
-const sendGameState = (lobby) => {
-  const game = gameLogic.getGameFromLobby.get(lobby);
-  console.log(game);
+const sendGameState = (game) => {
   io.emit("update", game);
 };
 
 const startRunningGame = (lobby) => {
   setInterval(() => {
-    sendGameState(lobby);
+    const game = gameLogic.activeGames.get(lobby);
+    console.log(game);
+    if (game) {
+      if (game.winner) {
+      gameLogic.handleGameEnd(game);
+      io.emit("update", "over");
+    } else {
+        sendGameState(game);
+    }
+  }
   }, 1000 / 60); // 60 frames per second
 };
 
