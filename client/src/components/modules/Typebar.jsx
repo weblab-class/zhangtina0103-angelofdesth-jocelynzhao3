@@ -11,7 +11,7 @@ const TypeBar = (props) => {
     const userInput = event.target.value;
     props.onType(userInput); // Pass the input up to parent
   };
-
+ 
   return (
     <div className="type-bar-container">
       <div className="type-bar">

@@ -12,7 +12,6 @@ const getRandomInt = (min, max) => {
 
 const activeGames = [];
 const getGameFromLobby = new Map();
-console.log("hi my name is", getGameFromLobby);
 
 
 
