@@ -22,6 +22,13 @@ const Battle = (props) => {
   const userContext = useContext(UserContext);
   const { language } = useContext(LanguageContext);
   const canvasRef = useRef(null);
+
+  const [isFrozen, setIsFrozen] = useState(false);
+  const disableTyping = () => {
+    setIsFrozen(true);
+    setTimeout(() => setIsFrozen(false), 3000);
+  };
+
   const [gameState, setGameState] = useState({
     lobby: "hardcodedlobbyname",
     language: null,
@@ -59,13 +66,12 @@ const Battle = (props) => {
 
     if (matchIndex !== -1) {
       const matchedWord = gameState.displayCards[matchIndex];
-      console.log("Match found!", matchedWord); // FOR THE SAKE OF DEBUGGING this is here, but we don't actually need to find the card 
+      console.log("Match found!", matchedWord); // FOR THE SAKE OF DEBUGGING this is here, but we don't actually need to find the card
       setTypedText("");
       takeCard(matchIndex, userContext.userId); // fix later
     }
 
     // Clear input
-    
   };
 
   // Add class to App container when component mounts
@@ -198,7 +204,7 @@ const Battle = (props) => {
           {gameState.displayCards[1].word}, {gameState.displayCards[1].english}
           {gameState.displayCards[2].word}, {gameState.displayCards[2].english}
         </p>
-        <TypeBar onType={handleTyping} typedText={typedText} />
+        <TypeBar onType={handleTyping} typedText={typedText} disable={isFrozen} />
         <div className="language-display">
           Debug area: language= <span className="language-text">{language}</span>
         </div>

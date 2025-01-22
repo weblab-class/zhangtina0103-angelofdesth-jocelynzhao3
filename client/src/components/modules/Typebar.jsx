@@ -11,7 +11,7 @@ const TypeBar = (props) => {
     const userInput = event.target.value;
     props.onType(userInput); // Pass the input up to parent
   };
- 
+
   return (
     <div className="type-bar-container">
       <div className="type-bar">
@@ -21,10 +21,17 @@ const TypeBar = (props) => {
           value={props.typedText}
           onChange={handleInputChange}
           className="typed-text"
-          placeholder="Start typing..."
-          autoFocus
+          placeholder={props.isFrozen ? "Typing is frozen!" : "Start typing..."}
+          disabled={props.isFrozen}
+          autoFocus={!props.isFrozen}
         />
       </div>
+
+      {props.isFrozen && (
+        <div>
+          <p>Typing is temporarily disabled.</p>
+        </div>
+      )}
     </div>
   );
 };
