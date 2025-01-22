@@ -21,9 +21,9 @@ const TypeBar = (props) => {
           value={props.typedText}
           onChange={handleInputChange}
           className="typed-text"
-          placeholder={props.isFrozen ? "Typing is frozen!" : "Start typing..."}
-          disabled={props.isFrozen}
-          autoFocus={!props.isFrozen}
+          //placeholder={props.isFrozen ? "Typing is frozen!" : "Start typing..."}
+          //disabled={props.isFrozen}
+          //autoFocus={!props.isFrozen}
         />
       </div>
 
