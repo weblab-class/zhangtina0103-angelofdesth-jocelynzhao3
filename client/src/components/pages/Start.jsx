@@ -50,7 +50,7 @@ const Start = (props) => {
         </div>
       )}
       <div className="Start-content">
-        <h1 className="Start-title"> Battle Lingo </h1>
+        <h1 className="Start-title"> BattleLingo </h1>
         <div className="google-login-container">
           {!userContext.userId && (
             <GoogleLogin

@@ -1,0 +1,102 @@
+/* Reset default margins and ensure full height */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.BattleEnd-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background: #0a0a1f;
+  color: #fff;
+  font-family: "Codec", sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+}
+
+.BattleEnd-container h1 {
+  font-family: "Aerglo", sans-serif;
+  font-size: 3rem;
+  color: #4dffff;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+  margin: 2rem 0;
+}
+
+.BattleEnd-userinfo {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 800px;
+  margin: 1rem auto;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(77, 255, 255, 0.1);
+}
+
+.BattleEnd-userinfo h2 {
+  color: #4dffff;
+  margin-bottom: 1.5rem;
+}
+
+.BattleEnd-userinfo p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.BattleEnd-log {
+  margin-top: 1.5rem;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.BattleEnd-log table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.BattleEnd-log th,
+.BattleEnd-log td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.BattleEnd-log th {
+  color: #4dffff;
+  font-weight: bold;
+  background: rgba(77, 255, 255, 0.1);
+}
+
+.BattleEnd-navigation {
+  margin: 2rem 0;
+  width: 100%;
+  text-align: center;
+}
+
+.BattleEnd-button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: rgba(77, 255, 255, 0.1);
+  color: #4dffff;
+  text-decoration: none;
+  border-radius: 5px;
+  border: 1px solid #4dffff;
+  transition: all 0.3s ease;
+}
+
+.BattleEnd-button:hover {
+  background: rgba(77, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(77, 255, 255, 0.3);
+}

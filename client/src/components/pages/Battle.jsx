@@ -64,9 +64,6 @@ const Battle = (props) => {
       setTypedText("");
       takeCard(matchIndex, userContext.userId); // fix later
     }
-
-    // Clear input
-
   };
 
   // Add class to App container when component mounts
@@ -86,7 +83,7 @@ const Battle = (props) => {
   }, []);
 
   // Get user's name and picture when component mounts
-  // TO DO this should be backend, nto front end
+  // TO DO this should be backend, not front end
   useEffect(() => {
     const getUserData = async () => {
       if (userContext && userContext.userId) {
@@ -119,7 +116,8 @@ const Battle = (props) => {
   }, []);
 
   useEffect(() => {
-    if (gameState.p1HP <= 0 || gameState.p2HP <= 0) { // tell the server game is over or will server know anyway
+    if (gameState.p1HP <= 0 || gameState.p2HP <= 0) {
+      // tell the server game is over or will server know anyway
       navigate("/end/");
     }
   }, [gameState.p1HP, gameState.p2HP]);

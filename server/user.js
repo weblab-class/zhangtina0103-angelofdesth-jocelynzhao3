@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
         Opponent: String,
         Language: String,
         Date: String,
-      },
+      }, // also track # words typed?
     ],
     default: [],
   },
