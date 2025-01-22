@@ -116,11 +116,11 @@ const Battle = (props) => {
   }, []);
 
   useEffect(() => {
-    if (gameState.p1HP <= 0 || gameState.p2HP <= 0) {
-      // tell the server game is over or will server know anyway
+    if (gameState.winner) {
+      // winner is no longer null
       navigate("/end/");
     }
-  }, [gameState.p1HP, gameState.p2HP]);
+  }, [gameState.winner]);
 
   useEffect(() => {
     const handleResize = () => {

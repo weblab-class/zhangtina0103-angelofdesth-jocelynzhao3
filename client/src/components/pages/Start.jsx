@@ -29,7 +29,7 @@ const Start = (props) => {
     }
   }, [userContext.userId]);
 
-  const handleBattleClick = () => {
+  const handleBattleClick = () => { // TODO: put player name in here too?
     if (userContext.userId) {
       post("/api/startGame", { playerId: userContext.userId, language: language }).then(
         navigate("/battle/")
