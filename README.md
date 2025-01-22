@@ -21,7 +21,7 @@ Remember to create your .env file with Database SRV (mongoConnectionURL) and ses
 
 ## Mongoose schema documentation
 
-- user: {name: String, googleid: String, elo: Number, log: [{Result: String,Opponent: String, Language: String, Date: String}]}
+- user: {name: String, googleid: String, elo: Number, log: [{Result: String, Opponent: String, Language: String, Date: String}]}
 - word: {language: String, word: String, english: String, difficulty: Number 1-4}
 
 ## API endpoint documentation
