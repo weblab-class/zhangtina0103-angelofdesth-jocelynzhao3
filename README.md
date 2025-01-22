@@ -19,6 +19,11 @@ Additionally for authentication, one of you will need to obtain a CLIENT_ID, ins
 
 Remember to create your .env file with Database SRV (mongoConnectionURL) and session secret (sessionSecret).
 
+## Mongoose schema documentation
+
+- user: {name: String, googleid: String, elo: Number, log: [{Result: String,Opponent: String, Language: String, Date: String}]}
+- word: {language: String, word: String, english: String, difficulty: Number 1-4}
+
 ## API endpoint documentation
 
 - "/whoami" returns the current user, or null if not logged in

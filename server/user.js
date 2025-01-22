@@ -7,8 +7,8 @@ const UserSchema = new mongoose.Schema({
   log: {
     type: [
       {
-        Opponent: String,
         Result: String,
+        Opponent: String,
         Language: String,
         Date: String,
       },
