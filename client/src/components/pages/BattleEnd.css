@@ -95,6 +95,26 @@ body {
   background: rgba(77, 255, 255, 0.1);
 }
 
+.BattleEnd-recent-battle {
+  background: rgba(77, 255, 255, 0.1);
+  position: relative;
+}
+
+.BattleEnd-recent-battle td {
+  position: relative;
+}
+
+.BattleEnd-recent-label {
+  font-size: 0.8em;
+  background: #4dffff;
+  color: #0a0a1f;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 8px;
+  display: inline-block;
+  font-weight: bold;
+}
+
 .BattleEnd-navigation {
   margin: 2rem 0;
   width: 100%;

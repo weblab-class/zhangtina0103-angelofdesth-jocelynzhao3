@@ -73,19 +73,20 @@
   height: 100%;
   transition: width 0.3s ease, all 0.6s ease;
   position: absolute;
-  left: 0;
   top: 0;
 }
 
-.Battle-hp-fill.enemy-hp {
-  background: linear-gradient(90deg, #00ff9d, #00ffcc);
-  box-shadow: 0 0 25px rgba(0, 255, 157, 0.6);
+.Battle-hp-fill.player-hp {
+  left: 0;
+  background: linear-gradient(90deg, #00ccff, #00ffff);
+  box-shadow: 0 0 25px rgba(0, 204, 255, 0.6);
   animation: elementGlow 3s infinite;
 }
 
-.Battle-hp-fill.player-hp {
-  background: linear-gradient(90deg, #00ccff, #00ffff);
-  box-shadow: 0 0 25px rgba(0, 204, 255, 0.6);
+.Battle-hp-fill.enemy-hp {
+  right: 0;
+  background: linear-gradient(90deg, #00ff9d, #00ffcc);
+  box-shadow: 0 0 25px rgba(0, 255, 157, 0.6);
   animation: elementGlow 3s infinite;
 }
 
@@ -140,9 +141,10 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 0;
+  padding: 0 2rem;
   z-index: 2;
   pointer-events: none;
+  margin-bottom: 2rem;
 }
 
 .Battle-avatars > * {
@@ -221,8 +223,8 @@
 .Battle-gameplay {
   position: fixed;
   bottom: 0;
-  left: 0;
-  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -232,10 +234,10 @@
   background: transparent;
   box-sizing: border-box;
   overflow-y: auto;
-  max-height: calc(100vh - 40px); /* Account for status bar */
+  height: calc(100vh - 200px); /* More space for avatars */
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
+  margin-top: 100px; /* Push content down from avatars */
 }
 
 .Battle-spell {
@@ -380,4 +382,84 @@
   100% {
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
   }
+}
+
+.Battle-cards-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+.Battle-card {
+  flex: 1;
+  min-width: 250px;
+  max-width: calc(33.333% - 1.5rem);
+  background: rgba(77, 255, 255, 0.05);
+  border: 2px solid rgba(77, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 900px) {
+  .Battle-card {
+    max-width: calc(50% - 1rem);
+  }
+
+  .Battle-cards-container {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .Battle-card {
+    max-width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .Battle-cards-container {
+    gap: 1rem;
+    padding: 0 0.5rem;
+    margin: 1rem auto;
+  }
+}
+
+.Battle-card:hover {
+  transform: translateY(-5px);
+  background: rgba(77, 255, 255, 0.1);
+  border-color: rgba(77, 255, 255, 0.5);
+  box-shadow: 0 0 20px rgba(77, 255, 255, 0.2);
+}
+
+.Battle-card-content {
+  text-align: center;
+}
+
+.Battle-card-word {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #4dffff;
+  margin-bottom: 0.5rem;
+  font-family: "Codec", sans-serif;
+}
+
+.Battle-card-divider {
+  width: 50%;
+  height: 2px;
+  background: rgba(77, 255, 255, 0.3);
+  margin: 0.8rem auto;
+}
+
+.Battle-card-english {
+  font-size: 1.2rem;
+  color: #ffffff;
+  opacity: 0.9;
 }

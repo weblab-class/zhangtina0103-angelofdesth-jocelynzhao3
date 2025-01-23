@@ -209,14 +209,21 @@ const Battle = (props) => {
       </div>
 
       <div className="Battle-gameplay">
-        <p style={{ color: "white" }}>
-          {" "}
-          The words are:
-          {gameState.displayCards[0].word}, {gameState.displayCards[0].english}
-          {gameState.displayCards[1].word}, {gameState.displayCards[1].english}
-          {gameState.displayCards[2].word}, {gameState.displayCards[2].english}
-        </p>
+        {/* Word Cards */}
+        <div className="Battle-cards-container">
+          {gameState.displayCards.map((card, index) => (
+            <div key={index} className="Battle-card">
+              <div className="Battle-card-content">
+                <div className="Battle-card-word">{card.word}</div>
+                <div className="Battle-card-divider"></div>
+                <div className="Battle-card-english">{card.english}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
         <TypeBar onType={handleTyping} typedText={typedText} />
+
         <div className="language-display">
           Debug area: language= <span className="language-text">{language}</span>
         </div>

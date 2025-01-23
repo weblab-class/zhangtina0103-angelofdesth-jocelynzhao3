@@ -35,7 +35,6 @@ const BattleEnd = (props) => {
       <div className="BattleEnd-userinfo">
         <h2>Player Information</h2>
         <p>Name: {userInfo.name}</p>
-        <p>Google ID: {userInfo.googleid}</p>
         <p>ELO Rating: {userInfo.elo}</p>
 
         <h3>Battle History</h3>
@@ -52,8 +51,11 @@ const BattleEnd = (props) => {
               </thead>
               <tbody>
                 {userInfo.log.map((entry, index) => (
-                  <tr key={index}>
-                    <td>{entry.Result}</td>
+                  <tr key={index} className={index === 0 ? "BattleEnd-recent-battle" : ""}>
+                    <td>
+                      {index === 0 && <span className="BattleEnd-recent-label">Latest</span>}
+                      {entry.Result}
+                    </td>
                     <td>{entry.Opponent}</td>
                     <td>{entry.Language}</td>
                     <td>{entry.Date}</td>
