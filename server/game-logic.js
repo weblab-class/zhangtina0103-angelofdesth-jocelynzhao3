@@ -14,19 +14,30 @@ const getRandomInt = (min, max) => {
 const activeGames = new Map();
 let multiplier = 1;
 
-const doEffect = (effectType, game, card) => {
+const doEffect = (effectType, game, card, player = "player") => {
   const amount = card.effect.amount * multiplier;
 
-  if (effectType === "attack") {
-    game.p2HP = Math.max(0, game.p2HP - amount); // Don't let HP go below 0
-    console.log(`Attacked for ${amount} damage. P2 HP now: ${game.p2HP}`);
-  } else if (effectType === "heal") {
-    game.p1HP = Math.min(100, game.p1HP + amount); // Don't let HP go above 100
-    console.log(`Healed for ${amount} HP. P1 HP now: ${game.p1HP}`);
+  if (player === "bot") {
+    if (effectType === "attack") {
+      game.p1HP = Math.max(0, game.p1HP - amount); // Don't let HP go below 0
+      console.log(`Attacked for ${amount} damage. P1 HP now: ${game.p1HP}`);
+    } else if (effectType === "heal") {
+      game.p2HP = Math.min(100, game.p2HP + amount); // Don't let HP go above 100
+      console.log(`Healed for ${amount} HP. P1 HP now: ${game.p2HP}`);
+    }
+  } else {
+    if (effectType === "attack") {
+      game.p2HP = Math.max(0, game.p2HP - amount); // Don't let HP go below 0
+      console.log(`Attacked for ${amount} damage. P2 HP now: ${game.p2HP}`);
+    } else if (effectType === "heal") {
+      game.p1HP = Math.min(100, game.p1HP + amount); // Don't let HP go above 100
+      console.log(`Healed for ${amount} HP. P1 HP now: ${game.p1HP}`);
+    }
   }
 
   // Update the game state in the activeGames map
-  activeGames.set(game.lobby, game);
+  activeGames.set(game.lobby, { ...game });
+  return game;
 };
 
 /**
@@ -56,7 +67,7 @@ const newCard = (language) => {
         english: word[0].english,
         effect: {
           type: possibleEffects[getRandomInt(0, possibleEffects.length - 1)],
-          amount: Math.floor(10 + 1.25 * word[0].difficulty),
+          amount: Math.floor(10 * word[0].difficulty),
         },
         difficulty: word[0].difficulty,
       };
@@ -96,12 +107,17 @@ const newGame = async (lobby, p1, p2, language) => {
 
     console.log("new game started with params", game);
     console.log("current active games are", activeGames);
+
+    // Start bot play when game starts
+    if (p2 === "bot") {
+      startBotPlay(lobby);
+    }
   }
 };
 
 const checkWin = async (game) => {
-  if (game.p1HP === 0 || game.p2HP === 0) {
-    if (game.p1HP === 0) {
+  if (game.p1HP <= 0 || game.p2HP <= 0) {
+    if (game.p1HP <= 0) {
       game.winner = game.p2;
       console.log("p2 wins");
     } else {
@@ -178,8 +194,8 @@ const handleGameEnd = async (game, winner) => {
   }
 };
 
-const playerTakeCard = async (lobby, player, cardIndex) => {
-  const game = activeGames.get(lobby);
+const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") => {
+  let game = activeGames.get(lobby);
   console.log(game);
   const takenCard = game.displayCards[cardIndex];
   console.log("I have received the card", takenCard);
@@ -192,11 +208,11 @@ const playerTakeCard = async (lobby, player, cardIndex) => {
   }
 
   if (takenCard.effect.type === "attack" || takenCard.effect.type === "heal") {
-    doEffect(takenCard.effect.type, game, takenCard);
+    game = doEffect(takenCard.effect.type, game, takenCard, playerType);
   } else if (takenCard.effect.type === "lifesteal") {
     // do attack and heal
-    doEffect("attack", game, takenCard);
-    doEffect("heal", game, takenCard);
+    game = doEffect("attack", game, takenCard, playerType);
+    game = doEffect("heal", game, takenCard, playerType);
   } else if (takenCard.effect.type === "freeze") {
     // p1 can't type for 5 seconds
     console.log("You can't type right now!");
@@ -206,16 +222,40 @@ const playerTakeCard = async (lobby, player, cardIndex) => {
   await checkWin(game);
 
   // removes the card and replaces it with a new card
-  const card = game.displayCards[cardIndex];
   let replacement = await newCard(game.language);
-  replacement.effect = card.effect;
   game.displayCards[cardIndex] = replacement;
+  activeGames.set(game.lobby, { ...game });
   console.log("new cards are now", game.displayCards);
+};
+
+// bot takes card
+const botTakeCard = (game) => {
+  if (!game || game.winner) return; // Don't take cards if game is over
+
+  // Randomly select a card index (0, 1, or 2)
+  const randomCardIndex = getRandomInt(0, 3);
+  console.log("Bot is taking card at index:", randomCardIndex);
+
+  playerTakeCard(game.lobby, "bot", randomCardIndex, "bot");
+};
+
+const startBotPlay = (lobby) => {
+  const interval = setInterval(() => {
+    const game = activeGames.get(lobby);
+    if (!game || game.winner) {
+      clearInterval(interval); // Stop bot if game is over
+      return;
+    }
+    botTakeCard(game);
+  }, 9500); // 9.5 seconds
+
+  return interval;
 };
 
 module.exports = {
   activeGames,
   newGame,
   playerTakeCard,
+  getCurrentTime,
   handleGameEnd,
 };

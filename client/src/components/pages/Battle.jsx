@@ -14,9 +14,9 @@ import { UserContext } from "../App.jsx";
 import { socket } from "../../client-socket.js";
 
 const hardcodedCards = [
-  { word: "Salz", english: "salt", effect: "deal 10 damage" },
-  { word: "Wasser", english: "water", effect: "deal 10 damage" },
-  { word: "Unterwegs", english: "underway", effect: "deal 10 damage" },
+  { word: "Salz", english: "salt", effect: { type: "damage", amount: 10 }, difficulty: "easy" },
+  { word: "Wasser", english: "water", effect: { type: "heal", amount: 5 }, difficulty: "medium" },
+  { word: "Unterwegs", english: "underway", effect: { type: "shield", amount: 10 }, difficulty: "hard" },
 ];
 
 const Battle = (props) => {
@@ -217,6 +217,12 @@ const Battle = (props) => {
                 <div className="Battle-card-word">{card.word}</div>
                 <div className="Battle-card-divider"></div>
                 <div className="Battle-card-english">{card.english}</div>
+                <div className="Battle-card-divider"></div>
+                <div className="Battle-card-stats">
+                  <div className="Battle-card-difficulty">Difficulty: {card.difficulty}</div>
+                  <div className="Battle-card-effect">Effect: {card.effect.type}</div>
+                  <div className="Battle-card-amount">Amount: {card.effect.amount}</div>
+                </div>
               </div>
             </div>
           ))}
