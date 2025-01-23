@@ -44,6 +44,12 @@ const Start = (props) => {
     <div className="Start-container">
       {userContext.userId && (
         <div className="Start-top-bar">
+          <Link
+            to="/profile"
+            className="profile-button button-base neon-bg neon-border neon-text"
+          >
+            Profile
+          </Link>
           <button
             onClick={userContext.handleLogout}
             className="logout-button button-base neon-bg neon-border neon-text"
