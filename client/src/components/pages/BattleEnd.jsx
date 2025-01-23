@@ -1,29 +1,27 @@
 import "../../utilities.css";
 import "./BattleEnd.css";
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserInfoContext } from "../App";
 import { Link } from "react-router-dom";
-import { post } from "../../utilities";
+import { get } from "../../utilities";
 
 const BattleEnd = (props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
 
-  // ELO update later
-  // const updateElo = async (newElo) => {
-  //   try {
-  //     // First update the database
-  //     const updatedUser = await post("/api/updateuser", {
-  //       userid: userInfo._id,
-  //       update: { elo: newElo }
-  //     });
-
-  //     // Then update the context state with all the user data
-  //     setUserInfo(updatedUser);
-  //   } catch (err) {
-  //     console.log("Error updating ELO:", err);
-  //   }
-  // };
+  // Fetch latest user info whenever userInfo changes
+  useEffect(() => {
+    if (userInfo && userInfo._id) {
+      get("/api/whoami").then((userData) => {
+        if (userData._id) {
+          console.log("getting new new data");
+          setUserInfo(userData); // Update userInfo with full user data
+        }
+      });
+    } else {
+      setUserInfo({}); // Clear userInfo when user logs out
+    }
+  }, [userInfo.elo]);
 
   if (!userInfo || !userInfo.name) {
     return <div>Loading...</div>;

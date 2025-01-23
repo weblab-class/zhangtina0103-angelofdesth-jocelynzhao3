@@ -28,27 +28,33 @@ const removeUser = (user, socket) => {
   delete socketToUserMap[socket.id];
 };
 
-// GAME STUFF 
-const newGame = (p1, language) => { // starts the game with the player and a hardcoded lobby name, which is a bot
+// GAME STUFF
+const newGame = (p1, language) => {
+  // starts the game with the player and a hardcoded lobby name, which is a bot
   gameLogic.newGame("hardcodedlobbyname", p1, "bot", language);
-}
+};
 
 const sendGameState = (game) => {
   io.emit("update", game);
 };
 
 const startRunningGame = (lobby) => {
-  setInterval(() => {
+  setInterval(async () => {
     const game = gameLogic.activeGames.get(lobby);
     console.log(game);
     if (game) {
       if (game.winner) {
-      gameLogic.handleGameEnd(game);
-      io.emit("update", "over");
-    } else {
+        try {
+          await gameLogic.handleGameEnd(game, game.winner);
+          io.emit("update", "over");
+        } catch (error) {
+          console.error("Error handling game end:", error);
+          io.emit("update", "over");
+        }
+      } else {
         sendGameState(game);
+      }
     }
-  }
   }, 1000 / 60); // 60 frames per second
 };
 

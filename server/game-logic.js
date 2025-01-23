@@ -2,6 +2,7 @@
 
 /** Utils! */
 const Word = require("./models/word");
+const User = require("./user");
 
 /** Helper to generate a random integer */
 const getRandomInt = (min, max) => {
@@ -15,9 +16,9 @@ const activeGames = new Map();
 /**
 
 card = {
-  word: string, 
-  english: string, 
-  effect: of the form: 
+  word: string,
+  english: string,
+  effect: of the form:
     {type: "damage" or "heal"
     amount: int}
 }
@@ -27,16 +28,18 @@ card = {
 const newCard = (language) => {
   // queries the word from the database given the language
   return Word.aggregate([
-      { $match: { language: language } },
-      { $sample: { size: 1 } }, // Get exactly 1 random word - they'll be unique
-    ]).then((word) => {
+    { $match: { language: language } },
+    { $sample: { size: 1 } }, // Get exactly 1 random word - they'll be unique
+  ])
+    .then((word) => {
       const card = {
         word: word[0].word,
         english: word[0].english,
         effect: null,
       };
       return card;
-    }).catch((err) => {
+    })
+    .catch((err) => {
       console.log(`Failed to get random words: ${err}`);
     });
 };
@@ -44,40 +47,39 @@ const newCard = (language) => {
 const newGame = async (lobby, p1, p2, language) => {
   if (activeGames.get(lobby)) {
     console.log("This game already exists! Nothing added.");
-  }
-  else {
-  game = {
-    lobby: lobby,
-    language: language,
-    winner: null,
-    p1: p1,
-    p2: p2,
-    p1HP: 100,
-    p2HP: 100,
-    displayCards: [], // this is where we'd populate the initial cards
-  };
-  //populate the three starting cards
+  } else {
+    game = {
+      lobby: lobby,
+      language: language,
+      winner: null,
+      p1: p1,
+      p2: p2,
+      p1HP: 100,
+      p2HP: 100,
+      displayCards: [], // this is where we'd populate the initial cards
+    };
+    //populate the three starting cards
 
-  let card1 = await newCard(language);
-  card1.effect = {type: "damage", amount: 10};
-  game.displayCards.push(card1);
+    let card1 = await newCard(language);
+    card1.effect = { type: "damage", amount: 20 };
+    game.displayCards.push(card1);
 
-  let card2 = await newCard(language);
-  card2.effect = {type: "damage", amount: 10};
-  game.displayCards.push(card2);
+    let card2 = await newCard(language);
+    card2.effect = { type: "damage", amount: 20 };
+    game.displayCards.push(card2);
 
-  let card3 = await newCard(language);
-  card3.effect = {type: "heal", amount: 5};
-  game.displayCards.push(card3);
+    let card3 = await newCard(language);
+    card3.effect = { type: "heal", amount: 5 };
+    game.displayCards.push(card3);
 
-  activeGames.set(lobby, game);
+    activeGames.set(lobby, game);
 
-  console.log("new game started with params", game); 
-  console.log("current active games are", activeGames);
+    console.log("new game started with params", game);
+    console.log("current active games are", activeGames);
   }
 };
 
-const checkWin = (game) => {
+const checkWin = async (game) => {
   if (game.p1HP === 0 || game.p2HP === 0) {
     if (game.p1HP === 0) {
       game.winner = game.p2;
@@ -87,51 +89,113 @@ const checkWin = (game) => {
       console.log("p1 wins");
     }
   }
-}
+};
 
-const handleGameEnd = (game) => {
+const getCurrentTime = () => {
+  const date = new Date();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const formattedHours = hours % 12 || 12;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  const month = date.toLocaleString("default", { month: "short" });
+  const day = date.getDate();
+
+  return `${formattedHours}:${formattedMinutes} ${ampm} on ${month} ${day}`;
+};
+
+const handleGameEnd = async (game, winner) => {
+  try {
     activeGames.delete(game.lobby);
-    // TO DO (jocelyn): here is where we save the game to the database
-    // the params passed in is just the game state (of the form above)
-    // you can add whatever else type of cleanup you think needs to happen once a game is over
-}
+
+    // Only update database if players are not bots
+    if (game.p1 !== "bot") {
+      const p1Result = winner === game.p1 ? "Win" : "Loss";
+      const p1Log = {
+        Result: p1Result,
+        Opponent: game.p2,
+        Language: game.language,
+        Date: getCurrentTime(),
+      };
+      console.log(game.p1);
+
+      const user = await User.findOne({ _id: game.p1 });
+      if (user) {
+        // Prepending log
+        user.log = [p1Log, ...user.log];
+        // Updating Elo (ensuring it doesn't drop below 1)
+        user.elo = Math.max(1, user.elo + (p1Result === "Win" ? 1 : -1));
+        // Save the updated user
+        await user.save();
+        console.log("User 1 updated successfully:", user);
+        // socket this over?
+      } else {
+        console.error("User 1 not found");
+      }
+    }
+
+    if (game.p2 !== "bot") {
+      const p2Result = winner === game.p2 ? "Win" : "Loss";
+      const p2Log = {
+        Result: p2Result,
+        Opponent: game.p1,
+        Language: game.language,
+        Date: getCurrentTime(),
+      };
+
+      const user = await User.findOne({ _id: game.p2 });
+      if (user) {
+        user.log = [p2Log, ...user.log];
+        user.elo = Math.max(1, user.elo + (p2Result === "Win" ? 1 : -1));
+        await user.save();
+        console.log("User 2 updated successfully:", user);
+      } else {
+        console.error("User 2 not found");
+      }
+    }
+  } catch (error) {
+    console.error("Error in handleGameEnd:", error);
+  }
+};
 
 const playerTakeCard = async (lobby, player, cardIndex) => {
   const game = activeGames.get(lobby);
   console.log(game);
   const takenCard = game.displayCards[cardIndex];
   console.log("I have received the card", takenCard);
-  
-  // does the effect of the card: 
+
+  // does the effect of the card:
   // for now, we have hardcoded the player to be player 1
   if (takenCard.effect.type === "damage") {
     game.p2HP = game.p2HP - takenCard.effect.amount;
   } else if (takenCard.effect.type === "heal") {
-    if (game.p1HP < 100 - takenCard.amount) { // does not allow overheal
+    if (game.p1HP < 100 - takenCard.amount) {
+      // does not allow overheal
       game.p1HP = game.p1HP + takenCard.effect.amount;
     } else {
-      game.p1HP = 100; 
-    };
+      game.p1HP = 100;
+    }
   } else {
-    console.log("There is an issue with the card type! Expected damage/heal but got", takenCard.type);
-  };
+    console.log(
+      "There is an issue with the card type! Expected damage/heal but got",
+      takenCard.type
+    );
+  }
 
   // checks if the game is complete with the new updated hps
-  checkWin(game);
+  await checkWin(game);
 
   // removes the card and replaces it with a new card
   const card = game.displayCards[cardIndex];
-  let replacement = await newCard(game.language); 
+  let replacement = await newCard(game.language);
   replacement.effect = card.effect;
-  game.displayCards[cardIndex] = replacement; 
+  game.displayCards[cardIndex] = replacement;
   console.log("new cards are now", game.displayCards);
 };
-
-
 
 module.exports = {
   activeGames,
   newGame,
   playerTakeCard,
   handleGameEnd,
-}
+};

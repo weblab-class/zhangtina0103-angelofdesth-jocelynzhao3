@@ -5,9 +5,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
   position: fixed;
@@ -15,7 +15,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  overflow: hidden;
+  overflow-y: auto;
   background: #0a0a1f;
   font-family: "Codec", sans-serif;
   color: #fff;
@@ -42,7 +42,7 @@
 
 .Start-content {
   text-align: center;
-  padding: 2rem;
+  padding: 20px;
   padding-top: 4rem;
   border-radius: 10px;
   animation: contentFade 1s ease-in;
@@ -50,6 +50,9 @@
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  overflow-y: auto;
 }
 
 .Start-title {
