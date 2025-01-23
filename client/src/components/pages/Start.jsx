@@ -45,7 +45,7 @@ const Start = (props) => {
       {userContext.userId && (
         <div className="Start-top-bar">
           <Link
-            to="/profile"
+            to="/battleProfile"
             className="profile-button button-base neon-bg neon-border neon-text"
           >
             Profile

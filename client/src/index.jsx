@@ -29,6 +29,7 @@ const router = createBrowserRouter(
       <Route path="/battle/:lobby" element={<Battle />} />
       <Route path="/end/" element={<BattleEnd />} />
       {/*  todo: add userid later in the url so the battle end screen is unique */}
+      <Route path="/battleProfile/" element={<BattleEnd />} />
     </Route>
   )
 );
