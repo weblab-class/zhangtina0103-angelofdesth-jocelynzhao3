@@ -23,9 +23,10 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<NotFound />} element={<App />}>
       <Route path="/" element={<Start />} />
+      {/* empty url take you to the hardcodedlobby (aka the bot page) */}
       <Route path="/battle/" element={<Battle />} />
-      {/* todo: add userid later in the url so the
-      battling is unique */}
+      {/* todo: add userid later in the url so the battling is unique */}
+      <Route path="/battle/:lobby" element={<Battle />} />
       <Route path="/end/" element={<BattleEnd />} />
       {/*  todo: add userid later in the url so the battle end screen is unique */}
     </Route>

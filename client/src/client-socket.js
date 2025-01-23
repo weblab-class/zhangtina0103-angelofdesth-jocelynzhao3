@@ -9,6 +9,6 @@ socket.on("connect", () => {
 
 /** Tells server which player took wha card**/
 /** use this to modify game state later */
-export const takeCard = (card, userId) => {
-  socket.emit("cards", { card, userId });
+export const takeCard = (card, userId, lobby) => {
+  socket.emit("cards", { card, userId, lobby });
 };
