@@ -16,20 +16,23 @@ const Start = (props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const { language, setLanguage } = useContext(LanguageContext);
 
-  useEffect(() => {
-    if (userContext.userId) {
-      get("/api/whoami").then((userData) => {
-        if (userData._id) {
-          setUserName(userData.name);
-          setUserInfo(userData); // Update userInfo with full user data
-        }
-      });
-    } else {
-      setUserInfo({}); // Clear userInfo when user logs out
-    }
-  }, [userContext.userId]);
+  // not needed?
+  // useEffect(() => {
+  //   if (userContext.userId) {
+  //     get("/api/whoami").then((userData) => {
+  //       if (userData._id) {
+  //         setUserName(userData.name);
+  //         setUserInfo(userData); // Update userInfo with full user data
+  //         console.log("user data here " + userData);
+  //       }
+  //     });
+  //   } else {
+  //     setUserInfo({}); // Clear userInfo when user logs out
+  //   }
+  // }, [userContext.userId]);
 
-  const handleBattleClick = () => { // TODO: put player name in here too?
+  const handleBattleClick = () => {
+    // TODO: put player name in here too?
     if (userContext.userId) {
       post("/api/startGame", { playerId: userContext.userId, language: language }).then(
         navigate("/battle/")

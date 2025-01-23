@@ -9,19 +9,19 @@ import { get } from "../../utilities";
 const BattleEnd = (props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
 
-  // Fetch latest user info whenever userInfo changes
-  useEffect(() => {
-    if (userInfo && userInfo._id) {
-      get("/api/whoami").then((userData) => {
-        if (userData._id) {
-          console.log("getting new new data");
-          setUserInfo(userData); // Update userInfo with full user data
-        }
-      });
-    } else {
-      setUserInfo({}); // Clear userInfo when user logs out
-    }
-  }, [userInfo.elo]);
+  // // Fetch latest user info whenever userInfo changes
+  // useEffect(() => {
+  //   if (userInfo && userInfo._id) {
+  //     get("/api/whoami").then((userData) => {
+  //       if (userData._id) {
+  //         console.log("getting new new data");
+  //         setUserInfo(userData); // Update userInfo with full user data
+  //       }
+  //     });
+  //   } else {
+  //     setUserInfo({}); // Clear userInfo when user logs out
+  //   }
+  // }, [userInfo.elo]);
 
   if (!userInfo || !userInfo.name) {
     return <div>Loading...</div>;

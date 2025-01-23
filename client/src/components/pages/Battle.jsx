@@ -9,18 +9,20 @@ import { get, post } from "../../utilities";
 import { takeCard } from "../../client-socket";
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { LanguageContext } from "../App";
+import { UserInfoContext } from "../App";
 import { UserContext } from "../App.jsx";
 import { socket } from "../../client-socket.js";
 
 const hardcodedCards = [
-  { prompt: "Salz", target: "salt", effect: "deal 10 damage" },
-  { prompt: "Wasser", target: "water", effect: "deal 10 damage" },
-  { prompt: "Unterwegs", target: "underway", effect: "deal 10 damage" },
+  { word: "Salz", english: "salt", effect: "deal 10 damage" },
+  { word: "Wasser", english: "water", effect: "deal 10 damage" },
+  { word: "Unterwegs", english: "underway", effect: "deal 10 damage" },
 ];
 
 const Battle = (props) => {
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
+  const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const { language } = useContext(LanguageContext);
   const canvasRef = useRef(null);
   const [gameState, setGameState] = useState({
@@ -41,7 +43,20 @@ const Battle = (props) => {
           setGameState(update);
         } else {
           console.log("Game over");
-          navigate("/end/");
+          // Make API call to get updated user info (including new ELO)
+          get("/api/userinfo", { _id: userContext.userId })
+            .then((userData) => {
+              if (userData._id) {
+                console.log("Got updated user data");
+                setUserInfo(userData); // Update global user info context
+                // Only navigate after user info is updated
+                navigate("/end/");
+              }
+            })
+            .catch((err) => {
+              console.error("Error getting updated user info:", err);
+              navigate("/end/"); // Navigate anyway if there's an error
+            });
         }
       }
     });
@@ -89,21 +104,21 @@ const Battle = (props) => {
 
   // Get user's name and picture when component mounts
   // TO DO this should be backend, not front end
-  useEffect(() => {
-    const getUserData = async () => {
-      if (userContext && userContext.userId) {
-        const userData = await get("/api/whoami");
-        console.log("Battle: Got user data:", userData);
-        if (userData._id) {
-          setGameState((prevState) => ({
-            ...prevState,
-            p1Picture: userData.picture,
-          }));
-        }
-      }
-    };
-    getUserData();
-  }, [userContext, userContext.userId]);
+  // useEffect(() => {
+  //   const getUserData = async () => {
+  //     if (userContext && userContext.userId) {
+  //       const userData = await get("/api/whoami");
+  //       console.log("Battle: Got user data:", userData);
+  //       if (userData._id) {
+  //         setGameState((prevState) => ({
+  //           ...prevState,
+  //           p1Picture: userData.picture,
+  //         }));
+  //       }
+  //     }
+  //   };
+  //   getUserData();
+  // }, [userContext, userContext.userId]);
 
   useEffect(() => {
     console.log("Battle: Current gameState:", gameState);

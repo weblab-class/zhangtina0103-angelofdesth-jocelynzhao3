@@ -50,6 +50,12 @@ router.post("/startGame", (req, res) => {
   res.send({});
 });
 
+router.get("/userinfo", (req, res) => {
+  User.findOne({ _id: req.user._id }).then((userInfo) => {
+    res.send(userInfo);
+  });
+});
+
 router.get("/word", (req, res) => {
   Word.aggregate([
     { $match: { language: req.query.language } },
