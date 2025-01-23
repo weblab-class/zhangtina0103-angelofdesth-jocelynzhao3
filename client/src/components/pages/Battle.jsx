@@ -4,7 +4,7 @@ import { drawCanvas } from "../../canvasManager.js";
 import TypeBar from "../modules/Typebar";
 import Player from "../modules/Player";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { get, post } from "../../utilities";
 import { takeCard } from "../../client-socket";
 import React, { useState, useEffect, useContext, useRef } from "react";
@@ -21,12 +21,13 @@ const hardcodedCards = [
 
 const Battle = (props) => {
   const navigate = useNavigate();
+  const { lobby } = useParams(); // Get lobby parameter from URL
   const userContext = useContext(UserContext);
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const { language } = useContext(LanguageContext);
   const canvasRef = useRef(null);
   const [gameState, setGameState] = useState({
-    lobby: "hardcodedlobbyname",
+    lobby: lobby || "hardcodedlobbyname", // Use URL lobby parameter or fallback to default
     language: language,
     p1: "",
     p2: "Enemy",
@@ -80,9 +81,9 @@ const Battle = (props) => {
 
     if (matchIndex !== -1) {
       const matchedWord = gameState.displayCards[matchIndex];
-      console.log("Match found!", matchedWord); // FOR THE SAKE OF DEBUGGING this is here, but we don't actually need to find the card
+      console.log("Match found!", matchedWord);
       setTypedText("");
-      takeCard(matchIndex, userContext.userId); // fix later
+      takeCard(matchIndex, userContext.userId, gameState.lobby);
     }
   };
 

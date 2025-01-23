@@ -72,7 +72,7 @@ module.exports = {
       });
       socket.on("cards", (card) => {
         console.log("I have received the card", card);
-        gameLogic.playerTakeCard("hardcodedlobbyname", card.userId, card.card);
+        gameLogic.playerTakeCard(card.lobby || "hardcodedlobbyname", card.userId, card.card);
       });
     });
   },
