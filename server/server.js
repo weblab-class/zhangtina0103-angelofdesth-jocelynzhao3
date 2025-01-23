@@ -63,10 +63,13 @@ app.use(express.json());
 // set up a session, which will persist login data across requests
 app.use(
   session({
-    // TODO: add a SESSION_SECRET string in your .env file, and replace the secret with process.env.SESSION_SECRET
-    secret: "session-secret",
+    secret: process.env.SESSION_SECRET || "session-secret",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: true,
+    },
   })
 );
 

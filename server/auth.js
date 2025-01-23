@@ -33,9 +33,14 @@ function getOrCreateUser(user) {
 }
 
 function login(req, res) {
+  console.log("Login request received with token");
   verify(req.body.token)
-    .then((user) => getOrCreateUser(user))
     .then((user) => {
+      console.log("Token verified, user info:", user);
+      return getOrCreateUser(user);
+    })
+    .then((user) => {
+      console.log("User found/created:", user);
       // persist user in the session
       req.session.user = user;
       res.send(user);
@@ -47,6 +52,7 @@ function login(req, res) {
 }
 
 function logout(req, res) {
+  console.log("Logging out user:", req.session.user);
   req.session.user = null;
   res.send({});
 }

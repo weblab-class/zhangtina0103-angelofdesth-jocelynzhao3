@@ -27,13 +27,16 @@ const App = () => {
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
+      console.log("Whoami response:", user);
       if (user._id) {
         // they are registed in the database, and currently logged in.
         setUserId(user._id);
         setUserInfo(user); // Set user info directly from whoami response
+        console.log("User is logged in with ID:", user._id);
       } else {
         setUserId(undefined);
         setUserInfo(null);
+        console.log("No user logged in");
       }
     });
   }, []);
@@ -41,11 +44,14 @@ const App = () => {
   const handleLogin = (credentialResponse) => {
     const userToken = credentialResponse.credential;
     const decodedCredential = jwt_decode(userToken);
-    console.log(`Logged in as ${decodedCredential.name}`);
+    console.log(`Attempting login as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
+      console.log("Login response:", user);
       setUserId(user._id);
       setUserInfo(user); // Set user info directly from login response
       post("/api/initsocket", { socketid: socket.id });
+    }).catch((err) => {
+      console.error("Login error:", err);
     });
   };
 

@@ -89,14 +89,14 @@ const Start = (props) => {
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
               >
-                {/* language value becomes empty string when selected, add more lan */}
-                <option value="">Select a language...</option>
+                <option value="">Select a language to battle in...</option>
                 <option value="Spanish">Spanish</option>
                 <option value="Chinese">Chinese</option>
                 <option value="German">German</option>
                 <option value="French">French</option>
                 <option value="Arabic">Arabic</option>
               </select>
+              {!language && <div className="signin-prompt">Please select a language to start battling</div>}
             </div>
           )}
           {userContext.userId && language && (

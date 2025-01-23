@@ -72,9 +72,13 @@ module.exports = {
         const user = getUserFromSocketID(socket.id);
         removeUser(user, socket);
       });
-      socket.on("cards", (card) => {
-        console.log("I have received the card", card);
-        gameLogic.playerTakeCard("hardcodedlobbyname", card.userId, card.card);
+      socket.on("cards", async (card) => {
+        console.log("Received card action:", card);
+        const updatedGame = await gameLogic.playerTakeCard("hardcodedlobbyname", card.userId, card.card);
+        if (updatedGame) {
+          console.log("Emitting updated game state:", updatedGame);
+          io.emit("update", updatedGame);
+        }
       });
     });
   },
