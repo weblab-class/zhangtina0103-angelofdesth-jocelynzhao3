@@ -247,7 +247,7 @@ const startBotPlay = (lobby) => {
       return;
     }
     botTakeCard(game);
-  }, 9500); // 9.5 seconds
+  }, 15000); // 9.5 seconds
 
   return interval;
 };
