@@ -12,6 +12,22 @@ const getRandomInt = (min, max) => {
 };
 
 const activeGames = new Map();
+let multiplier = 1;
+
+const doEffect = (effectType, game, card) => {
+  const amount = card.effect.amount * multiplier;
+
+  if (effectType === "attack") {
+    game.p2HP = Math.max(0, game.p2HP - amount); // Don't let HP go below 0
+    console.log(`Attacked for ${amount} damage. P2 HP now: ${game.p2HP}`);
+  } else if (effectType === "heal") {
+    game.p1HP = Math.min(100, game.p1HP + amount); // Don't let HP go above 100
+    console.log(`Healed for ${amount} HP. P1 HP now: ${game.p1HP}`);
+  }
+
+  // Update the game state in the activeGames map
+  activeGames.set(game.lobby, game);
+};
 
 /**
 
@@ -24,6 +40,9 @@ card = {
 }
 **/
 
+// different effects
+const possibleEffects = ["attack", "heal", "lifesteal", "freeze", "2x"];
+
 /** Game logic */
 const newCard = (language) => {
   // queries the word from the database given the language
@@ -35,7 +54,11 @@ const newCard = (language) => {
       const card = {
         word: word[0].word,
         english: word[0].english,
-        effect: null,
+        effect: {
+          type: possibleEffects[getRandomInt(0, possibleEffects.length - 1)],
+          amount: Math.floor(10 + 1.25 * word[0].difficulty),
+        },
+        difficulty: word[0].difficulty,
       };
       return card;
     })
@@ -61,15 +84,12 @@ const newGame = async (lobby, p1, p2, language) => {
     //populate the three starting cards
 
     let card1 = await newCard(language);
-    card1.effect = { type: "damage", amount: 20 };
     game.displayCards.push(card1);
 
     let card2 = await newCard(language);
-    card2.effect = { type: "damage", amount: 20 };
     game.displayCards.push(card2);
 
     let card3 = await newCard(language);
-    card3.effect = { type: "heal", amount: 5 };
     game.displayCards.push(card3);
 
     activeGames.set(lobby, game);
@@ -164,22 +184,22 @@ const playerTakeCard = async (lobby, player, cardIndex) => {
   const takenCard = game.displayCards[cardIndex];
   console.log("I have received the card", takenCard);
 
-  // does the effect of the card:
-  // for now, we have hardcoded the player to be player 1
-  if (takenCard.effect.type === "damage") {
-    game.p2HP = game.p2HP - takenCard.effect.amount;
-  } else if (takenCard.effect.type === "heal") {
-    if (game.p1HP < 100 - takenCard.amount) {
-      // does not allow overheal
-      game.p1HP = game.p1HP + takenCard.effect.amount;
-    } else {
-      game.p1HP = 100;
-    }
+  // double multiplier
+  if (takenCard.effect.type === "2x") {
+    multiplier = multiplier * 2;
   } else {
-    console.log(
-      "There is an issue with the card type! Expected damage/heal but got",
-      takenCard.type
-    );
+    multiplier = 1;
+  }
+
+  if (takenCard.effect.type === "attack" || takenCard.effect.type === "heal") {
+    doEffect(takenCard.effect.type, game, takenCard);
+  } else if (takenCard.effect.type === "lifesteal") {
+    // do attack and heal
+    doEffect("attack", game, takenCard);
+    doEffect("heal", game, takenCard);
+  } else if (takenCard.effect.type === "freeze") {
+    // p1 can't type for 5 seconds
+    console.log("You can't type right now!");
   }
 
   // checks if the game is complete with the new updated hps
