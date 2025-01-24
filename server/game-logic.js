@@ -71,7 +71,7 @@ const newCard = (language) => {
         english: word[0].english,
         effect: {
           type: type,
-          amount: type == "freeze" ? "2 seconds" : Math.floor(10 * word[0].difficulty),
+          amount: type == "freeze" ? "3 seconds" : Math.floor(10 * word[0].difficulty),
         },
         difficulty: word[0].difficulty,
       };
@@ -222,9 +222,9 @@ const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") =
   } else if (takenCard.effect.type === "freeze") {
     // Set freeze timestamp in game state
     if (playerType === "bot") {
-      game.p1FreezeUntil = Date.now() + 2000; // Freeze for 2 seconds
+      game.p1FreezeUntil = Date.now() + 3000; // Freeze for 2 seconds
     } else {
-      game.p2FreezeUntil = Date.now() + 2000;
+      game.p2FreezeUntil = Date.now() + 3000;
     }
     console.log("Freeze effect applied!");
   }
