@@ -65,3 +65,9 @@
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
   transform: scale(1.02);
 }
+
+.typed-text.frozen {
+  background-color: #e0f7ff;
+  border-color: #80d8ff;
+  cursor: not-allowed;
+}
