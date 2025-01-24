@@ -1,0 +1,31 @@
+.Spell-container {
+  position: relative;
+  padding: 2.5rem 1rem;
+  min-height: 180px;
+  border-radius: 8px;
+  background-color: rgba(235, 235, 240, 0.75);
+  filter: brightness(0.75) saturate(0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Spell-filter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 60%;
+  background-color: rgba(40, 40, 50, 0.15);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.Spell-word {
+  position: relative;
+  color: rgba(40, 40, 50, 0.85);
+  font-size: 1.2rem;
+  text-align: center;
+  z-index: 1;
+}
