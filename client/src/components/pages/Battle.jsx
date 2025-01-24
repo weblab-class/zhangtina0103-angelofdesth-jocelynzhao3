@@ -16,7 +16,12 @@ import { socket } from "../../client-socket.js";
 const hardcodedCards = [
   { word: "Salz", english: "salt", effect: { type: "damage", amount: 10 }, difficulty: "easy" },
   { word: "Wasser", english: "water", effect: { type: "heal", amount: 5 }, difficulty: "medium" },
-  { word: "Unterwegs", english: "underway", effect: { type: "shield", amount: 10 }, difficulty: "hard" },
+  {
+    word: "Unterwegs",
+    english: "underway",
+    effect: { type: "shield", amount: 10 },
+    difficulty: "hard",
+  },
 ];
 
 const Battle = (props) => {
@@ -213,16 +218,26 @@ const Battle = (props) => {
         {/* Word Cards */}
         <div className="Battle-cards-container">
           {gameState.displayCards.map((card, index) => (
-            <div key={index} className="Battle-card">
+            <div key={index} className="Battle-card" data-effect={card.effect.type}>
               <div className="Battle-card-content">
-                <div className="Battle-card-word">{card.word}</div>
+                <div className="Battle-card-effect">{card.effect.type}</div>
                 <div className="Battle-card-divider"></div>
-                <div className="Battle-card-english">{card.english}</div>
-                <div className="Battle-card-divider"></div>
-                <div className="Battle-card-stats">
-                  <div className="Battle-card-difficulty">Difficulty: {card.difficulty}</div>
-                  <div className="Battle-card-effect">Effect: {card.effect.type}</div>
-                  <div className="Battle-card-amount">{card.effect.type === "heal" ? `Restore ${card.effect.amount} HP` : `Deal ${card.effect.amount} HP`}</div>
+                <div className="Battle-card-middle">
+                  <div className="Battle-card-word">{card.word}</div>
+                  <div className="Battle-card-english">{card.english}</div>
+                  <div className="Battle-card-amount">
+                    {card.effect.type === "heal" ? (
+                      <span>+{card.effect.amount} HP</span>
+                    ) : card.effect.type === "attack" ? (
+                      <span>-{card.effect.amount} HP</span>
+                    ) : card.effect.type === "lifesteal" ? (
+                      <span>±{card.effect.amount} HP</span>
+                    ) : card.effect.type === "freeze" ? (
+                      <span>+3 seconds</span>
+                    ) : (
+                      <span>2x</span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
