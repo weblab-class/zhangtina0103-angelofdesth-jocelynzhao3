@@ -50,6 +50,12 @@ const Start = (props) => {
           >
             Profile
           </Link>
+          <Link
+            to="/instructions"
+            className="profile-button button-base neon-bg neon-border neon-text"
+          >
+            Instructions
+          </Link>
           <button
             onClick={userContext.handleLogout}
             className="logout-button button-base neon-bg neon-border neon-text"
@@ -60,6 +66,8 @@ const Start = (props) => {
       )}
       <div className="Start-content">
         <h1 className="Start-title"> BattleLingo </h1>
+        {!userContext.userId && <div className="signin-prompt">Sign in to start battling</div>}
+
         <div className="google-login-container">
           {!userContext.userId && (
             <GoogleLogin
@@ -73,22 +81,23 @@ const Start = (props) => {
               text="signin_with"
             />
           )}
-          {!userContext.userId && <div className="signin-prompt">Sign in to start battling</div>}
         </div>
-        <div className="instructions-container">
-          <h2 className="instructions-title">How to Play</h2>
-          <p className="instructions-text">
-            To play this game, <span className="highlight-cyan">translate</span> the displayed words
-            into the <span className="highlight-purple">language</span> of your choice. Each word
-            corresponds to a <span className="highlight-green">spell</span> that either{" "}
-            <span className="highlight-pink">damages</span> your opponent or{" "}
-            <span className="highlight-blue">heals</span> you.{" "}
-            <span className="highlight-yellow">Speed</span> and{" "}
-            <span className="highlight-orange">accuracy</span> are crucial, so act quickly but
-            carefully! Be aware—your opponent can <span className="highlight-red">steal</span> the
-            card by typing the correct answer faster than you! Let the battle begin!
-          </p>
-        </div>
+        {!userContext.userId && (
+          <div className="instructions-container">
+            <h2 className="instructions-title">How to Play</h2>
+            <p className="instructions-text">
+              To play this game, <span className="highlight-cyan">translate</span> the displayed
+              words into the <span className="highlight-purple">language</span> of your choice. Each
+              word corresponds to a <span className="highlight-blue">spell</span>, such as{" "}
+              <span className="highlight-pink">damaging</span> your opponent or{" "}
+              <span className="highlight-green">healing</span> you.{" "}
+              <span className="highlight-yellow">Speed</span> and{" "}
+              <span className="highlight-orange">accuracy</span> are crucial—your opponent can{" "}
+              <span className="highlight-red">steal</span> the spell by typing the correct answer
+              faster than you! Let the battle begin!
+            </p>
+          </div>
+        )}
         <div>
           {userContext.userId && (
             <div className="language-selector-container">

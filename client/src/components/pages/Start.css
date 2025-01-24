@@ -155,12 +155,11 @@
 }
 
 .signin-prompt {
-  display: block;
-  margin: 1rem 0;
-  color: #fff;
-  font-family: "Open Sans", sans-serif;
   font-size: 1.2rem;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  margin-bottom: 0.5rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  animation: fadeIn 1s ease-in;
 }
 
 .battle-link {
