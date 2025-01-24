@@ -134,14 +134,15 @@ const checkWin = async (game) => {
 };
 
 const getCurrentTime = () => {
-  const date = new Date();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
+  const date = new Date().toLocaleString("en-US", {timeZone: "America/New_York"});
+  const estDate = new Date(date);
+  const hours = estDate.getHours();
+  const minutes = estDate.getMinutes();
   const ampm = hours >= 12 ? "PM" : "AM";
   const formattedHours = hours % 12 || 12;
   const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-  const month = date.toLocaleString("default", { month: "short" });
-  const day = date.getDate();
+  const month = estDate.toLocaleString("default", { month: "short" });
+  const day = estDate.getDate();
 
   return `${formattedHours}:${formattedMinutes} ${ampm} on ${month} ${day}`;
 };
