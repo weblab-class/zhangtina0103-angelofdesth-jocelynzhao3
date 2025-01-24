@@ -163,7 +163,7 @@ const Battle = (props) => {
               className="Battle-hp-fill player-hp"
               style={{ width: `${(gameState.p1HP / 100) * 100}%` }}
             />
-            <div className="Battle-hp-text">{gameState.p1HP} / 100</div>
+            <div className="Battle-hp-text">{gameState.p1HP}HP/100HP</div>
           </div>
         </div>
 
@@ -180,7 +180,7 @@ const Battle = (props) => {
               className="Battle-hp-fill enemy-hp"
               style={{ width: `${(gameState.p2HP / 100) * 100}%` }}
             />
-            <div className="Battle-hp-text">{gameState.p2HP} / 100</div>
+            <div className="Battle-hp-text">{gameState.p2HP}HP/100HP</div>
           </div>
         </div>
       </div>
@@ -222,7 +222,7 @@ const Battle = (props) => {
                 <div className="Battle-card-stats">
                   <div className="Battle-card-difficulty">Difficulty: {card.difficulty}</div>
                   <div className="Battle-card-effect">Effect: {card.effect.type}</div>
-                  <div className="Battle-card-amount">Amount: {card.effect.amount}</div>
+                  <div className="Battle-card-amount">{card.effect.type === "heal" ? `Restore ${card.effect.amount} HP` : `Deal ${card.effect.amount} HP`}</div>
                 </div>
               </div>
             </div>

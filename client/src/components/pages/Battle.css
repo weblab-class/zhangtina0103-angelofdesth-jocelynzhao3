@@ -442,21 +442,20 @@
 }
 
 .Battle-card-word {
-  font-family: "Codec", sans-serif;
-  font-size: 1.4em;
+  text-align: center;
+  font-size: 1.5rem;
   font-weight: bold;
-  color: #00ffff;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-  letter-spacing: 1px;
-  margin-bottom: 8px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60px;
 }
 
 .Battle-card-english {
-  font-family: "Codec", sans-serif;
-  font-size: 1.2em;
-  color: #ffffff;
-  opacity: 0.9;
-  margin-bottom: 12px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #a0a0a0;
 }
 
 .Battle-card-divider {
