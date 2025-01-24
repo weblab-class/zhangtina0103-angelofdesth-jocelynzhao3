@@ -27,7 +27,7 @@ Remember to create your .env file with Database SRV (mongoConnectionURL) and ses
 ## API endpoint documentation
 
 - "/whoami" returns the current user, or null if not logged in
-- "/userInfo" returns user information
+- "/userinfo" returns user information, such as elo and game history
 - "/word" returns a random word to translate
 - "/startGame" starts a new game
 - add more as needed
