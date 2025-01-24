@@ -34,8 +34,15 @@ const BattleProfile = (props) => {
       </div>
       <div className="BattleEnd-userinfo">
         <h2>Player Information</h2>
-        <p>Name: {userInfo.name}</p>
-        <p>ELO Rating: {userInfo.elo}</p>
+        <div className="BattleEnd-header">
+          <div className="BattleEnd-player-info">
+            <p>Name: {userInfo.name}</p>
+            <p>ELO Rating: {userInfo.elo}</p>
+          </div>
+          <Link to="/" className="BattleEnd-button">
+            Back to start page!
+          </Link>
+        </div>
 
         <h3>Battle History</h3>
         <div className="BattleEnd-log">
@@ -67,11 +74,6 @@ const BattleProfile = (props) => {
             <p>No battle history yet</p>
           )}
         </div>
-      </div>
-      <div className="BattleEnd-navigation">
-        <Link to="/" className="BattleEnd-button">
-          Back to start page!
-        </Link>
       </div>
     </div>
   );
