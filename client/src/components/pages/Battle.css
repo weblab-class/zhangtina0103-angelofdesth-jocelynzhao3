@@ -530,15 +530,15 @@
   border: 1px solid rgba(0, 128, 255, 0.6);
 }
 
-.Battle-card[data-effect="2x"] {
+.Battle-card[data-effect="3x"] {
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 0, 0.95) 0%,
-    rgba(255, 255, 0, 1) 50%,
-    rgba(255, 255, 0, 0.95) 100%
+    rgba(255, 140, 0, 0.95) 0%,
+    rgba(255, 140, 0, 1) 50%,
+    rgba(255, 140, 0, 0.95) 100%
   );
-  box-shadow: 0 0 40px rgba(255, 255, 0, 0.4);
-  border: 1px solid rgba(255, 255, 0, 0.6);
+  box-shadow: 0 0 40px rgba(255, 140, 0, 0.4);
+  border: 1px solid rgba(255, 140, 0, 0.6);
 }
 
 .Battle-card[data-effect="lifesteal"] {
@@ -573,9 +573,9 @@
   border-color: rgba(0, 128, 255, 0.8);
 }
 
-.Battle-card[data-effect="2x"]:hover {
-  box-shadow: 0 0 60px rgba(255, 255, 0, 0.6);
-  border-color: rgba(255, 255, 0, 0.8);
+.Battle-card[data-effect="3x"]:hover {
+  box-shadow: 0 0 60px rgba(255, 140, 0, 0.6);
+  border-color: rgba(255, 140, 0, 0.8);
 }
 
 .Battle-card[data-effect="lifesteal"]:hover {
@@ -712,9 +712,9 @@
   text-shadow: 0 0 20px rgba(0, 128, 255, 0.8);
 }
 
-.Battle-card[data-effect="2x"] .Battle-card-effect {
-  color: #ffff99;
-  text-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+.Battle-card[data-effect="3x"] .Battle-card-effect {
+  color: #ffc266;
+  text-shadow: 0 0 20px rgba(255, 165, 0, 1);
 }
 
 .Battle-card[data-effect="lifesteal"] .Battle-card-effect {
@@ -769,10 +769,17 @@
   border-color: rgba(0, 128, 255, 0.3);
 }
 
-.Battle-card[data-effect="2x"] .Battle-card-amount {
-  color: #ffff99;
-  text-shadow: 0 0 15px rgba(255, 255, 0, 0.6);
-  border-color: rgba(255, 255, 0, 0.3);
+.Battle-card[data-effect="3x"] .Battle-card-word,
+.Battle-card[data-effect="3x"] span {
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255, 165, 0, 1), 0 0 10px rgba(255, 255, 255, 0.8);
+  opacity: 1;
+}
+
+.Battle-card[data-effect="3x"] .Battle-card-amount {
+  color: #ffa500;
+  text-shadow: 0 0 15px rgba(255, 165, 0, 1);
+  border-color: rgba(255, 165, 0, 0.5);
 }
 
 .Battle-card[data-effect="lifesteal"] .Battle-card-amount {
