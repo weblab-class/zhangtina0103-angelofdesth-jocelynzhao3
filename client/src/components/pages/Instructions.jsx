@@ -16,11 +16,11 @@ const Instructions = (props) => {
             To play this game, <span className="highlight-cyan">translate</span> the displayed words
             into the <span className="highlight-purple">language</span> of your choice. Each word
             corresponds to a <span className="highlight-blue">spell</span>, such as{" "}
-            <span className="highlight-pink">damaging</span> your opponent or{" "}
+            <span className="highlight-red">damaging</span> your opponent or{" "}
             <span className="highlight-green">healing</span> you.{" "}
             <span className="highlight-yellow">Speed</span> and{" "}
             <span className="highlight-orange">accuracy</span> are crucial—your opponent can{" "}
-            <span className="highlight-red">steal</span> the spell by typing the correct answer
+            <span className="highlight-purple">steal</span> the spell by typing the correct answer
             faster than you! Let the battle begin!
           </p>
         </div>
@@ -28,7 +28,7 @@ const Instructions = (props) => {
         <h2 className="instructions-title">Spell Types</h2>
         <div className="instructions-container">
           <p className="instructions-text">
-            <span className="highlight-pink">Attack</span> - Damage specified HP to your opponent
+            <span className="highlight-red">Attack</span> - Damage specified HP to your opponent
           </p>
           <p className="instructions-text">
             <span className="highlight-green">Heal</span> - Restore specified HP to yourself

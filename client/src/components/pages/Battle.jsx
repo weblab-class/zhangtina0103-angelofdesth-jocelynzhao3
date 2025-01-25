@@ -256,6 +256,7 @@ const Battle = (props) => {
             <div
               key={`${card.word}-${index}`}
               className={`Battle-card ${animatingCards.has(index) ? "animate-card" : ""}`}
+              data-effect={card.effect.type}
             >
               <div className="Battle-card-content">
                 <div className="Battle-card-effect">{card.effect.type}</div>
@@ -283,16 +284,6 @@ const Battle = (props) => {
         </div>
 
         <TypeBar onType={handleTyping} typedText={typedText} isFrozen={isKeyboardFrozen()} />
-
-        <div className="language-display">
-          Debug area: language= <span className="language-text">{language}</span>
-        </div>
-        <div className="language-display">
-          Debug area: typedText= <span className="language-text">{typedText}</span>
-        </div>
-        {/* <Link to="/end/" className="NavBar-link u-inlineBlock">
-          Quit - TODO needs to tell server to end the game
-        </Link> */}
       </div>
     </div>
   );

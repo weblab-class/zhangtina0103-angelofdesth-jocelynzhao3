@@ -434,8 +434,8 @@ select:not([value=""]) {
 }
 
 .highlight-red {
-  color: #ff4444;
-  text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+  color: #dc1e1e;
+  text-shadow: 0 0 10px rgba(220, 30, 30, 0.5);
 }
 
 /* Hover effects for highlights */
@@ -670,8 +670,8 @@ select:not([value=""]) {
 }
 
 .highlight-red {
-  color: #ff4444;
-  text-shadow: 0 0 10px rgba(255, 68, 68, 0.7);
+  color: #dc1e1e;
+  text-shadow: 0 0 10px rgba(220, 30, 30, 0.7);
 }
 
 /* Effect highlight colors */
@@ -696,8 +696,8 @@ select:not([value=""]) {
 }
 
 .highlight-red {
-  color: #ff4444;
-  text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+  color: #dc1e1e;
+  text-shadow: 0 0 10px rgba(220, 30, 30, 0.5);
 }
 
 .see-effects-btn {
