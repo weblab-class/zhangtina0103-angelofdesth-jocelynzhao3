@@ -29,10 +29,14 @@ const removeUser = (user, socket) => {
 };
 
 // GAME STUFF
-const newGame = (p1, language) => {
-  // starts the game with the player and a hardcoded lobby name, which is a bot
-  gameLogic.newGame("hardcodedlobbyname", p1, "bot", language);
+const newBotGame = (p1, language, difficulty) => {
+  // starts the game with the player's id as the lobby name
+  gameLogic.newGame(p1, p1, "bot", language);
 };
+
+const newPVPGame = (lobby, p1, p2, language) => {
+  gameLogic.newGame(lobby, p1, p2, language);
+}
 
 const sendGameState = (game) => {
   io.emit("update", game);
@@ -84,7 +88,8 @@ module.exports = {
   getUserFromSocketID: getUserFromSocketID,
   getSocketFromSocketID: getSocketFromSocketID,
 
-  newGame: newGame,
+  newPVPGame: newPVPGame,
+  newBotGame: newBotGame,
 
   getIo: () => io,
 };
