@@ -11,10 +11,15 @@ const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 };
 
+// different effects
+const possibleEffects = ["attack", "attack", "heal", "heal", "lifesteal", "freeze", "3x", "block"];
+
+const basefreezeDuration = 3000;
+
 const activeGames = new Map();
 
 const doEffect = (effectType, game, card, player = "player") => {
-  if (card.effect.type === "freeze") return game; // no need to change HP
+  if (effectType === "freeze") return game; // no need to change HP
 
   const amount = card.effect.amount * game.multiplier;
 
@@ -36,25 +41,23 @@ const doEffect = (effectType, game, card, player = "player") => {
     }
   }
 
+  if (effectType === "3x") {
+    game.multiplier = game.multiplier * 3; // triples
+  } else {
+    game.multiplier = 1; // resets multiplier
+  }
+
   // Update the game state in the activeGames map
   activeGames.set(game.lobby, { ...game });
   return game;
 };
 
-/**
-
-card = {
-  word: string,
-  english: string,
-  effect: of the form:
-    {type: "damage" or "heal"
-    amount: int}
-}
-**/
-
-// different effects
-const possibleEffects = ["attack", "heal", "lifesteal", "freeze", "2x"];
-// const possibleEffects = ["freeze", "freeze", "freeze", "freeze", "freeze"];
+const getEffectAmount = (type, difficulty) => {
+  if (type === "freeze") return "freeze";
+  if (type === "3x") return "3x next spell";
+  if (type === "block") return "block next attack";
+  return Math.floor(10 * difficulty);
+};
 
 /** Game logic */
 const newCard = (language) => {
@@ -70,7 +73,7 @@ const newCard = (language) => {
         english: word[0].english,
         effect: {
           type: type,
-          amount: type == "freeze" ? "3 seconds" : Math.floor(10 * word[0].difficulty),
+          amount: getEffectAmount(type, word[0].difficulty),
         },
         difficulty: word[0].difficulty,
       };
@@ -94,9 +97,9 @@ const newGame = async (lobby, p1, p2, language) => {
       p1HP: 100,
       p2HP: 100,
       displayCards: [], // this is where we'd populate the initial cards
+      p1Effects: { freezeUntil: 0, block: false },
+      p2Effects: { freezeUntil: 0, block: false },
       multiplier: 1,
-      p1FreezeUntil: 0, // timestamp when p1's freeze ends (0 means not frozen)
-      p2FreezeUntil: 0, // timestamp when p2's freeze ends (0 means not frozen)
     };
     //populate the three starting cards
 
@@ -134,14 +137,15 @@ const checkWin = async (game) => {
 };
 
 const getCurrentTime = () => {
-  const date = new Date();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
+  const date = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+  const estDate = new Date(date);
+  const hours = estDate.getHours();
+  const minutes = estDate.getMinutes();
   const ampm = hours >= 12 ? "PM" : "AM";
   const formattedHours = hours % 12 || 12;
   const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-  const month = date.toLocaleString("default", { month: "short" });
-  const day = date.getDate();
+  const month = estDate.toLocaleString("default", { month: "short" });
+  const day = estDate.getDate();
 
   return `${formattedHours}:${formattedMinutes} ${ampm} on ${month} ${day}`;
 };
@@ -206,13 +210,6 @@ const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") =
   const takenCard = game.displayCards[cardIndex];
   console.log("I have received the card", takenCard);
 
-  // double multiplier
-  if (takenCard.effect.type === "2x") {
-    game.multiplier = game.multiplier * 2;
-  } else {
-    game.multiplier = 1;
-  }
-
   if (takenCard.effect.type === "attack" || takenCard.effect.type === "heal") {
     game = doEffect(takenCard.effect.type, game, takenCard, playerType);
   } else if (takenCard.effect.type === "lifesteal") {
@@ -222,11 +219,13 @@ const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") =
   } else if (takenCard.effect.type === "freeze") {
     // Set freeze timestamp in game state
     if (playerType === "bot") {
-      game.p1FreezeUntil = Date.now() + 3000; // Freeze for 2 seconds
+      game.p1Effects.freezeUntil = Date.now() + basefreezeDuration * game.multiplier; // Freeze for x seconds
     } else {
-      game.p2FreezeUntil = Date.now() + 3000;
+      game.p2Effects.freezeUntil = Date.now() + basefreezeDuration * game.multiplier;
     }
     console.log("Freeze effect applied!");
+  } else if (takenCard.effect.type === "3x") {
+    game = doEffect("3x", game, takenCard, playerType);
   }
 
   // checks if the game is complete with the new updated hps
@@ -246,7 +245,7 @@ const botTakeCard = (game) => {
   // Randomly select a card index (0, 1, or 2)
   const randomCardIndex = getRandomInt(0, 3);
   console.log("Bot is taking card at index:", randomCardIndex);
-  if (game.p2FreezeUntil <= Date.now()) {
+  if (game.p2Effects.freezeUntil <= Date.now()) {
     playerTakeCard(game.lobby, "bot", randomCardIndex, "bot");
   }
 };

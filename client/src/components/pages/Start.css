@@ -438,6 +438,11 @@ select:not([value=""]) {
   text-shadow: 0 0 10px rgba(220, 30, 30, 0.5);
 }
 
+.highlight-orange {
+  color: #ff8c00;
+  text-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+}
+
 /* Hover effects for highlights */
 .highlight-cyan:hover,
 .highlight-purple:hover,

@@ -24,8 +24,8 @@ const Start = (props) => {
     },
     { icon: "", name: "Heal", description: "Restore HP to yourself" },
     { icon: "", name: "Life Stealer", description: "Both attack your opponent and heal yourself" },
-    { icon: "", name: "2x", description: "Double the effect of your next spell" },
-    { icon: "", name: "Freeze", description: "Disable your opponent's keyboard for 5 seconds" },
+    { icon: "", name: "3x", description: "Triple the effect of your next spell" },
+    { icon: "", name: "Freeze", description: "Disable your opponent's keyboard for 3 seconds" },
   ];
 
   // not needed?
