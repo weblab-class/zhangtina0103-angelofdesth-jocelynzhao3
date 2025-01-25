@@ -14,9 +14,14 @@ import { UserContext } from "../App.jsx";
 import { socket } from "../../client-socket.js";
 
 const hardcodedCards = [
-  { word: "Salz", english: "salt", effect: { type: "damage", amount: 10 }, difficulty: "easy" },
-  { word: "Wasser", english: "water", effect: { type: "heal", amount: 5 }, difficulty: "medium" },
-  { word: "Unterwegs", english: "underway", effect: { type: "shield", amount: 10 }, difficulty: "hard" },
+  { word: "", english: "", effect: { type: "", amount: "" }, difficulty: "" },
+  { word: "", english: "", effect: { type: "", amount: "" }, difficulty: "" },
+  {
+    word: "",
+    english: "",
+    effect: { type: "", amount: "" },
+    difficulty: "",
+  },
 ];
 
 const Battle = (props) => {
@@ -34,7 +39,12 @@ const Battle = (props) => {
     p1HP: 100,
     p2HP: 100,
     displayCards: hardcodedCards,
+    p1FreezeUntil: 0,
+    p2FreezeUntil: 0,
   });
+  const [animatingCards, setAnimatingCards] = useState(new Set());
+  const prevCards = useRef(gameState.displayCards);
+
   // gets the Game state on mount
   useEffect(() => {
     socket.on("update", (update) => {
@@ -66,6 +76,26 @@ const Battle = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    // Compare current cards with previous cards
+    const newAnimatingCards = new Set();
+    gameState.displayCards.forEach((card, index) => {
+      if (prevCards.current[index]?.word !== card.word && card.word !== "") {
+        newAnimatingCards.add(index);
+      }
+    });
+
+    if (newAnimatingCards.size > 0) {
+      setAnimatingCards(newAnimatingCards);
+      // Clear animation flags after animation duration
+      setTimeout(() => {
+        setAnimatingCards(new Set());
+      }, 200); // Match animation duration
+    }
+
+    prevCards.current = gameState.displayCards;
+  }, [gameState.displayCards]);
+
   const [typedText, setTypedText] = useState(""); // Track user input
 
   const handleTyping = (text) => {
@@ -85,6 +115,16 @@ const Battle = (props) => {
       setTypedText("");
       takeCard(matchIndex, userContext.userId, gameState.lobby);
     }
+  };
+
+  const isKeyboardFrozen = () => {
+    const now = Date.now();
+    if (userContext.userId === gameState.p1) {
+      return now < gameState.p1FreezeUntil;
+    } else if (userContext.userId === gameState.p2) {
+      return now < gameState.p2FreezeUntil;
+    }
+    return false;
   };
 
   // Add class to App container when component mounts
@@ -213,33 +253,51 @@ const Battle = (props) => {
         {/* Word Cards */}
         <div className="Battle-cards-container">
           {gameState.displayCards.map((card, index) => (
-            <div key={index} className="Battle-card">
+            <div
+              key={`${card.word}-${index}`}
+              className={`Battle-card ${animatingCards.has(index) ? "animate-card" : ""}`}
+              data-effect={card.effect.type}
+            >
               <div className="Battle-card-content">
-                <div className="Battle-card-word">{card.word}</div>
+                <div className="Battle-card-effect">{card.effect.type}</div>
                 <div className="Battle-card-divider"></div>
-                <div className="Battle-card-english">{card.english}</div>
-                <div className="Battle-card-divider"></div>
-                <div className="Battle-card-stats">
-                  <div className="Battle-card-difficulty">Difficulty: {card.difficulty}</div>
-                  <div className="Battle-card-effect">Effect: {card.effect.type}</div>
-                  <div className="Battle-card-amount">{card.effect.type === "heal" ? `Restore ${card.effect.amount} HP` : `Deal ${card.effect.amount} HP`}</div>
+                <div className="Battle-card-middle">
+                  <div className="Battle-card-word">{card.word}</div>
+                  <div className="Battle-card-english">{card.english}</div>
+                  <div className="Battle-card-amount">
+                    {card.effect.type === "heal" ? (
+                      <span>+{card.effect.amount} HP</span>
+                    ) : card.effect.type === "attack" ? (
+                      <span>-{card.effect.amount} HP</span>
+                    ) : card.effect.type === "lifesteal" ? (
+                      <span>±{card.effect.amount} HP</span>
+                    ) : card.effect.type === "freeze" ? (
+                      <span>+3 seconds</span>
+                    ) : (
+                      <span>2x</span>
+                    )}
+                  </div>
+                  <div className="Battle-card-effect-description">
+                    {card.effect.type === "heal" ? 
+                      `Heals you for ${card.effect.amount} HP` :
+                      card.effect.type === "attack" ? 
+                      `Deals ${card.effect.amount} damage to your opponent` :
+                      card.effect.type === "lifesteal" ? 
+                      `Deals ${card.effect.amount} damage and heals you for the same amount` :
+                      card.effect.type === "freeze" ? 
+                      "Freezes your opponent for 3 seconds" :
+                      card.effect.type === "2x" ? 
+                      "Doubles the effect of your next card" :
+                      ""
+                    }
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        <TypeBar onType={handleTyping} typedText={typedText} />
-
-        <div className="language-display">
-          Debug area: language= <span className="language-text">{language}</span>
-        </div>
-        <div className="language-display">
-          Debug area: typedText= <span className="language-text">{typedText}</span>
-        </div>
-        {/* <Link to="/end/" className="NavBar-link u-inlineBlock">
-          Quit - TODO needs to tell server to end the game
-        </Link> */}
+        <TypeBar onType={handleTyping} typedText={typedText} isFrozen={isKeyboardFrozen()} />
       </div>
     </div>
   );

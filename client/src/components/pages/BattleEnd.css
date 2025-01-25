@@ -115,10 +115,25 @@ body {
   font-weight: bold;
 }
 
+.BattleEnd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.BattleEnd-player-info {
+  flex: 1;
+}
+
+.BattleEnd-player-info p {
+  margin: 8px 0;
+}
+
 .BattleEnd-navigation {
   margin: 2rem 0;
   width: 100%;
-  text-align: center;
+  text-align: right;
 }
 
 .BattleEnd-button {
