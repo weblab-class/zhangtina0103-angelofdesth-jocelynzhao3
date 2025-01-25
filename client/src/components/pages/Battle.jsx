@@ -39,8 +39,9 @@ const Battle = (props) => {
     p1HP: 100,
     p2HP: 100,
     displayCards: hardcodedCards,
-    p1FreezeUntil: 0,
-    p2FreezeUntil: 0,
+    p1Effects: { freezeUntil: 0, block: false }, // possible effects
+    p2Effects: { freezeUntil: 0, block: false },
+    multiplier: 1,
   });
   const [animatingCards, setAnimatingCards] = useState(new Set());
   const prevCards = useRef(gameState.displayCards);
@@ -120,9 +121,9 @@ const Battle = (props) => {
   const isKeyboardFrozen = () => {
     const now = Date.now();
     if (userContext.userId === gameState.p1) {
-      return now < gameState.p1FreezeUntil;
+      return now < gameState.p1Effects.freezeUntil;
     } else if (userContext.userId === gameState.p2) {
-      return now < gameState.p2FreezeUntil;
+      return now < gameState.p2Effects.freezeUntil;
     }
     return false;
   };
@@ -290,22 +291,21 @@ const Battle = (props) => {
                     ) : card.effect.type === "freeze" ? (
                       <span>+3 seconds</span>
                     ) : (
-                      <span>2x</span>
+                      <span>3x</span>
                     )}
                   </div>
                   <div className="Battle-card-effect-description">
-                    {card.effect.type === "heal" ? 
-                      `Heals you for ${card.effect.amount} HP` :
-                      card.effect.type === "attack" ? 
-                      `Deals ${card.effect.amount} damage to your opponent` :
-                      card.effect.type === "lifesteal" ? 
-                      `Deals ${card.effect.amount} damage and heals you for the same amount` :
-                      card.effect.type === "freeze" ? 
-                      "Freezes your opponent for 3 seconds" :
-                      card.effect.type === "2x" ? 
-                      "Doubles the effect of your next card" :
-                      ""
-                    }
+                    {card.effect.type === "heal"
+                      ? `Heals you for ${card.effect.amount} HP`
+                      : card.effect.type === "attack"
+                      ? `Deals ${card.effect.amount} damage to your opponent`
+                      : card.effect.type === "lifesteal"
+                      ? `Deals ${card.effect.amount} damage and heals you for the same amount`
+                      : card.effect.type === "freeze"
+                      ? "Freezes your opponent for 3 seconds"
+                      : card.effect.type === "3x"
+                      ? "Triples the effect of your next card"
+                      : ""}
                   </div>
                 </div>
               </div>
@@ -314,6 +314,19 @@ const Battle = (props) => {
         </div>
 
         <TypeBar onType={handleTyping} typedText={typedText} isFrozen={isKeyboardFrozen()} />
+
+        {/* <div className="language-display">
+          Debug area: language= <span className="language-text">{language}</span>
+        </div>
+        <div className="language-display">
+          Debug area: typedText= <span className="language-text">{typedText}</span>
+        </div> */}
+        <div className="language-display">
+          Debug area: multiplier= <span className="language-text">{gameState.multiplier}</span>
+        </div>
+        {/* <Link to="/end/" className="NavBar-link u-inlineBlock">
+          Quit - TODO needs to tell server to end the game
+        </Link> */}
       </div>
     </div>
   );
