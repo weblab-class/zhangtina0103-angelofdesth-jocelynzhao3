@@ -4,14 +4,15 @@
   align-items: center;
   width: 100%;
   max-width: 900px;
-  margin: 1.5rem auto;
+  margin: 1rem auto;
   padding: 0 2rem;
+  min-height: 100vh;
 }
 
 .instructions-title {
   color: #4dffff;
   font-size: 2rem;
-  margin: 1.2rem 0;
+  margin: 1rem 0;
   text-align: center;
   text-shadow: 0 0 15px rgba(77, 255, 255, 0.4);
   font-family: "Aerglo", sans-serif;
@@ -22,16 +23,16 @@
   background: rgba(0, 255, 255, 0.05);
   border: 2px solid rgba(77, 255, 255, 0.2);
   border-radius: 10px;
-  padding: 1.5rem 2rem;
+  padding: 1.2rem 2rem;
   width: 100%;
   max-width: 700px;
-  margin: 0.5rem auto 1.8rem auto;
+  margin: 0.5rem auto 1.5rem auto;
   box-shadow: 0 0 20px rgba(77, 255, 255, 0.1);
 }
 
 .instructions-text {
   font-size: 1.1rem;
-  line-height: 1.7;
+  line-height: 1.6;
   color: #fff;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
   margin: 0;
@@ -39,9 +40,9 @@
 }
 
 .effect-item {
-  margin: 1rem 0;
+  margin: 0.8rem 0;
   font-size: 1.1rem;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #fff;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
   display: flex;
@@ -59,7 +60,7 @@
 }
 
 .back-to-start-container {
-  margin: 0.5rem 0 1rem;
+  margin: 1rem 0 2rem;
   text-align: center;
 }
 
