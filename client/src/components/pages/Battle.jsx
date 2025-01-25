@@ -50,8 +50,9 @@ const Battle = (props) => {
     p1HP: 100,
     p2HP: 100,
     displayCards: hardcodedCards,
-    p1FreezeUntil: 0,
-    p2FreezeUntil: 0,
+    p1Effects: { freezeUntil: 0, block: false }, // possible effects
+    p2Effects: { freezeUntil: 0, block: false },
+    multiplier: 1,
   });
   const [animatingCards, setAnimatingCards] = useState(new Set());
   const prevCards = useRef(gameState.displayCards);
@@ -95,7 +96,7 @@ const Battle = (props) => {
         newAnimatingCards.add(index);
       }
     });
-    
+
     if (newAnimatingCards.size > 0) {
       setAnimatingCards(newAnimatingCards);
       // Clear animation flags after animation duration
@@ -103,7 +104,7 @@ const Battle = (props) => {
         setAnimatingCards(new Set());
       }, 200); // Match animation duration
     }
-    
+
     prevCards.current = gameState.displayCards;
   }, [gameState.displayCards]);
 
@@ -131,9 +132,9 @@ const Battle = (props) => {
   const isKeyboardFrozen = () => {
     const now = Date.now();
     if (userContext.userId === gameState.p1) {
-      return now < gameState.p1FreezeUntil;
+      return now < gameState.p1Effects.freezeUntil;
     } else if (userContext.userId === gameState.p2) {
-      return now < gameState.p2FreezeUntil;
+      return now < gameState.p2Effects.freezeUntil;
     }
     return false;
   };
@@ -264,9 +265,9 @@ const Battle = (props) => {
         {/* Word Cards */}
         <div className="Battle-cards-container">
           {gameState.displayCards.map((card, index) => (
-            <div 
-              key={`${card.word}-${index}`} 
-              className={`Battle-card ${animatingCards.has(index) ? 'animate-card' : ''}`}
+            <div
+              key={`${card.word}-${index}`}
+              className={`Battle-card ${animatingCards.has(index) ? "animate-card" : ""}`}
             >
               <div className="Battle-card-content">
                 <div className="Battle-card-word">{card.word}</div>
@@ -285,11 +286,14 @@ const Battle = (props) => {
 
         <TypeBar onType={handleTyping} typedText={typedText} isFrozen={isKeyboardFrozen()} />
 
-        <div className="language-display">
+        {/* <div className="language-display">
           Debug area: language= <span className="language-text">{language}</span>
         </div>
         <div className="language-display">
           Debug area: typedText= <span className="language-text">{typedText}</span>
+        </div> */}
+        <div className="language-display">
+          Debug area: multiplier= <span className="language-text">{gameState.multiplier}</span>
         </div>
         {/* <Link to="/end/" className="NavBar-link u-inlineBlock">
           Quit - TODO needs to tell server to end the game

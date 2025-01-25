@@ -42,8 +42,11 @@ const Instructions = (props) => {
             seconds
           </p>
           <p className="instructions-text">
-            <span className="highlight-yellow">2x</span> - Double the effect of the next spell
+            <span className="highlight-yellow">3x</span> - Triple the effect of the next spell
             (CAUTION: this goes both ways!)
+          </p>
+          <p className="instructions-text">
+            <span className="highlight-orange">Block</span> - Nullifies the next damage you take
           </p>
         </div>
 
