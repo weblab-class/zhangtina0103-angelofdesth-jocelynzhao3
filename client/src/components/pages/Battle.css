@@ -150,20 +150,12 @@
 }
 
 .Battle-hp-container:first-child .Battle-hp-bar {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 255, 255, 0.1) 0%,
-    rgba(0, 255, 255, 0.2) 100%
-  );
+  background: linear-gradient(90deg, rgba(0, 255, 255, 0.1) 0%, rgba(0, 255, 255, 0.2) 100%);
   border: 1px solid rgba(0, 255, 255, 0.4);
 }
 
 .Battle-hp-container:last-child .Battle-hp-bar {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 150, 255, 0.1) 0%,
-    rgba(0, 150, 255, 0.2) 100%
-  );
+  background: linear-gradient(90deg, rgba(0, 150, 255, 0.1) 0%, rgba(0, 150, 255, 0.2) 100%);
   border: 1px solid rgba(0, 150, 255, 0.4);
 }
 
@@ -182,20 +174,12 @@
 }
 
 .Battle-hp-container:first-child .Battle-hp-fill {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 255, 255, 0.6) 0%,
-    rgba(0, 255, 255, 0.8) 100%
-  );
+  background: linear-gradient(90deg, rgba(0, 255, 255, 0.6) 0%, rgba(0, 255, 255, 0.8) 100%);
   box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
 }
 
 .Battle-hp-container:last-child .Battle-hp-fill {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 150, 255, 0.6) 0%,
-    rgba(0, 150, 255, 0.8) 100%
-  );
+  background: linear-gradient(90deg, rgba(0, 150, 255, 0.6) 0%, rgba(0, 150, 255, 0.8) 100%);
   box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
 }
 
@@ -503,16 +487,17 @@
 
 .Battle-cards-container {
   display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  width: 1000px; /* Reduced from 1100px to bring cards closer */
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 1rem 0;
 }
 
 .Battle-card {
-  flex: 0 0 260px;
-  width: 260px;
+  flex: 1;
+  max-width: 300px;
   height: 300px;
   border-radius: 12px;
   box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
