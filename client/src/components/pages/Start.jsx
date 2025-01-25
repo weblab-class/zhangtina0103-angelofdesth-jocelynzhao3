@@ -17,7 +17,11 @@ const Start = (props) => {
   const { language, setLanguage } = useContext(LanguageContext);
   const [showEffects, setShowEffects] = useState(false);
   const spellEffects = [
-    { icon: "", name: "Attack", description: "Deal damage with specified HP amount to your opponent" },
+    {
+      icon: "",
+      name: "Attack",
+      description: "Deal damage with specified HP amount to your opponent",
+    },
     { icon: "", name: "Heal", description: "Restore HP to yourself" },
     { icon: "", name: "Life Stealer", description: "Both attack your opponent and heal yourself" },
     { icon: "", name: "2x", description: "Double the effect of your next spell" },
@@ -39,12 +43,9 @@ const Start = (props) => {
   //   }
   // }, [userContext.userId]);
 
-  const handleBattleClick = () => {
-    // TODO: put player name in here too?
+  const handleStartClick = () => {
     if (userContext.userId) {
-      post("/api/startGame", { playerId: userContext.userId, language: language }).then(
-        navigate("/battle/")
-      );
+      navigate("/lobbies/");
     }
   };
 
@@ -109,31 +110,12 @@ const Start = (props) => {
         )}
         <div>
           {userContext.userId && (
-            <div className="bottom-content-wrapper">
-              <div className="language-selector-container">
-                <select
-                  name="language"
-                  id="language-select"
-                  value={language}
-                  onChange={(e) => setLanguage(e.target.value)}
-                >
-                  <option value="">Choose your language...</option>
-                  <option value="Spanish">Spanish</option>
-                  <option value="Chinese">Chinese</option>
-                  <option value="German">German</option>
-                  <option value="French">French</option>
-                  <option value="Arabic">Arabic</option>
-                </select>
-              </div>
-              <div className={`battle-button-container ${language ? "visible" : ""}`}>
-                <button
-                  onClick={handleBattleClick}
-                  className="battle-button button-base neon-bg neon-border neon-text"
-                >
-                  Enter Battle
-                </button>
-              </div>
-            </div>
+            <button
+              onClick={handleStartClick}
+              className="battle-button button-base neon-bg neon-border neon-text"
+            >
+              Start A Game
+            </button>
           )}
         </div>
       </div>

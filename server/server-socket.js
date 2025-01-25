@@ -55,7 +55,7 @@ const startRunningGame = (lobby) => {
         sendGameState(game);
       }
     }
-  }, 1000 / 60); // 60 frames per second
+  }, 1000 / 0.2); // 60 frames per second
 };
 
 startRunningGame("hardcodedlobbyname");

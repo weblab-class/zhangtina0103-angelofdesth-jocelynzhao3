@@ -8,6 +8,7 @@ import BattleEnd from "./components/pages/BattleEnd";
 import Start from "./components/pages/Start";
 import BattleProfile from "./components/pages/BattleProfile";
 import Instructions from "./components/pages/Instructions";
+import Lobbies from "./components/pages/Lobbies";
 
 import {
   createBrowserRouter,
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<NotFound />} element={<App />}>
       <Route path="/" element={<Start />} />
+      <Route path="/lobbies/" element={<Lobbies />} />
       {/* empty url take you to the hardcodedlobby (aka the bot page) */}
       <Route path="/battle/" element={<Battle />} />
       {/* todo: add userid later in the url so the battling is unique */}

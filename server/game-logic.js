@@ -12,12 +12,11 @@ const getRandomInt = (min, max) => {
 };
 
 const activeGames = new Map();
-let multiplier = 1;
 
 const doEffect = (effectType, game, card, player = "player") => {
   if (card.effect.type === "freeze") return game; // no need to change HP
 
-  const amount = card.effect.amount * multiplier;
+  const amount = card.effect.amount * game.multiplier;
 
   if (player === "bot") {
     if (effectType === "attack") {
@@ -95,6 +94,7 @@ const newGame = async (lobby, p1, p2, language) => {
       p1HP: 100,
       p2HP: 100,
       displayCards: [], // this is where we'd populate the initial cards
+      multiplier: 1,
       p1FreezeUntil: 0, // timestamp when p1's freeze ends (0 means not frozen)
       p2FreezeUntil: 0, // timestamp when p2's freeze ends (0 means not frozen)
     };
@@ -208,9 +208,9 @@ const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") =
 
   // double multiplier
   if (takenCard.effect.type === "2x") {
-    multiplier = multiplier * 2;
+    game.multiplier = game.multiplier * 2;
   } else {
-    multiplier = 1;
+    game.multiplier = 1;
   }
 
   if (takenCard.effect.type === "attack" || takenCard.effect.type === "heal") {

@@ -45,10 +45,19 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 
 //grab a word from the database filtered by language
-router.post("/startGame", (req, res) => {
-  socketManager.newGame(req.body.playerId, req.body.language);
+router.post("/createLobby", (req, res) => {
+  console.log("received a request to create a new lobby");
+}); 
+
+router.post("/startPVPGame", (req, res) => {
+  socketManager.newPVPGame(req.body.lobby, req.body.p1, req.body.p2, req.body.language);
   res.send({});
 });
+
+router.post("/startBotGame", (req, res) => {
+  socketManager.newBotGame(req.body.p1, req.body.language, req.body.difficulty); 
+  res.send({});
+})
 
 router.get("/userinfo", (req, res) => {
   User.findOne({ _id: req.user._id }).then((userInfo) => {

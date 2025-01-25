@@ -1,0 +1,11 @@
+import "../../utilities.css";
+import "./BotLobbyCreation";
+
+const LobbyList = (props) => {
+
+    return (
+        <p> This is the list of all the available lobbies </p>
+    )
+};
+
+export default LobbyList
