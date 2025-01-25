@@ -62,12 +62,12 @@ const Battle = (props) => {
                 console.log("Got updated user data");
                 setUserInfo(userData); // Update global user info context
                 // Only navigate after user info is updated
-                navigate("/end/");
+                navigate("/battleProfile/");
               }
             })
             .catch((err) => {
               console.error("Error getting updated user info:", err);
-              navigate("/end/"); // Navigate anyway if there's an error
+              navigate("/battleProfile/"); // Navigate anyway if there's an error
             });
         }
       }
@@ -328,12 +328,6 @@ const Battle = (props) => {
 
         <TypeBar onType={handleTyping} typedText={typedText} isFrozen={isKeyboardFrozen()} />
 
-        {/* <div className="language-display">
-          Debug area: language= <span className="language-text">{language}</span>
-        </div>
-        <div className="language-display">
-          Debug area: typedText= <span className="language-text">{typedText}</span>
-        </div> */}
         <div className="language-display">
           Debug area: p1 blocks= <span className="language-text">{numberBlocks().p1Blocks}</span>
         </div>
@@ -343,9 +337,6 @@ const Battle = (props) => {
         <div className="language-display">
           Debug area: multiplier= <span className="language-text">{gameState.multiplier}</span>
         </div>
-        {/* <Link to="/end/" className="NavBar-link u-inlineBlock">
-          Quit - TODO needs to tell server to end the game
-        </Link> */}
       </div>
     </div>
   );
