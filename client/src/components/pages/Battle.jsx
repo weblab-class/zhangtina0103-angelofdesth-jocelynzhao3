@@ -199,12 +199,20 @@ const Battle = (props) => {
       <div className="Battle-status-bar">
         {/* Player HP (Left) */}
         <div className="Battle-hp-container">
-          <div className="Battle-hp-bar">
+          <div 
+            className="Battle-hp-bar" 
+            data-hp={gameState.p1HP <= 30 ? "low" : "normal"}
+          >
             <div
-              className="Battle-hp-fill player-hp"
+              className={`Battle-hp-fill player-hp`}
               style={{ width: `${(gameState.p1HP / 100) * 100}%` }}
             />
-            <div className="Battle-hp-text">{gameState.p1HP}HP/100HP</div>
+            <div 
+              className="Battle-hp-text"
+              data-hp={gameState.p1HP <= 30 ? "low" : "normal"}
+            >
+              {gameState.p1HP} HP
+            </div>
           </div>
         </div>
 
@@ -216,12 +224,20 @@ const Battle = (props) => {
 
         {/* Enemy HP (Right) */}
         <div className="Battle-hp-container">
-          <div className="Battle-hp-bar">
+          <div 
+            className="Battle-hp-bar"
+            data-hp={gameState.p2HP <= 30 ? "low" : "normal"}
+          >
             <div
-              className="Battle-hp-fill enemy-hp"
+              className={`Battle-hp-fill enemy-hp`}
               style={{ width: `${(gameState.p2HP / 100) * 100}%` }}
             />
-            <div className="Battle-hp-text">{gameState.p2HP}HP/100HP</div>
+            <div 
+              className="Battle-hp-text"
+              data-hp={gameState.p2HP <= 30 ? "low" : "normal"}
+            >
+              {gameState.p2HP} HP
+            </div>
           </div>
         </div>
       </div>
