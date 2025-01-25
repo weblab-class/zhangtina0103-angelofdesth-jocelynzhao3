@@ -1,5 +1,5 @@
 import "../../utilities.css";
-import "./BotLobbyCreation";
+import "./LobbyList.css";
 
 const LobbyList = (props) => {
 

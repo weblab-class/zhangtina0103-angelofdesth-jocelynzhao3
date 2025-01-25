@@ -5,6 +5,7 @@ import LobbyList from "../modules/LobbyList";
 
 
 import { useState } from "react";
+import PVPLobbyCreation from "../modules/PVPLobbyCreation";
 
 const Lobbies = (props) => {
   const [displayedLobby, setDisplayedLobby] = useState(null) 
@@ -36,7 +37,7 @@ const Lobbies = (props) => {
           {displayedLobby ? ( 
             <>
             {displayedLobby === "newPVP" ? (
-              <p> this is where I would put new pvp </p>
+              <PVPLobbyCreation />
             ) : ( 
               <>
               {displayedLobby === "newBot" ? (

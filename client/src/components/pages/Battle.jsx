@@ -45,34 +45,42 @@ const Battle = (props) => {
   const [animatingCards, setAnimatingCards] = useState(new Set());
   const prevCards = useRef(gameState.displayCards);
 
+  const processUpdate = (update) => {
+    if (update) {
+      if (update !== "over") {
+        console.log("I have received the update", update);
+        setGameState(update);
+      } else {
+        console.log("Game over");
+        // Make API call to get updated user info (including new ELO)
+        get("/api/userinfo", { _id: userContext.userId })
+          .then((userData) => {
+            if (userData._id) {
+              console.log("Got updated user data");
+              setUserInfo(userData); // Update global user info context
+              // Only navigate after user info is updated
+              navigate("/end/");
+            }
+          })
+          .catch((err) => {
+            console.error("Error getting updated user info:", err);
+            navigate("/end/"); // Navigate anyway if there's an error
+          });
+      }
+    }
+  }
+
   // gets the Game state on mount
   useEffect(() => {
-    socket.on("update", (update) => {
-      if (update) {
-        if (update !== "over") {
-          console.log("I have received the update", update);
-          setGameState(update);
-        } else {
-          console.log("Game over");
-          // Make API call to get updated user info (including new ELO)
-          get("/api/userinfo", { _id: userContext.userId })
-            .then((userData) => {
-              if (userData._id) {
-                console.log("Got updated user data");
-                setUserInfo(userData); // Update global user info context
-                // Only navigate after user info is updated
-                navigate("/end/");
-              }
-            })
-            .catch((err) => {
-              console.error("Error getting updated user info:", err);
-              navigate("/end/"); // Navigate anyway if there's an error
-            });
-        }
-      }
-    });
+    if (lobby) {
+      socket.on(lobby, processUpdate)
+    } else {
+      socket.on(userContext.userId, processUpdate);
+    }
+    
     return () => {
-      socket.off("update");
+      socket.off(lobby);
+      socket.off(userContext.userId);
     };
   }, []);
 

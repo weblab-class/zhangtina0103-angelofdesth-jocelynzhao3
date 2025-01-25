@@ -39,30 +39,36 @@ const newPVPGame = (lobby, p1, p2, language) => {
 }
 
 const sendGameState = (game) => {
-  io.emit("update", game);
+  io.emit(game.lobby, game);
 };
 
-const startRunningGame = (lobby) => {
-  setInterval(async () => {
-    const game = gameLogic.activeGames.get(lobby);
-    console.log(game);
-    if (game) {
+const startRunningGames = (activeGames) => {
+  const runGame = async (game) => {
       if (game.winner) {
         try {
           await gameLogic.handleGameEnd(game, game.winner);
-          io.emit("update", "over");
+          io.emit(game.lobby, "over");
         } catch (error) {
           console.error("Error handling game end:", error);
-          io.emit("update", "over");
+          io.emit(game.lobby, "over");
         }
       } else {
         sendGameState(game);
+        console.log("I have sent the game", game);
       }
+  };
+
+  const runAllGames = () => {
+    if (activeGames) {
+      activeGames.forEach((game, lobbyname) => {runGame(game)})
     }
-  }, 1000 / 0.2); // 60 frames per second
+  }
+
+  setInterval(runAllGames
+  , 1000 / 0.5); // 60 frames per second
 };
 
-startRunningGame("hardcodedlobbyname");
+startRunningGames(gameLogic.activeGames);
 
 module.exports = {
   init: (http) => {
@@ -76,7 +82,7 @@ module.exports = {
       });
       socket.on("cards", (card) => {
         console.log("I have received the card", card);
-        gameLogic.playerTakeCard(card.lobby || "hardcodedlobbyname", card.userId, card.card);
+        gameLogic.playerTakeCard(card.lobby, card.userId, card.card);
       });
     });
   },
