@@ -42,7 +42,7 @@ const Instructions = (props) => {
             seconds
           </p>
           <p className="instructions-text">
-            <span className="highlight-orange">Block</span> - Gain 3 seconds of protection of your
+            <span className="highlight-brown">Block</span> - Gain 3 seconds of protection of your
             opponent's next attack
           </p>
           <p className="instructions-text">
