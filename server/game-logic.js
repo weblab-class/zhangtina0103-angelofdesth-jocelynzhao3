@@ -24,15 +24,45 @@ const doEffect = (effectType, game, card, player = "player") => {
   const amount = card.effect.amount * game.multiplier;
 
   if (player === "bot") {
+    //p2 attacking
     if (effectType === "attack") {
+      // check for block
+      const now = Date.now();
+      while (game.p1Effects.block.length > 0) {
+        const blockTime = game.p1Effects.block[0];
+        game.p1Effects.block.shift(); // Remove the first block
+
+        if (blockTime > now) {
+          // Block is still active, consume it and prevent damage
+          console.log("Attack blocked by P1!");
+          return game;
+        }
+        // If block was expired, continue checking next block
+      }
+
       game.p1HP = Math.max(0, game.p1HP - amount); // Don't let HP go below 0
       console.log(`Attacked for ${amount} damage. P1 HP now: ${game.p1HP}`);
     } else if (effectType === "heal") {
       game.p2HP = Math.min(100, game.p2HP + amount); // Don't let HP go above 100
-      console.log(`Healed for ${amount} HP. P1 HP now: ${game.p2HP}`);
+      console.log(`Healed for ${amount} HP. P2 HP now: ${game.p2HP}`);
     }
   } else {
+    //p1 attacking
     if (effectType === "attack") {
+      // check for block
+      const now = Date.now();
+      while (game.p2Effects.block.length > 0) {
+        const blockTime = game.p2Effects.block[0];
+        game.p2Effects.block.shift(); // Remove the first block
+
+        if (blockTime > now) {
+          // Block is still active, consume it and prevent damage
+          console.log("Attack blocked by P2!");
+          return game;
+        }
+        // If block was expired, continue checking next block
+      }
+
       game.p2HP = Math.max(0, game.p2HP - amount); // Don't let HP go below 0
       console.log(`Attacked for ${amount} damage. P2 HP now: ${game.p2HP}`);
     } else if (effectType === "heal") {
@@ -67,7 +97,7 @@ const newCard = (language) => {
     { $sample: { size: 1 } }, // Get exactly 1 random word - they'll be unique
   ])
     .then((word) => {
-      const type = possibleEffects[getRandomInt(0, possibleEffects.length - 1)];
+      const type = possibleEffects[getRandomInt(0, possibleEffects.length)];
       const card = {
         word: word[0].word,
         english: word[0].english,
@@ -97,8 +127,8 @@ const newGame = async (lobby, p1, p2, language) => {
       p1HP: 100,
       p2HP: 100,
       displayCards: [], // this is where we'd populate the initial cards
-      p1Effects: { freezeUntil: 0, block: false },
-      p2Effects: { freezeUntil: 0, block: false },
+      p1Effects: { freezeUntil: 0, block: [] }, // block is an increasing array of times when the player is blocked
+      p2Effects: { freezeUntil: 0, block: [] },
       multiplier: 1,
     };
     //populate the three starting cards
@@ -223,9 +253,22 @@ const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") =
     } else {
       game.p2Effects.freezeUntil = Date.now() + basefreezeDuration * game.multiplier;
     }
-    console.log("Freeze effect applied!");
+    // console.log("Freeze effect applied!");
   } else if (takenCard.effect.type === "3x") {
     game = doEffect("3x", game, takenCard, playerType);
+  } else if (takenCard.effect.type === "block") {
+    // block is an increasing array of times when the player is blocked
+    if (playerType === "bot") {
+      // assuming bot = p2, needs modificationin PVP
+      game.p2Effects.block = game.p2Effects.block.concat(
+        new Array(game.multiplier).fill(Date.now() + 3000) // Block for 3 seconds
+      );
+    } else {
+      game.p1Effects.block = game.p1Effects.block.concat(
+        new Array(game.multiplier).fill(Date.now() + 3000)
+      );
+    }
+    console.log("Block effect applied!");
   }
 
   // checks if the game is complete with the new updated hps

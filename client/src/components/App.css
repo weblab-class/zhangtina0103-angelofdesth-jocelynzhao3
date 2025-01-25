@@ -1,3 +1,19 @@
+:root {
+  background: #0a0a1f;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: #0a0a1f;
+  color: #fff;
+}
+
+body {
+  overflow-x: hidden;
+}
+
 .App-container {
   display: flex;
   justify-content: center; /* Horizontally centers the content */
@@ -7,6 +23,8 @@
   padding: 1rem;
   margin: auto;
   box-sizing: border-box;
+  min-height: 100vh;
+  background: #0a0a1f;
 }
 
 /* Allow Battle page to break out of container */

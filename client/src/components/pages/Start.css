@@ -70,7 +70,8 @@
   text-shadow: 0 0 15px rgba(0, 255, 255, 0.4), 0 0 25px rgba(0, 255, 255, 0.2),
     0 0 35px rgba(0, 255, 255, 0.1);
   font-family: "Aerglo", sans-serif;
-  margin-bottom: 1rem;
+  margin: 2rem;
+  padding: 2rem;
   letter-spacing: 2px;
   line-height: 1.1;
   transform: perspective(500px) rotateX(5deg);
@@ -443,6 +444,16 @@ select:not([value=""]) {
   text-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
 }
 
+.highlight-green {
+  color: #00ff80;
+  text-shadow: 0 0 10px rgba(0, 255, 128, 0.5);
+}
+
+.highlight-brown {
+  color: #8B4513;
+  text-shadow: 0 0 10px rgba(139, 69, 19, 0.8);
+}
+
 /* Hover effects for highlights */
 .highlight-cyan:hover,
 .highlight-purple:hover,
@@ -451,7 +462,8 @@ select:not([value=""]) {
 .highlight-blue:hover,
 .highlight-yellow:hover,
 .highlight-orange:hover,
-.highlight-red:hover {
+.highlight-red:hover,
+.highlight-brown:hover {
   filter: brightness(1.2);
   transform: scale(1.05);
   transition: all 0.3s ease;
@@ -679,30 +691,24 @@ select:not([value=""]) {
   text-shadow: 0 0 10px rgba(220, 30, 30, 0.7);
 }
 
-/* Effect highlight colors */
-.highlight-pink {
-  color: #ff69b4;
-  text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+.highlight-brown {
+  color: #8B4513;
+  text-shadow: 0 0 10px rgba(139, 69, 19, 0.8);
 }
 
-.highlight-blue {
-  color: #00bfff;
-  text-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
-}
-
-.highlight-purple {
-  color: #da70d6;
-  text-shadow: 0 0 10px rgba(218, 112, 214, 0.5);
-}
-
-.highlight-yellow {
-  color: #ffd700;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-}
-
-.highlight-red {
-  color: #dc1e1e;
-  text-shadow: 0 0 10px rgba(220, 30, 30, 0.5);
+/* Hover effects for highlights */
+.highlight-cyan:hover,
+.highlight-purple:hover,
+.highlight-green:hover,
+.highlight-pink:hover,
+.highlight-blue:hover,
+.highlight-yellow:hover,
+.highlight-orange:hover,
+.highlight-red:hover,
+.highlight-brown:hover {
+  filter: brightness(1.2);
+  transform: scale(1.05);
+  transition: all 0.3s ease;
 }
 
 .see-effects-btn {

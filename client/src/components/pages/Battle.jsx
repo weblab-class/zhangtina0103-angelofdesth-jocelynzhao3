@@ -39,8 +39,8 @@ const Battle = (props) => {
     p1HP: 100,
     p2HP: 100,
     displayCards: hardcodedCards,
-    p1Effects: { freezeUntil: 0, block: false }, // possible effects
-    p2Effects: { freezeUntil: 0, block: false },
+    p1Effects: { freezeUntil: 0, block: [] }, // possible effects
+    p2Effects: { freezeUntil: 0, block: [] },
     multiplier: 1,
   });
   const [animatingCards, setAnimatingCards] = useState(new Set());
@@ -128,6 +128,25 @@ const Battle = (props) => {
     return false;
   };
 
+  const numberBlocks = () => {
+    // returns number of blocks for each player, live updating
+    const now = Date.now();
+
+    // Clean up and count P1's blocks
+    while (gameState.p1Effects.block.length > 0 && gameState.p1Effects.block[0] <= now) {
+      gameState.p1Effects.block.shift(); // Remove expired blocks
+    }
+    const p1Blocks = gameState.p1Effects.block.length;
+
+    // Clean up and count P2's blocks
+    while (gameState.p2Effects.block.length > 0 && gameState.p2Effects.block[0] <= now) {
+      gameState.p2Effects.block.shift(); // Remove expired blocks
+    }
+    const p2Blocks = gameState.p2Effects.block.length;
+
+    return { p1Blocks, p2Blocks };
+  };
+
   // Add class to App container when component mounts
   useEffect(() => {
     const appContainer = document.querySelector(".App-container");
@@ -199,18 +218,12 @@ const Battle = (props) => {
       <div className="Battle-status-bar">
         {/* Player HP (Left) */}
         <div className="Battle-hp-container">
-          <div 
-            className="Battle-hp-bar" 
-            data-hp={gameState.p1HP <= 30 ? "low" : "normal"}
-          >
+          <div className="Battle-hp-bar" data-hp={gameState.p1HP <= 30 ? "low" : "normal"}>
             <div
               className={`Battle-hp-fill player-hp`}
               style={{ width: `${(gameState.p1HP / 100) * 100}%` }}
             />
-            <div 
-              className="Battle-hp-text"
-              data-hp={gameState.p1HP <= 30 ? "low" : "normal"}
-            >
+            <div className="Battle-hp-text" data-hp={gameState.p1HP <= 30 ? "low" : "normal"}>
               {gameState.p1HP} HP
             </div>
           </div>
@@ -224,18 +237,12 @@ const Battle = (props) => {
 
         {/* Enemy HP (Right) */}
         <div className="Battle-hp-container">
-          <div 
-            className="Battle-hp-bar"
-            data-hp={gameState.p2HP <= 30 ? "low" : "normal"}
-          >
+          <div className="Battle-hp-bar" data-hp={gameState.p2HP <= 30 ? "low" : "normal"}>
             <div
               className={`Battle-hp-fill enemy-hp`}
               style={{ width: `${(gameState.p2HP / 100) * 100}%` }}
             />
-            <div 
-              className="Battle-hp-text"
-              data-hp={gameState.p2HP <= 30 ? "low" : "normal"}
-            >
+            <div className="Battle-hp-text" data-hp={gameState.p2HP <= 30 ? "low" : "normal"}>
               {gameState.p2HP} HP
             </div>
           </div>
@@ -290,8 +297,12 @@ const Battle = (props) => {
                       <span>±{card.effect.amount} HP</span>
                     ) : card.effect.type === "freeze" ? (
                       <span>+3 seconds</span>
-                    ) : (
+                    ) : card.effect.type === "3x" ? (
                       <span>3x</span>
+                    ) : card.effect.type === "block" ? (
+                      <span>+3 seconds </span>
+                    ) : (
+                      ""
                     )}
                   </div>
                   <div className="Battle-card-effect-description">
@@ -305,6 +316,8 @@ const Battle = (props) => {
                       ? "Freezes your opponent for 3 seconds"
                       : card.effect.type === "3x"
                       ? "Triples the effect of your next card"
+                      : card.effect.type === "block"
+                      ? "3 seconds protection from your opponent's next attack"
                       : ""}
                   </div>
                 </div>
@@ -321,6 +334,12 @@ const Battle = (props) => {
         <div className="language-display">
           Debug area: typedText= <span className="language-text">{typedText}</span>
         </div> */}
+        <div className="language-display">
+          Debug area: p1 blocks= <span className="language-text">{numberBlocks().p1Blocks}</span>
+        </div>
+        <div className="language-display">
+          Debug area: p2 blocks= <span className="language-text">{numberBlocks().p2Blocks}</span>
+        </div>
         <div className="language-display">
           Debug area: multiplier= <span className="language-text">{gameState.multiplier}</span>
         </div>
