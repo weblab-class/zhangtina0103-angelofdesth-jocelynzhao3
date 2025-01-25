@@ -293,11 +293,11 @@
 }
 
 .Battle-avatars > :first-child {
-  margin-left: 15%; /* Increased margin for better symmetry */
+  margin-left: 5%; /* Reduced from 15% */
 }
 
 .Battle-avatars > :last-child {
-  margin-right: 15%; /* Matching margin for perfect symmetry */
+  margin-right: 5%; /* Reduced from 15% */
 }
 
 .Battle-avatar {
@@ -646,6 +646,56 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.Battle-card-effect::before {
+  content: attr(data-description);
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  text-transform: none;
+  letter-spacing: normal;
+  text-shadow: none;
+  margin-bottom: 10px;
+  font-family: "Codec", sans-serif;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.Battle-card:hover .Battle-card-effect::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.Battle-card-effect-description {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  padding: 6px;
+  margin-top: 6px;
+  font-family: "Codec", sans-serif;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.Battle-card:hover .Battle-card-effect-description {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Effect-specific text colors */
 .Battle-card[data-effect="attack"] .Battle-card-effect {
   color: #ff9999;
@@ -673,11 +723,11 @@
 }
 
 .Battle-card-word {
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: bold;
   margin: 0.5rem 0;
-  text-align: center;
   color: white;
+  text-align: center;
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
   font-family: "Orbitron", sans-serif;
   letter-spacing: 1px;
@@ -698,18 +748,6 @@
   font-weight: bold;
   text-align: center;
   padding: 6px 14px;
-  line-height: 1.2;
-  letter-spacing: 1px;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-  font-family: "Orbitron", sans-serif;
-  margin-top: 6px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 70px;
 }
 
 /* Effect-specific amount colors */

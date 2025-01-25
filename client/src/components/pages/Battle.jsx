@@ -277,6 +277,20 @@ const Battle = (props) => {
                       <span>2x</span>
                     )}
                   </div>
+                  <div className="Battle-card-effect-description">
+                    {card.effect.type === "heal" ? 
+                      `Heals you for ${card.effect.amount} HP` :
+                      card.effect.type === "attack" ? 
+                      `Deals ${card.effect.amount} damage to your opponent` :
+                      card.effect.type === "lifesteal" ? 
+                      `Deals ${card.effect.amount} damage and heals you for the same amount` :
+                      card.effect.type === "freeze" ? 
+                      "Freezes your opponent for 3 seconds" :
+                      card.effect.type === "2x" ? 
+                      "Doubles the effect of your next card" :
+                      ""
+                    }
+                  </div>
                 </div>
               </div>
             </div>
