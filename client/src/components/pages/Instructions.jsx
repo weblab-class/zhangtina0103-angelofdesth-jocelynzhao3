@@ -34,7 +34,7 @@ const Instructions = (props) => {
             <span className="highlight-green">Heal</span> - Restore specified HP to yourself
           </p>
           <p className="instructions-text">
-            <span className="highlight-purple">Lifesteal</span> - Damage your opponent and heal
+            <span className="highlight-purple">Lifesteal</span> - Deal damage your opponent and heal
             yourself
           </p>
           <p className="instructions-text">
@@ -42,11 +42,12 @@ const Instructions = (props) => {
             seconds
           </p>
           <p className="instructions-text">
-            <span className="highlight-yellow">3x</span> - Triple the effect of the next spell
-            (CAUTION: this goes both ways!)
+            <span className="highlight-orange">Block</span> - Gain 3 seconds of protection of your
+            opponent's next attack
           </p>
           <p className="instructions-text">
-            <span className="highlight-orange">Block</span> - Nullifies the next damage you take
+            <span className="highlight-yellow">3x</span> - Triple the effect of the next spell
+            (CAUTION: this goes both ways!)
           </p>
         </div>
 
