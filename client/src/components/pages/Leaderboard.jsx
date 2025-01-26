@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { get } from "../../utilities";
 import "./Leaderboard.css";
 import { UserInfoContext } from "../App.jsx";
+import { Link } from "react-router-dom";
 
 const processUserStats = (user) => {
   const log = user.log || [];
@@ -44,33 +45,40 @@ const Leaderboard = () => {
   const userRank = userInfo ? users.findIndex((user) => user._id === userInfo._id) + 1 : -1;
 
   return (
-    <div className="Leaderboard-container">
-      <h1>Leaderboard</h1>
-      {userRank > 0 && <div className="Leaderboard-userRank">Your Rank: #{userRank}</div>}
-      <div className="Leaderboard-table">
-        <div className="Leaderboard-header">
-          <div className="Leaderboard-rank">Rank</div>
-          <div className="Leaderboard-name">Name</div>
-          <div className="Leaderboard-elo">ELO</div>
-          <div className="Leaderboard-games">Games</div>
-          <div className="Leaderboard-winrate">Win Rate</div>
-          <div className="Leaderboard-language">Top Language</div>
-        </div>
-        {users.map((user, index) => (
-          <div
-            key={user._id}
-            className={`Leaderboard-row ${
-              user._id === userInfo?._id ? "Leaderboard-row-highlight" : ""
-            }`}
-          >
-            <div className="Leaderboard-rank">{index + 1}</div>
-            <div className="Leaderboard-name">{user.name}</div>
-            <div className="Leaderboard-elo">{user.elo}</div>
-            <div className="Leaderboard-games">{user.log.length}</div>
-            <div className="Leaderboard-winrate">{user.winRate}</div>
-            <div className="Leaderboard-language">{user.mostPlayedLanguage}</div>
+    <div className="Start-container">
+      <div className="Leaderboard-container">
+        <h1>Leaderboard</h1>
+        {userRank > 0 && <div className="Leaderboard-userRank">Your Rank: #{userRank}</div>}
+        <div className="Leaderboard-table">
+          <div className="Leaderboard-header">
+            <div className="Leaderboard-rank">Rank</div>
+            <div className="Leaderboard-name">Name</div>
+            <div className="Leaderboard-elo">ELO</div>
+            <div className="Leaderboard-games">Games</div>
+            <div className="Leaderboard-winrate">Win Rate</div>
+            <div className="Leaderboard-language">Top Language</div>
           </div>
-        ))}
+          {users.map((user, index) => (
+            <div
+              key={user._id}
+              className={`Leaderboard-row ${
+                user._id === userInfo?._id ? "Leaderboard-row-highlight" : ""
+              }`}
+            >
+              <div className="Leaderboard-rank">{index + 1}</div>
+              <div className="Leaderboard-name">{user.name}</div>
+              <div className="Leaderboard-elo">{user.elo}</div>
+              <div className="Leaderboard-games">{user.log.length}</div>
+              <div className="Leaderboard-winrate">{user.winRate}</div>
+              <div className="Leaderboard-language">{user.mostPlayedLanguage}</div>
+            </div>
+          ))}
+        </div>
+        <div className="back-to-start-container">
+          <Link to="/" className="BattleEnd-button">
+            Back to start page!
+          </Link>
+        </div>
       </div>
     </div>
   );
