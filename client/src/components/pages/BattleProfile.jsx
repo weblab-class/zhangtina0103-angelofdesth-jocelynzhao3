@@ -81,11 +81,19 @@ const BattleProfile = (props) => {
         <h2>Player Information</h2>
         <div className="BattleEnd-header">
           <div className="BattleEnd-player-info">
-            <img
-              src={userInfo.avatarURL || "/default-avatar.png"}
-              alt={`${userInfo.name}'s avatar`}
-              className="BattleEnd-avatar"
-            />
+            <div className="battle-profile-container">
+              <img
+                src={userInfo.picture || "/default-avatar.png"}
+                alt={userInfo.name}
+                className="profile-picture"
+                onError={(e) => {
+                  e.target.onerror = null; // Prevent infinite loop
+                  e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    userInfo.name
+                  )}&background=0D8ABC&color=fff`;
+                }}
+              />
+            </div>
             <div className="BattleEnd-player-details">
               <p>Name: {userInfo.name}</p>
               <p className="elo">ELO Rating: {userInfo.elo}</p>
