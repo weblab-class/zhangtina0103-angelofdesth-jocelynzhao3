@@ -31,10 +31,10 @@ const removeUser = (user, socket) => {
 // LOBBY STUFF
 const newLobby = (p1, language) => {
   const lobbyid = lobbyLogic.createLobby(p1, language);
-  activeLobbies = Array.from(lobbyLogic.activeLobbies.values()); 
-  console.log("emitting in activeLobbies", activeLobbies)
+  activeLobbies = Array.from(lobbyLogic.activeLobbies.values());
+  console.log("emitting in activeLobbies", activeLobbies);
   io.emit("activeLobbies", activeLobbies);
-  return lobbyid
+  return lobbyid;
 };
 
 const newBotGame = (p1, language, difficulty) => {
@@ -44,9 +44,7 @@ const newBotGame = (p1, language, difficulty) => {
 
 const newPVPGame = (lobby, p1, p2, language) => {
   gameLogic.newGame(lobby, p1, p2, language);
-}
-
-
+};
 
 // GAME STUFF
 const sendGameState = (game) => {
@@ -55,28 +53,30 @@ const sendGameState = (game) => {
 
 const startRunningGames = (activeGames) => {
   const runGame = async (game) => {
-      if (game.winner) {
-        try {
-          await gameLogic.handleGameEnd(game, game.winner);
-          io.emit(game.lobby, "over");
-        } catch (error) {
-          console.error("Error handling game end:", error);
-          io.emit(game.lobby, "over");
-        }
-      } else {
-        sendGameState(game);
-        console.log("I have sent the game", game);
+    if (game.winner) {
+      try {
+        await gameLogic.handleGameEnd(game, game.winner);
+        console.log("Game ended");
+        io.emit(game.lobby, "over");
+      } catch (error) {
+        console.error("Error handling game end:", error);
+        io.emit(game.lobby, "over");
       }
+    } else {
+      sendGameState(game);
+      console.log("I have sent the game", game);
+    }
   };
 
   const runAllGames = () => {
     if (activeGames) {
-      activeGames.forEach((game, lobbyname) => {runGame(game)})
+      activeGames.forEach((game, lobbyname) => {
+        runGame(game);
+      });
     }
-  }
+  };
 
-  setInterval(runAllGames
-  , 1000 / 60); // 60 frames per second
+  setInterval(runAllGames, 1000 / 60); // 60 frames per second
 };
 
 startRunningGames(gameLogic.activeGames);

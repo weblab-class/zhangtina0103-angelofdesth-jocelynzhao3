@@ -2,7 +2,7 @@ import "../../utilities.css";
 import "./Lobby.css";
 
 import { Link, useNavigate } from "react-router-dom";
-import {useContext} from "react";
+import { useContext } from "react";
 import { LanguageContext } from "../App";
 import { UserContext } from "../App";
 import { UserInfoContext } from "../App";
@@ -16,25 +16,25 @@ import { get, post } from "../../utilities";
  */
 
 const Lobby = (props) => {
-    const userContext = useContext(UserContext);
-    const { language, setLanguage } = useContext(LanguageContext);
-    const { userInfo, setUserInfo } = useContext(UserInfoContext);
-    const navigate = useNavigate();
+  const userContext = useContext(UserContext);
+  const { language, setLanguage } = useContext(LanguageContext);
+  const { userInfo, setUserInfo } = useContext(UserInfoContext);
+  const navigate = useNavigate();
 
-    const handleJoinClick = () => {
-        console.log("you are joining the game")
-      };
+  const handleJoinClick = () => {
+    console.log("you are joining the game");
+  };
 
-    return (
+  return (
     <div>
-        <h3>Lobby {props.id}</h3>
-        <div>
-        <p>P1: {userInfo.name} [{userInfo.elo}]</p>
-
-        
-        </div>
+      <h3>Lobby {props.id}</h3>
+      <div>
+        <p>
+          P1: {userInfo.name} [{userInfo.elo}]
+        </p>
+      </div>
     </div>
-    )
-}
+  );
+};
 
 export default Lobby;

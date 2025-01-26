@@ -9,20 +9,21 @@ import { useState, useEffect } from "react";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities.js";
 
-
 const Lobbies = (props) => {
   const [displayedLobby, setDisplayedLobby] = useState(null);
   // the possible states for the lobby will be {null, newPVP, newBot, #lobbyid}
   const [activeLobbies, setActiveLobbies] = useState([]);
 
-  useEffect(() => { // initial pulling of the active lobbies
+  useEffect(() => {
+    // initial pulling of the active lobbies
     get("/api/activeLobbies").then((data) => {
       setActiveLobbies(data.lobbies);
-      console.log("initial pull: I have set the lobbies to", data.lobbies)
+      console.log("initial pull: I have set the lobbies to", data.lobbies);
     });
   }, []);
 
-  useEffect(() => { // this will continuously update all the active lobbies
+  useEffect(() => {
+    // this will continuously update all the active lobbies
     const callback = (data) => {
       console.log("I received", data);
       setActiveLobbies(data);
@@ -45,43 +46,33 @@ const Lobbies = (props) => {
     setDisplayedLobby("newBot");
   };
 
-
   return (
-    <div>
-      <p> this is the pvp page, where you can join a lobby or start a lobby.
-
-
-        The displayed lobby is {displayedLobby}
+    <div className="Lobbies-container">
+      <p>
+        {" "}
+        this is the pvp page, where you can join a lobby or start a lobby. The displayed lobby is{" "}
+        {displayedLobby}
       </p>
-        <button
-          onClick={handleNewPVP}
-        >Create New PVP Lobby</button>
-        <button
-          onClick={handleNewBot}
-        >Create New vs Bot Lobby</button>
-        <div>
-          <LobbyList lobbies = {activeLobbies} setDisplayedLobby={setDisplayedLobby}/>
-        </div>
-        <div> 
-          {displayedLobby ? ( 
-            <>
+      <button onClick={handleNewPVP}>Create New PVP Lobby</button>
+      <button onClick={handleNewBot}>Create New vs Bot Lobby</button>
+      <div>
+        <LobbyList lobbies={activeLobbies} setDisplayedLobby={setDisplayedLobby} />
+      </div>
+      <div>
+        {displayedLobby ? (
+          <>
             {displayedLobby === "newPVP" ? (
-              <PVPLobbyCreation setDisplayedLobby={setDisplayedLobby}/>
-            ) : ( 
+              <PVPLobbyCreation setDisplayedLobby={setDisplayedLobby} />
+            ) : (
               <>
-              {displayedLobby === "newBot" ? (
-                <BotLobbyCreation/>
-              ) : (
-                <Lobby id={displayedLobby}/>
-              )}
-              </> 
-            )
-          }
+                {displayedLobby === "newBot" ? <BotLobbyCreation /> : <Lobby id={displayedLobby} />}
+              </>
+            )}
           </>
-          ) : (
-            <p> please choose a lobby or create your own! </p>
-          )}
-        </div>
+        ) : (
+          <p> please choose a lobby or create your own! </p>
+        )}
+      </div>
     </div>
   );
 };

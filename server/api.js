@@ -49,26 +49,46 @@ router.post("/initsocket", (req, res) => {
 
 //Lobby APIs
 router.get("/activeLobbies", (req, res) => {
-  const activeLobbies = Array.from(lobbyLogic.activeLobbies.values()); 
-  console.log("got a request to show all the active lobbies, sending", activeLobbies)
-  res.send({lobbies: activeLobbies});
+  const activeLobbies = Array.from(lobbyLogic.activeLobbies.values());
+  console.log("got a request to show all the active lobbies, sending", activeLobbies);
+  res.send({ lobbies: activeLobbies });
 });
 
-
 router.post("/createLobby", (req, res) => {
-  const lobbyid = socketManager.newLobby(req.body.p1, req.body.language);
-  res.send({lobbyid: lobbyid});
-}); 
+  const lobbyid = lobbyLogic.createLobby(req.body.p1, req.body.language);
+  res.send({ lobbyid: lobbyid });
+});
 
+router.post("/joinLobby", (req, res) => {
+  const result = lobbyLogic.joinLobby(req.body.lobby, req.body.player);
+  res.send({ result: result });
+});
+
+router.post("/updateReadyStatus", (req, res) => {
+  const result = lobbyLogic.updateReadyStatus(req.body.lobby, req.body.player, req.body.isReady);
+  res.send({ result: result });
+});
+
+router.post("/leaveLobby", (req, res) => {
+  const result = lobbyLogic.leaveLobby(req.body.lobby, req.body.player);
+  res.send({ result: result });
+});
+
+router.post("/removeLobby", (req, res) => {
+  const result = lobbyLogic.removeLobby(req.body.lobby);
+  res.send({ result: result });
+});
+
+//Game APIs
 router.post("/startPVPGame", (req, res) => {
   socketManager.newPVPGame(req.body.lobby, req.body.p1, req.body.p2, req.body.language);
   res.send({});
 });
 
 router.post("/startBotGame", (req, res) => {
-  socketManager.newBotGame(req.body.p1, req.body.language, req.body.difficulty); 
+  socketManager.newBotGame(req.body.p1, req.body.language, req.body.difficulty);
   res.send({});
-})
+});
 
 router.get("/userinfo", (req, res) => {
   User.findOne({ _id: req.user._id }).then((userInfo) => {
@@ -76,8 +96,7 @@ router.get("/userinfo", (req, res) => {
   });
 });
 
-
-// gets one word from the database 
+// gets one word from the database
 router.get("/word", (req, res) => {
   Word.aggregate([
     { $match: { language: req.query.language } },
