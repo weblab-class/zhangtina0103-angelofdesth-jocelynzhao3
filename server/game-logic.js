@@ -12,17 +12,18 @@ const getRandomInt = (min, max) => {
 };
 
 // different effects
-const possibleEffects = [
-  "attack",
-  "attack",
-  "attack",
-  "heal",
-  "heal",
-  "lifesteal",
-  "freeze",
-  "3x",
-  "block",
-];
+// //const possibleEffects = [
+//   "attack",
+//   "attack",
+//   "attack",
+//   "heal",
+//   "heal",
+//   "lifesteal",
+//   "freeze",
+//   "3x",
+//   "block",
+// ];
+const possibleEffects = ["attack", "block", "3x"];
 
 const basefreezeDuration = 3000;
 
@@ -280,20 +281,23 @@ const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") =
   } else if (takenCard.effect.type === "3x") {
     game = doEffect("3x", game, takenCard, playerType);
   } else if (takenCard.effect.type === "block") {
-    // First reset multiplier through doEffect
-    game = doEffect("block", game, takenCard, playerType);
+    // Save current multiplier
+    const currentMultiplier = game.multiplier;
 
-    // Then apply block effect
+    // Apply block effect with current multiplier
     if (playerType === "bot") {
       game.p2Effects.block = game.p2Effects.block.concat(
-        new Array(game.multiplier).fill(Date.now() + 3000) // Block for 3 seconds
+        new Array(currentMultiplier).fill(Date.now() + 3000) // Block for 3 seconds
       );
     } else {
       game.p1Effects.block = game.p1Effects.block.concat(
-        new Array(game.multiplier).fill(Date.now() + 3000)
+        new Array(currentMultiplier).fill(Date.now() + 3000)
       );
     }
-    console.log("Block effect applied!");
+    console.log(`Block effect applied with multiplier ${currentMultiplier}!`);
+
+    // Then reset multiplier through doEffect
+    game = doEffect("block", game, takenCard, playerType);
   }
 
   // Update last card effect for either player or bot
