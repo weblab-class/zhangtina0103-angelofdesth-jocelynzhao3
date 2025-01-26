@@ -66,23 +66,28 @@ const Start = (props) => {
         <div className="Start-content">
           {userContext.userId && (
             <div className="Start-top-bar">
-              <Link
-                to="/battleProfile"
-                className="profile-button button-base neon-bg neon-border neon-text"
-              >
-                Profile
+              <div className="profile-section">
+                {userInfo?.picture && (
+                  <Link to="/battleProfile" className="profile-picture-container">
+                    <img
+                      src={userInfo.picture}
+                      alt={userInfo.name}
+                      className="profile-picture"
+                      onError={(e) => {
+                        e.target.onerror = null; // Prevent infinite loop
+                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                          userInfo.name
+                        )}&background=0D8ABC&color=fff`;
+                      }}
+                    />
+                  </Link>
+                )}
+              </div>
+              <Link to="/instructions" className="instructions-button">
+                ❓
               </Link>
-              <Link
-                to="/instructions"
-                className="profile-button button-base neon-bg neon-border neon-text"
-              >
-                Instructions
-              </Link>
-              <Link
-                to="/leaderboard"
-                className="profile-button button-base neon-bg neon-border neon-text"
-              >
-                Leaderboard
+              <Link to="/leaderboard" className="leaderboard-button">
+                🏆
               </Link>
               <button
                 onClick={userContext.handleLogout}
