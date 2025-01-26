@@ -67,12 +67,12 @@ const Battle = (props) => {
                 console.log("Got updated user data");
                 setUserInfo(userData); // Update global user info context
                 // Only navigate after user info is updated
-                navigate("/end/");
+                navigate("/battleProfile/");
               }
             })
             .catch((err) => {
               console.error("Error getting updated user info:", err);
-              navigate("/end/"); // Navigate anyway if there's an error
+              navigate("/battleProfile/"); // Navigate anyway if there's an error
             });
         }
       }

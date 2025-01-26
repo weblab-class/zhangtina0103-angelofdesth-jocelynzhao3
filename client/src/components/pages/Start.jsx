@@ -48,15 +48,14 @@ const Start = (props) => {
   const handleBattleClick = () => {
     if (userContext.userId) {
       setShowOverlay(true); // Show the overlay first
-      
+
       // Start the game setup
-      post("/api/startGame", { playerId: userContext.userId, language: language })
-        .then(() => {
-          // Wait for 4 seconds (3,2,1,GO!) before navigating
-          setTimeout(() => {
-            navigate("/battle/");
-          }, 4000);
-        });
+      post("/api/startGame", { playerId: userContext.userId, language: language }).then(() => {
+        // Wait for 4 seconds (3,2,1,GO!) before navigating
+        setTimeout(() => {
+          navigate("/battle/");
+        }, 4000);
+      });
     }
   };
 

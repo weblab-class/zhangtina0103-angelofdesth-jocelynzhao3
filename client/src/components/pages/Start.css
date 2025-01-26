@@ -450,7 +450,7 @@ select:not([value=""]) {
 }
 
 .highlight-brown {
-  color: #8B4513;
+  color: #8b4513;
   text-shadow: 0 0 10px rgba(139, 69, 19, 0.8);
 }
 
@@ -692,7 +692,7 @@ select:not([value=""]) {
 }
 
 .highlight-brown {
-  color: #8B4513;
+  color: #8b4513;
   text-shadow: 0 0 10px rgba(139, 69, 19, 0.8);
 }
 
