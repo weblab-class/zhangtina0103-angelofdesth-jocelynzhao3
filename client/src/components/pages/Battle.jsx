@@ -3,6 +3,7 @@ import "./Battle.css";
 import { drawCanvas } from "../../canvasManager.js";
 import TypeBar from "../modules/Typebar";
 import Player from "../modules/Player";
+import Spell from "../modules/Spell";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { get, post } from "../../utilities";
@@ -317,58 +318,11 @@ const Battle = (props) => {
           {/* Word Cards */}
           <div className="Battle-cards-container">
             {gameState.displayCards.map((card, index) => (
-              <div
+              <Spell
                 key={`${card.word}-${index}`}
-                className={`Battle-card ${animatingCards.has(index) ? "animate-card" : ""}`}
-                data-effect={card.effect.type}
-              >
-                <div className="Battle-card-content">
-                  <div className="Battle-card-effect">{card.effect.type}</div>
-                  <div className="Battle-card-divider"></div>
-                  <div className="Battle-card-middle">
-                    <div
-                      className={`Battle-card-word ${
-                        card.word.length > 8 ? "Battle-card-word-long" : ""
-                      }`}
-                    >
-                      {card.word}
-                    </div>
-                    <div className="Battle-card-english">{card.english}</div>
-                    <div className="Battle-card-amount">
-                      {card.effect.type === "heal" ? (
-                        <span>+{card.effect.amount} HP</span>
-                      ) : card.effect.type === "attack" ? (
-                        <span>-{card.effect.amount} HP</span>
-                      ) : card.effect.type === "lifesteal" ? (
-                        <span>±{card.effect.amount} HP</span>
-                      ) : card.effect.type === "freeze" ? (
-                        <span>+3 seconds</span>
-                      ) : card.effect.type === "3x" ? (
-                        <span>3x</span>
-                      ) : card.effect.type === "block" ? (
-                        <span>+3 seconds </span>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="Battle-card-effect-description">
-                      {card.effect.type === "heal"
-                        ? `Heals you for ${card.effect.amount} HP`
-                        : card.effect.type === "attack"
-                        ? `Deals ${card.effect.amount} damage to your opponent`
-                        : card.effect.type === "lifesteal"
-                        ? `Deals ${card.effect.amount} damage and heals you for the same amount`
-                        : card.effect.type === "freeze"
-                        ? "Freezes your opponent for 3 seconds"
-                        : card.effect.type === "3x"
-                        ? "Triples the effect of your next card"
-                        : card.effect.type === "block"
-                        ? "3 seconds protection from your opponent's next attack"
-                        : ""}
-                    </div>
-                  </div>
-                </div>
-              </div>
+                card={card}
+                isAnimating={animatingCards.has(index)}
+              />
             ))}
           </div>
 
@@ -380,23 +334,6 @@ const Battle = (props) => {
           <div className="language-display">
             Debug area: typedText= <span className="language-text">{typedText}</span>
           </div> */}
-          {/*
-          <div className="language-display">
-            Debug area: p1 blocks= <span className="language-text">{numberBlocks().p1Blocks}</span>
-          </div>
-          <div className="language-display">
-            Debug area: p1 remaining seconds= <span className="language-text">{numberBlocks().p1RemainingSeconds}</span>
-          </div>
-          <div className="language-display">
-            Debug area: p2 blocks= <span className="language-text">{numberBlocks().p2Blocks}</span>
-          </div>
-          <div className="language-display">
-            Debug area: p2 remaining seconds= <span className="language-text">{numberBlocks().p2RemainingSeconds}</span>
-          </div>
-          <div className="language-display">
-            Debug area: multiplier= <span className="language-text">{gameState.multiplier}</span>
-          </div>
-}
           {/* <Link to="/end/" className="NavBar-link u-inlineBlock">
             Quit - TODO needs to tell server to end the game
           </Link> */}

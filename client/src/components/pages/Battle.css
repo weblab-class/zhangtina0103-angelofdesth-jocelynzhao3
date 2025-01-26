@@ -1040,3 +1040,36 @@
 .Battle-status-bar {
   position: relative;
 }
+
+/* Word change animations */
+@keyframes wordChangeScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes wordPulse {
+  0% {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+  }
+}
+
+.word-change-animation {
+  animation: wordChangeScale 0.3s ease-in-out;
+}
+
+.word-pulse {
+  animation: wordPulse 0.3s ease-in-out;
+}
