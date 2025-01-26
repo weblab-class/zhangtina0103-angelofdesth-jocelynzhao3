@@ -12,18 +12,17 @@ const getRandomInt = (min, max) => {
 };
 
 // different effects
-// //const possibleEffects = [
-//   "attack",
-//   "attack",
-//   "attack",
-//   "heal",
-//   "heal",
-//   "lifesteal",
-//   "freeze",
-//   "3x",
-//   "block",
-// ];
-const possibleEffects = ["attack", "block", "3x"];
+const possibleEffects = [
+  "attack",
+  "attack",
+  "attack",
+  "heal",
+  "heal",
+  "lifesteal",
+  "freeze",
+  "3x",
+  "block",
+];
 
 const basefreezeDuration = 3000;
 
