@@ -13,6 +13,8 @@ import SingleActiveLobby from "./SingleActiveLobby";
  */
 
 const LobbyList = (props) => {
+    // TODO: once you are in a lobby that you created yourself,
+    // then you're not allowed to click on any other lobby.
     console.log("trying to render", props.lobbies);
     return (
         <div>
@@ -20,11 +22,16 @@ const LobbyList = (props) => {
             <div>
             <p> Here are the active lobbies: </p>
             {props.lobbies.map((lobby) => (
+                <>
                 <SingleActiveLobby 
                     lobby={lobby}
                     setDisplayedLobby={props.setDisplayedLobby}
-                    active={props.displayedLobby === lobby.lobbyid}
+                    active={ props.displayedLobby ? 
+                        props.displayedLobby.lobbyid === lobby.lobbyid : false}
+                    setInLobby={props.setInLobby}
                 />
+                </>
+                
             ))}
             </div>
             ) : (

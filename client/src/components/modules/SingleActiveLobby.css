@@ -7,6 +7,8 @@
   transition: border-width 0.2s ease;
 }
 
+
+
 .SingleActiveLobby-container.joined {
   border-width: 4px;
 }
@@ -14,6 +16,10 @@
 .SingleActiveLobby-container p {
   margin: 8px 0;
   color: white;
+}
+
+.SingleActiveLobby-container-active {
+  background-color: darkcyan
 }
 
 .SingleActiveLobby-joinButton,

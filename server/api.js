@@ -55,7 +55,7 @@ router.get("/activeLobbies", (req, res) => {
 });
 
 router.post("/createLobby", (req, res) => {
-  const lobbyid = lobbyLogic.createLobby(req.body.p1, req.body.language);
+  const lobbyid = socketManager.newLobby(req.body.p1, req.body.language);
   res.send({ lobbyid: lobbyid });
 });
 
@@ -92,6 +92,14 @@ router.post("/startBotGame", (req, res) => {
 
 router.get("/userinfo", (req, res) => {
   User.findOne({ _id: req.user._id }).then((userInfo) => {
+    res.send(userInfo);
+  });
+});
+
+router.get("/otheruserinfo", (req, res) => {
+  console.log(req.body._id);
+  User.findOne({ _id: req.body._id }).then((userInfo) => {
+    console.log("I got the userInfo", userInfo);
     res.send(userInfo);
   });
 });

@@ -13,6 +13,7 @@ const Lobbies = (props) => {
   const [displayedLobby, setDisplayedLobby] = useState(null);
   // the possible states for the lobby will be {null, newPVP, newBot, #lobbyid}
   const [activeLobbies, setActiveLobbies] = useState([]);
+  const [inLobby, setInLobby] = useState(false);
 
   useEffect(() => {
     // initial pulling of the active lobbies
@@ -40,38 +41,49 @@ const Lobbies = (props) => {
 
   const handleNewPVP = () => {
     setDisplayedLobby("newPVP");
+    setInLobby(true);
   };
 
   const handleNewBot = () => {
     setDisplayedLobby("newBot");
+    setInLobby(true);
   };
 
   return (
     <div className="Lobbies-container">
       <p>
         {" "}
-        this is the pvp page, where you can join a lobby or start a lobby. The displayed lobby is{" "}
-        {displayedLobby}
+        this is the pvp page, where you can join a lobby or start a lobby.
       </p>
-      <button onClick={handleNewPVP}>Create New PVP Lobby</button>
-      <button onClick={handleNewBot}>Create New vs Bot Lobby</button>
-      <div>
-        <LobbyList lobbies={activeLobbies} setDisplayedLobby={setDisplayedLobby} />
-      </div>
-      <div>
-        {displayedLobby ? (
-          <>
-            {displayedLobby === "newPVP" ? (
-              <PVPLobbyCreation setDisplayedLobby={setDisplayedLobby} />
-            ) : (
-              <>
-                {displayedLobby === "newBot" ? <BotLobbyCreation /> : <Lobby id={displayedLobby} />}
-              </>
-            )}
-          </>
-        ) : (
-          <p> please choose a lobby or create your own! </p>
-        )}
+      {inLobby ? 
+         <p> You are already in a lobby </p> : <div>
+         <button onClick={handleNewPVP}>Create New PVP Lobby</button> 
+         <button onClick={handleNewBot}>Create New vs Bot Lobby</button>
+         </div>
+        }
+      <div className="u-flex">
+        <div>
+          <LobbyList lobbies={activeLobbies} 
+                      setDisplayedLobby={setDisplayedLobby} 
+                      displayedLobby={displayedLobby}
+                      setInLobby={setInLobby}/>
+        </div>
+        <div>
+          {displayedLobby ? (
+            <>
+              {displayedLobby === "newPVP" ? (
+                <PVPLobbyCreation setDisplayedLobby={setDisplayedLobby} />
+              ) : (
+                <>
+                  {displayedLobby === "newBot" ? <BotLobbyCreation /> : 
+                  <Lobby lobby={displayedLobby}/>}
+                </>
+              )}
+            </>
+          ) : (
+            <p> please choose a lobby or create your own! </p>
+          )}
+        </div>
       </div>
     </div>
   );

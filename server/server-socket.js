@@ -30,11 +30,11 @@ const removeUser = (user, socket) => {
 };
 // LOBBY STUFF
 const newLobby = (p1, language) => {
-  const lobbyid = lobbyLogic.createLobby(p1, language);
+  const lobby = lobbyLogic.createLobby(p1, language);
   activeLobbies = Array.from(lobbyLogic.activeLobbies.values());
   console.log("emitting in activeLobbies", activeLobbies);
   io.emit("activeLobbies", activeLobbies);
-  return lobbyid;
+  return lobby;
 };
 
 const newBotGame = (p1, language, difficulty) => {

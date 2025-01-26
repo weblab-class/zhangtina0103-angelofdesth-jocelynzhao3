@@ -18,7 +18,7 @@ const BotLobbyCreation = (props) => {
         // TODO: put player name in here too?
         console.log(userContext);
         // TODO: implement difficulty. Difficulty hardcoded to 1 for now
-        post("/api/startBotGame", { p1: userContext.userId, language: language, difficulty: 1}).then(
+        post("/api/startBotGame", { p1: userInfo._id, language: language, difficulty: 1}).then(
             navigate("/battle/")
         );
       };

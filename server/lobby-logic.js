@@ -39,7 +39,7 @@ const createLobby = (p1, language) => {
   };
   activeLobbies.set(lobbyid, lobby);
   console.log(activeLobbies);
-  return lobbyid;
+  return lobby;
 };
 
 // angeline this function responds to socket event
