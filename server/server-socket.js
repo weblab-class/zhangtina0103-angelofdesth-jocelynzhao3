@@ -1,4 +1,5 @@
 const gameLogic = require("./game-logic");
+const lobbyLogic = require("./lobby-logic");
 
 let io;
 
@@ -27,8 +28,15 @@ const removeUser = (user, socket) => {
   if (user) delete userToSocketMap[user._id];
   delete socketToUserMap[socket.id];
 };
+// LOBBY STUFF
+const newLobby = (p1, language) => {
+  const lobbyid = lobbyLogic.createLobby(p1, language);
+  activeLobbies = Array.from(lobbyLogic.activeLobbies.values()); 
+  console.log("emitting in activeLobbies", activeLobbies)
+  io.emit("activeLobbies", activeLobbies);
+  return lobbyid
+};
 
-// GAME STUFF
 const newBotGame = (p1, language, difficulty) => {
   // starts the game with the player's id as the lobby name
   gameLogic.newGame(p1, p1, "bot", language);
@@ -38,6 +46,9 @@ const newPVPGame = (lobby, p1, p2, language) => {
   gameLogic.newGame(lobby, p1, p2, language);
 }
 
+
+
+// GAME STUFF
 const sendGameState = (game) => {
   io.emit(game.lobby, game);
 };
@@ -65,7 +76,7 @@ const startRunningGames = (activeGames) => {
   }
 
   setInterval(runAllGames
-  , 1000 / 0.5); // 60 frames per second
+  , 1000 / 60); // 60 frames per second
 };
 
 startRunningGames(gameLogic.activeGames);
@@ -94,6 +105,7 @@ module.exports = {
   getUserFromSocketID: getUserFromSocketID,
   getSocketFromSocketID: getSocketFromSocketID,
 
+  newLobby: newLobby,
   newPVPGame: newPVPGame,
   newBotGame: newBotGame,
 

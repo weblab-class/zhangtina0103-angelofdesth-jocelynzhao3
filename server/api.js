@@ -16,6 +16,9 @@ const Word = require("./models/word");
 // import authentication library
 const auth = require("./auth");
 
+// lobby logic for sending
+const lobbyLogic = require("./lobby-logic");
+
 // api endpoints: all these paths will be prefixed with "/api/"
 const router = express.Router();
 
@@ -44,9 +47,17 @@ router.post("/initsocket", (req, res) => {
 // | write your API methods below!|
 // |------------------------------|
 
-//grab a word from the database filtered by language
+//Lobby APIs
+router.get("/activeLobbies", (req, res) => {
+  const activeLobbies = Array.from(lobbyLogic.activeLobbies.values()); 
+  console.log("got a request to show all the active lobbies, sending", activeLobbies)
+  res.send({lobbies: activeLobbies});
+});
+
+
 router.post("/createLobby", (req, res) => {
-  console.log("received a request to create a new lobby");
+  const lobbyid = socketManager.newLobby(req.body.p1, req.body.language);
+  res.send({lobbyid: lobbyid});
 }); 
 
 router.post("/startPVPGame", (req, res) => {
@@ -65,6 +76,8 @@ router.get("/userinfo", (req, res) => {
   });
 });
 
+
+// gets one word from the database 
 router.get("/word", (req, res) => {
   Word.aggregate([
     { $match: { language: req.query.language } },

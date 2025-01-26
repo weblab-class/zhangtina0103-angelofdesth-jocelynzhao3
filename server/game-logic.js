@@ -16,7 +16,7 @@ const possibleEffects = ["attack", "attack", "heal", "heal", "lifesteal", "freez
 
 const basefreezeDuration = 3000;
 
-const activeGames = new Map();
+let activeGames = new Map();
 
 const doEffect = (effectType, game, card, player = "player") => {
   if (effectType === "freeze") return game; // no need to change HP
