@@ -765,3 +765,57 @@ select:not([value=""]) {
     font-size: 1rem;
   }
 }
+
+.cityscape-container {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.neon-cityscape {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 35vh;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%);
+}
+
+.cityscape-path {
+  fill: none;
+  stroke: #4dffff;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 8px #4dffff) drop-shadow(0 0 16px rgba(77, 255, 255, 0.8));
+  stroke-dasharray: 6000;
+  stroke-dashoffset: 6000;
+  animation: neonPulse 3s ease-in-out infinite, drawLine 5s ease-out forwards;
+  animation-delay: 0.5s, 5.5s;
+}
+
+@keyframes drawLine {
+  from {
+    stroke-dashoffset: 6000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes neonPulse {
+  0% {
+    filter: drop-shadow(0 0 8px #4dffff) drop-shadow(0 0 16px rgba(77, 255, 255, 0.8));
+    stroke: #4dffff;
+  }
+  50% {
+    filter: drop-shadow(0 0 12px #4dffff) drop-shadow(0 0 24px rgba(77, 255, 255, 0.9));
+    stroke: #7fffff;
+  }
+  100% {
+    filter: drop-shadow(0 0 8px #4dffff) drop-shadow(0 0 16px rgba(77, 255, 255, 0.8));
+    stroke: #4dffff;
+  }
+}

@@ -105,6 +105,31 @@ const Start = (props) => {
             )}
           </div>
 
+          <div className="neon-cityscape">
+            <div className="cityscape-container">
+              <svg width="100%" height="100%" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax meet">
+                <path
+                  className="cityscape-path"
+                  d="M0,300 
+                  L30,300 L30,180 L60,180 L60,240 L90,240 L90,160 
+                  L120,160 L120,220 L150,220 L150,140 L180,140 L180,200 
+                  L210,200 L210,150 L240,150 L240,190 L270,190 L270,110 
+                  L300,110 L300,170 L330,170 L330,130 L360,130 L360,200 
+                  L390,200 L390,140 L420,140 L420,180 L450,180 L450,100 
+                  L480,100 L480,160 L510,160 L510,220 L540,220 L540,150 
+                  L570,150 L570,190 L600,190 L600,120 L630,120 L630,200 
+                  L660,200 L660,140 L690,140 L690,170 L720,170 L720,230 
+                  L750,230 L750,160 L780,160 L780,200 L810,200 L810,130 
+                  L840,130 L840,180 L870,180 L870,220 L900,220 L900,150 
+                  L930,150 L930,190 L960,190 L960,240 L990,240 L990,170 
+                  L1020,170 L1020,210 L1050,210 L1050,140 L1080,140 L1080,190 
+                  L1110,190 L1110,250 L1140,250 L1140,200 L1170,200 L1170,260 
+                  L1200,260 L1200,300 Z"
+                />
+              </svg>
+            </div>
+          </div>
+
           {showEffects && (
             <div className="effects-modal">
               <div className="effects-content">
