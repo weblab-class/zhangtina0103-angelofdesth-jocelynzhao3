@@ -1,90 +1,70 @@
-/* Reset default margins and ensure full height */
-html,
+@import url("../../fonts/fonts.css");
+
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  width: 100%;
+  font-family: "Orbitron", sans-serif;
+  background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+  color: #fff;
+  min-height: 100vh;
 }
 
 .BattleEnd-container {
+  min-height: 100vh;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  width: 100vw;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow-y: auto;
-  background: #0a0a1f;
-  font-family: "Codec", sans-serif;
+  background: linear-gradient(135deg, #000428 0%, #004e92 100%);
   color: #fff;
 }
 
-.BattleEnd-content {
-  text-align: center;
-  padding: 20px;
-  padding-top: 2rem;
-  border-radius: 10px;
-  animation: contentFade 1s ease-in;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 1200px;
-}
-
 .BattleEnd-container h1 {
-  font-family: "Aerglo", sans-serif;
-  font-size: 4.5rem;
   color: #4dffff;
-  text-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-  margin: 1rem 0 1rem 0;
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 10px rgba(77, 255, 255, 0.5);
+  font-family: "Press Start 2P", "Orbitron", sans-serif;
+  letter-spacing: 2px;
 }
 
 .BattleEnd-userinfo {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2rem;
   border-radius: 10px;
   width: 90%;
   max-width: 800px;
-  margin: 0.5rem auto;
+  margin: 0.5rem auto 0 auto;
   backdrop-filter: blur(10px);
   box-shadow: 0 0 20px rgba(77, 255, 255, 0.1);
 }
 
-.BattleEnd-userinfo h2,
-.BattleEnd-userinfo h3 {
+.BattleEnd-userinfo h2 {
   color: #4dffff;
-  margin-bottom: 1rem;
+  margin: 0;
   font-size: 1.5rem;
+  margin-bottom: 2px;
 }
 
 .BattleEnd-userinfo h3 {
-  margin-top: 2.5rem;
+  margin-top: -20px;
   margin-bottom: 0.1rem;
   color: #fff;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-  font-family: "Orbitron", sans-serif;
-  font-weight: bold;
-  letter-spacing: 2px;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .BattleEnd-userinfo p {
   margin: 0.5rem 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 .BattleEnd-log {
-  margin-top: 0.1rem;
+  margin: 0;
+  padding: 0;
   width: 100%;
   overflow-x: auto;
 }
@@ -93,154 +73,263 @@ body {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
-}
-
-.BattleEnd-log th {
-  color: #4dffff;
-  font-weight: bold;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
 }
 
 .BattleEnd-log th,
 .BattleEnd-log td {
-  padding: 0.75rem;
+  padding: 1rem;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(77, 255, 255, 0.1);
 }
 
-.BattleEnd-log td {
-  position: relative;
+.BattleEnd-log th {
+  background: rgba(77, 255, 255, 0.1);
+  color: #4dffff;
+  font-weight: bold;
 }
 
 .BattleEnd-recent-battle {
-  background: rgba(77, 255, 255, 0.1);
-  position: relative;
+  background: rgba(77, 255, 255, 0.05);
 }
 
 .BattleEnd-recent-label {
-  font-size: 0.8em;
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
   background: #4dffff;
-  color: #0a0a1f;
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-right: 8px;
-  display: inline-block;
+  color: #000;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
   font-weight: bold;
+}
+
+.result-text.win {
+  color: #00ffaa;
+  text-shadow: 0 0 10px rgba(0, 255, 170, 0.4);
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.result-text.lose {
+  color: #ff00ff;
+  text-shadow: 
+    0 0 10px rgba(255, 0, 255, 0.4),
+    0 0 20px rgba(255, 0, 255, 0.2);
+  font-weight: bold;
+  letter-spacing: 1px;
 }
 
 .BattleEnd-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  gap: 40px;
+  margin-top: -80px;
+  margin-bottom: 12px;
+  padding-top: 0;
 }
 
 .BattleEnd-player-info {
   display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-top: 10px;
+  padding-top: 25px;
+}
+
+.BattleEnd-player-name-and-avatar {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
 }
 
-.profile-picture-container {
-  display: block;
-  width: 40px;
-  height: 40px;
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.BattleEnd-avatar {
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid rgba(77, 255, 255, 0.4);
-  box-shadow: 0 0 10px rgba(77, 255, 255, 0.3);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-/* Standalone styling for BattleProfile's picture */
-.battle-profile-container {
-  display: block;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 3px solid rgba(77, 255, 255, 0.4);
-  box-shadow: 0 0 15px rgba(77, 255, 255, 0.4);
-}
-
-/* Remove the old classes that are no longer needed */
-.battle-profile-picture,
-.battle-profile-picture:hover {
-  display: none;
-}
-
-.profile-picture-container:hover {
-  border-color: rgba(77, 255, 255, 0.8);
-  box-shadow: 0 0 15px rgba(77, 255, 255, 0.5);
-  transform: scale(1.05);
-}
-
-.profile-picture {
-  width: 100%;
-  height: 100%;
+  border: 3px solid rgba(77, 255, 255, 0.5);
+  box-shadow: 0 0 15px rgba(77, 255, 255, 0.3);
   object-fit: cover;
 }
 
 .BattleEnd-player-details {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
+  padding-top: 0;
+  min-width: 180px;
+  margin-bottom: -20px;
+  margin-top: -5px;
+}
+
+.BattleEnd-player-details .player-name {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: bold;
+  text-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(255, 255, 255, 0.2),
+    0 0 30px rgba(255, 255, 255, 0.1);
+  margin: 0 0 8px 0;
+  font-size: 1.3rem;
+  font-family: "Press Start 2P", "Orbitron", sans-serif;
+  letter-spacing: 1px;
+  animation: nameGlow 3s ease-in-out infinite;
+}
+
+.BattleEnd-player-details .stats-header {
+  color: #4dffff;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(77, 255, 255, 0.4);
+  margin: 15px 0 10px 0;
+  font-size: 1.2rem;
+  font-family: "Orbitron", sans-serif;
+  letter-spacing: 1px;
+}
+
+.BattleEnd-player-details .elo,
+.BattleEnd-player-details .games,
+.BattleEnd-player-details .win-rate {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  margin: 5px 0;
+  font-family: "Orbitron", sans-serif;
+  letter-spacing: 1px;
 }
 
 .BattleEnd-player-details p {
-  margin: 0;
-  font-size: 1.2rem;
+  margin: 8px 0;
+  white-space: nowrap;
+  font-family: "Orbitron", sans-serif;
+  letter-spacing: 1px;
 }
 
-.BattleEnd-player-details .elo {
-  color: #4dffff;
+.BattleEnd-chart-container {
+  width: 450px;
+  height: 500px;
+  margin: -85px auto -100px auto;
+  position: relative;
+  filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.15));
+}
+
+.BattleEnd-chart-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.9rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  top: 320px;
+  letter-spacing: 2px;
   font-weight: bold;
 }
 
-.BattleEnd-player-info p {
-  margin: 8px 0;
+.BattleEnd-chart {
+  width: 100%;
+  height: 450px;
+  animation: chartGlow 4s ease-in-out infinite;
+}
+
+@keyframes nameGlow {
+  0% {
+    text-shadow: 
+      0 0 10px rgba(255, 255, 255, 0.4),
+      0 0 20px rgba(255, 255, 255, 0.3),
+      0 0 30px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    text-shadow: 
+      0 0 15px rgba(255, 255, 255, 0.5),
+      0 0 25px rgba(255, 255, 255, 0.4),
+      0 0 35px rgba(255, 255, 255, 0.3);
+  }
+  100% {
+    text-shadow: 
+      0 0 10px rgba(255, 255, 255, 0.4),
+      0 0 20px rgba(255, 255, 255, 0.3),
+      0 0 30px rgba(255, 255, 255, 0.2);
+  }
+}
+
+@keyframes chartGlow {
+  0% {
+    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 25px rgba(0, 255, 255, 0.3));
+  }
+  100% {
+    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.2));
+  }
 }
 
 .BattleEnd-navigation {
-  margin: 2rem 0;
-  width: 100%;
-  text-align: right;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
 .BattleEnd-button {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
   background: rgba(77, 255, 255, 0.1);
   color: #4dffff;
-  text-decoration: none;
-  border-radius: 5px;
   border: 1px solid #4dffff;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
   font-family: "Orbitron", sans-serif;
   font-size: 0.9rem;
   letter-spacing: 1px;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 .BattleEnd-button:hover {
   background: rgba(77, 255, 255, 0.2);
-  transform: translateY(-2px);
   box-shadow: 0 0 15px rgba(77, 255, 255, 0.3);
+  transform: translateY(-2px);
 }
 
 .BattleEnd-show-more {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
+  display: block;
+  margin: 1rem auto;
   background: transparent;
   color: #4dffff;
-  border: 1px solid #4dffff;
-  border-radius: 4px;
+  border: none;
   cursor: pointer;
   font-family: "Orbitron", sans-serif;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
   transition: all 0.3s ease;
 }
 
 .BattleEnd-show-more:hover {
   background: rgba(77, 255, 255, 0.1);
   box-shadow: 0 0 15px rgba(77, 255, 255, 0.2);
+}
+
+.BattleEnd-stats {
+  margin: 20px 0;
+}
+
+.BattleEnd-stats h3 {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: "Orbitron", sans-serif;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
 }
