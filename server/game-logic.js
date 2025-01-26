@@ -12,7 +12,17 @@ const getRandomInt = (min, max) => {
 };
 
 // different effects
-const possibleEffects = ["attack", "attack", "heal", "heal", "lifesteal", "freeze", "3x", "block"];
+const possibleEffects = [
+  "attack",
+  "attack",
+  "attack",
+  "heal",
+  "heal",
+  "lifesteal",
+  "freeze",
+  "3x",
+  "block",
+];
 
 const basefreezeDuration = 3000;
 
@@ -30,14 +40,15 @@ const doEffect = (effectType, game, card, player = "player") => {
       const now = Date.now();
       while (game.p1Effects.block.length > 0) {
         const blockTime = game.p1Effects.block[0];
-        game.p1Effects.block.shift(); // Remove the first block
-
         if (blockTime > now) {
-          // Block is still active, consume it and prevent damage
+          // Block is still active
           console.log("Attack blocked by P1!");
+          // Remove just one block
+          game.p1Effects.block.shift();
           return game;
         }
-        // If block was expired, continue checking next block
+        // Remove expired block
+        game.p1Effects.block.shift();
       }
 
       game.p1HP = Math.max(0, game.p1HP - amount); // Don't let HP go below 0
@@ -53,14 +64,15 @@ const doEffect = (effectType, game, card, player = "player") => {
       const now = Date.now();
       while (game.p2Effects.block.length > 0) {
         const blockTime = game.p2Effects.block[0];
-        game.p2Effects.block.shift(); // Remove the first block
-
         if (blockTime > now) {
-          // Block is still active, consume it and prevent damage
+          // Block is still active
           console.log("Attack blocked by P2!");
+          // Remove just one block
+          game.p2Effects.block.shift();
           return game;
         }
-        // If block was expired, continue checking next block
+        // Remove expired block
+        game.p2Effects.block.shift();
       }
 
       game.p2HP = Math.max(0, game.p2HP - amount); // Don't let HP go below 0
@@ -72,9 +84,13 @@ const doEffect = (effectType, game, card, player = "player") => {
   }
 
   if (effectType === "3x") {
-    game.multiplier = game.multiplier * 3; // triples
+    game.multiplier = game.multiplier * 3; // multiply by 3 each time
+  } else if (effectType === "block") {
+    game.multiplier = 1; // resets multiplier for block cards
+  } else if (effectType === "freeze") {
+    game.multiplier = 1; // resets multiplier for freeze cards
   } else {
-    game.multiplier = 1; // resets multiplier
+    game.multiplier = 1; // resets multiplier for non-3x cards
   }
 
   // Update the game state in the activeGames map
@@ -129,7 +145,8 @@ const newGame = async (lobby, p1, p2, language) => {
       displayCards: [], // this is where we'd populate the initial cards
       p1Effects: { freezeUntil: 0, block: [] }, // block is an increasing array of times when the player is blocked
       p2Effects: { freezeUntil: 0, block: [] },
-      multiplier: 1,
+      multiplier: 1, // Start with 1x multiplier
+      lastCardEffect: null, // Initialize lastCardEffect to null
     };
     //populate the three starting cards
 
@@ -247,19 +264,27 @@ const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") =
     game = doEffect("attack", game, takenCard, playerType);
     game = doEffect("heal", game, takenCard, playerType);
   } else if (takenCard.effect.type === "freeze") {
-    // Set freeze timestamp in game state
+    // Calculate freeze duration before resetting multiplier
+    const freezeDuration = basefreezeDuration * game.multiplier;
+    console.log(`Applying freeze for ${freezeDuration}ms with multiplier ${game.multiplier}`);
+
+    // Then reset multiplier through doEffect
+    game = doEffect("freeze", game, takenCard, playerType);
+
+    // Apply freeze effect with saved duration
     if (playerType === "bot") {
-      game.p1Effects.freezeUntil = Date.now() + basefreezeDuration * game.multiplier; // Freeze for x seconds
+      game.p1Effects.freezeUntil = Date.now() + freezeDuration;
     } else {
-      game.p2Effects.freezeUntil = Date.now() + basefreezeDuration * game.multiplier;
+      game.p2Effects.freezeUntil = Date.now() + freezeDuration;
     }
-    // console.log("Freeze effect applied!");
   } else if (takenCard.effect.type === "3x") {
     game = doEffect("3x", game, takenCard, playerType);
   } else if (takenCard.effect.type === "block") {
-    // block is an increasing array of times when the player is blocked
+    // First reset multiplier through doEffect
+    game = doEffect("block", game, takenCard, playerType);
+
+    // Then apply block effect
     if (playerType === "bot") {
-      // assuming bot = p2, needs modificationin PVP
       game.p2Effects.block = game.p2Effects.block.concat(
         new Array(game.multiplier).fill(Date.now() + 3000) // Block for 3 seconds
       );
@@ -270,6 +295,9 @@ const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") =
     }
     console.log("Block effect applied!");
   }
+
+  // Update last card effect for either player or bot
+  game.lastCardEffect = takenCard.effect.type;
 
   // checks if the game is complete with the new updated hps
   await checkWin(game);

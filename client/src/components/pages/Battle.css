@@ -46,7 +46,7 @@
   height: 60px;
   background: linear-gradient(180deg, rgba(16, 16, 32, 0.95) 0%, rgba(16, 16, 32, 0.85) 100%);
   z-index: 2;
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -230,7 +230,7 @@
   transform: translateY(-50%);
   color: #fff;
   font-family: "Orbitron", sans-serif;
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.5);
   z-index: 1;
   padding: 0 15px;
@@ -243,11 +243,11 @@
 }
 
 .Battle-hp-container:first-child .Battle-hp-text {
-  left: 15%;
+  left: 40%;
 }
 
 .Battle-hp-container:last-child .Battle-hp-text {
-  right: 15%;
+  right: 40%;
 }
 
 .Battle-hp-bar[data-hp="low"] {
@@ -307,100 +307,125 @@
 }
 
 /* Avatars section */
-.Battle-avatars {
+.Battle-players {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
   position: fixed;
   top: 80px;
   left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0;
   z-index: 2;
-  pointer-events: none;
-  margin-bottom: 2rem;
 }
 
-.Battle-avatars > * {
-  pointer-events: auto;
-  flex: 0 0 auto;
-  width: 200px; /* Increased width for both avatars */
+.Battle-player {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 120px;
+  margin: 0 80px;
 }
 
-.Battle-avatars > :first-child {
-  margin-left: 10%; /* Increased margin */
-}
-
-.Battle-avatars > :last-child {
-  margin-right: 10%; /* Increased margin */
+.Battle-player.enemy {
+  margin-left: auto;
 }
 
 .Battle-avatar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  transition: all 0.6s ease;
-  cursor: pointer;
+  gap: 0rem;
+  width: 100%;
+}
+
+.Battle-avatar-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
 }
 
 .Battle-avatar-circle {
-  width: 60px;
-  height: 60px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  border: 2px solid rgba(0, 255, 255, 0.4);
-  overflow: hidden;
-  transition: all 0.6s ease;
-  animation: avatarGlow 3s infinite;
-  position: relative;
-}
-
-.Battle-avatar-circle::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2), transparent);
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.Battle-avatar:hover .Battle-avatar-circle {
-  border-color: rgba(0, 255, 255, 0.8);
-  transform: scale(1.05);
-  box-shadow: 0 0 40px rgba(0, 255, 255, 0.6);
-}
-
-.Battle-avatar:hover .Battle-avatar-circle::after {
-  opacity: 1;
-}
-
-.Battle-avatar:hover .Battle-avatar-circle img {
-  filter: brightness(1.3);
+  object-fit: cover;
+  background: rgba(0, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: rgba(0, 255, 255, 0.8);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
 .Battle-avatar-name {
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-align: center;
-  width: 100%;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  line-height: 1.2;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: #fff;
-  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-  font-family: "Aeonik Aerglo", sans-serif;
-  animation: textGlow 3s infinite;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 0.8rem;
 }
 
-.Battle-avatar:hover .Battle-avatar-name {
-  color: #fff;
-  transform: scale(1.05);
-  text-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
+@keyframes avatarGlow {
+  0% {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  }
+}
+
+.Battle-game-area {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Multiplier styles */
+.Battle-multiplier {
+  position: fixed;
+  left: 50%;
+  top: 100px;
+  transform: translateX(-50%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.Battle-multiplier-text {
+  font-family: "Orbitron", sans-serif;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ffc266;
+  text-shadow: 0 0 20px rgba(255, 165, 0, 0.8), 0 0 40px rgba(255, 165, 0, 0.4);
+  text-align: center;
+  padding: 15px;
+  line-height: 1;
+  animation: multiplierPulse 2s infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes multiplierPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .Battle-gameplay {
@@ -772,6 +797,15 @@
   color: white;
   text-align: center;
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+  padding: 0 0.5rem;
+  word-wrap: break-word;
+  line-height: 1.1;
+}
+
+.Battle-card-word-long {
+  font-size: 2rem;
+  line-height: 1;
+  margin: 0.3rem 0 0 0;
 }
 
 .Battle-card-english {
@@ -848,8 +882,11 @@
   }
 
   .Battle-card-word {
-    font-size: 2.4em;
-    margin: 8px 0;
+    font-size: 2.2rem;
+  }
+
+  .Battle-card-word-long {
+    font-size: 1.8rem;
   }
 
   .Battle-card-english {
@@ -883,6 +920,10 @@
   .Battle-card-word {
     font-size: 2em;
     margin: 6px 0;
+  }
+
+  .Battle-card-word-long {
+    font-size: 1.6rem;
   }
 
   .Battle-card-english {
@@ -993,4 +1034,9 @@
   100% {
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
   }
+}
+
+/* Make the status bar position relative for absolute positioning of multiplier */
+.Battle-status-bar {
+  position: relative;
 }
