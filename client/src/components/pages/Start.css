@@ -38,6 +38,9 @@
   backdrop-filter: blur(10px);
   font-family: "Orbitron", sans-serif;
   letter-spacing: 1px;
+  opacity: 1;
+  transform: none;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .Start-top-bar button {
@@ -49,7 +52,6 @@
   text-align: center;
   padding: 0.5rem;
   border-radius: 10px;
-  animation: contentFade 1s ease-in;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,6 +63,8 @@
   padding-top: 1rem;
   padding-bottom: 1.5rem;
   box-sizing: border-box;
+  opacity: 1;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .Start-title {
@@ -115,6 +119,7 @@
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
   white-space: nowrap;
   margin-left: auto;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .logout-button:hover {
@@ -135,6 +140,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .battle-button-container.visible {
@@ -163,6 +169,7 @@
   animation: buttonFadeIn 0.5s ease;
   min-width: 320px;
   text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+  animation: fadeIn 0.8s ease-in;
 }
 
 .battle-button:hover {
@@ -189,16 +196,19 @@
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
   color: #fff;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .battle-link {
   display: block;
   margin-top: 16px;
   margin-bottom: 16px;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .profile-section {
   text-align: center;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .profile-button {
@@ -210,6 +220,7 @@
   margin-right: 1rem;
   text-decoration: none;
   transition: all 0.3s ease;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .profile-button:hover {
@@ -234,6 +245,7 @@
   box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   animation: modalFade 0.3s ease-out;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .effects-overlay {
@@ -245,11 +257,13 @@
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(3px);
   z-index: 999;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .effects-container .instructions-title {
   color: #4dffff;
   margin-bottom: 1.2rem;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .effect-item {
@@ -258,6 +272,7 @@
   line-height: 1.5;
   color: #fff;
   text-align: left;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .close-effects-btn {
@@ -272,6 +287,7 @@
   padding: 5px;
   line-height: 1;
   transition: all 0.3s ease;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .close-effects-btn:hover {
@@ -289,6 +305,7 @@
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
   animation: glowPulse 3s infinite;
   transition: all 0.3s ease;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .instructions-container:hover {
@@ -317,6 +334,7 @@
   margin: 0 0 1.2rem 0;
   letter-spacing: 1px;
   text-align: center;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .instructions-text {
@@ -328,6 +346,7 @@
   text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
   text-align: center;
   max-width: 95%;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .main-content-wrapper {
@@ -338,6 +357,7 @@
   justify-content: space-between;
   width: 100%;
   padding: 1vh 0 3vh 0;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .bottom-content-wrapper {
@@ -345,6 +365,7 @@
   flex-direction: column;
   gap: 1.5vh;
   flex-shrink: 0;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .language-selector-container {
@@ -358,6 +379,7 @@
   opacity: 1;
   transform: translateY(0);
   transition: all 0.3s ease;
+  animation: fadeIn 0.8s ease-in;
 }
 
 select {
@@ -385,6 +407,7 @@ select {
   text-align: center;
   text-align-last: center;
   transition: all 0.3s ease;
+  animation: fadeIn 0.8s ease-in;
 }
 
 select:hover {
@@ -406,6 +429,7 @@ select option {
   padding: 10px;
   font-size: 1.1rem;
   text-align: center;
+  animation: fadeIn 0.8s ease-in;
 }
 
 select:not([value=""]) {
@@ -728,6 +752,7 @@ select:not([value=""]) {
     0 0 30px rgba(77, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
+  animation: fadeIn 0.8s ease-in;
 }
 
 .see-effects-btn:hover {
