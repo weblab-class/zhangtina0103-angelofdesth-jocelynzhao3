@@ -78,6 +78,12 @@ const Start = (props) => {
               >
                 Instructions
               </Link>
+              <Link
+                to="/leaderboard"
+                className="profile-button button-base neon-bg neon-border neon-text"
+              >
+                Leaderboard
+              </Link>
               <button
                 onClick={userContext.handleLogout}
                 className="logout-button button-base neon-bg neon-border neon-text"
