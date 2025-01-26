@@ -12,6 +12,7 @@ import { LanguageContext } from "../App";
 import { UserInfoContext } from "../App";
 import { UserContext } from "../App.jsx";
 import { socket } from "../../client-socket.js";
+import useTextFit from "../../hooks/useTextFit";
 
 const hardcodedCards = [
   { word: "", english: "", effect: { type: "", amount: "" }, difficulty: "" },
@@ -46,6 +47,14 @@ const Battle = (props) => {
   });
   const [animatingCards, setAnimatingCards] = useState(new Set());
   const prevCards = useRef(gameState.displayCards);
+  const cardRefs = useRef([]);
+  const textRefs = useRef([]);
+
+  // Initialize refs for each card
+  useEffect(() => {
+    cardRefs.current = cardRefs.current.slice(0, gameState.displayCards.length);
+    textRefs.current = textRefs.current.slice(0, gameState.displayCards.length);
+  }, [gameState.displayCards.length]);
 
   // gets the Game state on mount
   useEffect(() => {
@@ -316,60 +325,70 @@ const Battle = (props) => {
         <div className="Battle-gameplay">
           {/* Word Cards */}
           <div className="Battle-cards-container">
-            {gameState.displayCards.map((card, index) => (
-              <div
-                key={`${card.word}-${index}`}
-                className={`Battle-card ${animatingCards.has(index) ? "animate-card" : ""}`}
-                data-effect={card.effect.type}
-              >
-                <div className="Battle-card-content">
-                  <div className="Battle-card-effect">{card.effect.type}</div>
-                  <div className="Battle-card-divider"></div>
-                  <div className="Battle-card-middle">
-                    <div
-                      className={`Battle-card-word ${
-                        card.word.length > 8 ? "Battle-card-word-long" : ""
-                      }`}
-                    >
-                      {card.word}
-                    </div>
-                    <div className="Battle-card-english">{card.english}</div>
-                    <div className="Battle-card-amount">
-                      {card.effect.type === "heal" ? (
-                        <span>+{card.effect.amount} HP</span>
-                      ) : card.effect.type === "attack" ? (
-                        <span>-{card.effect.amount} HP</span>
-                      ) : card.effect.type === "lifesteal" ? (
-                        <span>±{card.effect.amount} HP</span>
-                      ) : card.effect.type === "freeze" ? (
-                        <span>+3 seconds</span>
-                      ) : card.effect.type === "3x" ? (
-                        <span>3x</span>
-                      ) : card.effect.type === "block" ? (
-                        <span>+3 seconds </span>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="Battle-card-effect-description">
-                      {card.effect.type === "heal"
-                        ? `Heals you for ${card.effect.amount} HP`
-                        : card.effect.type === "attack"
-                        ? `Deals ${card.effect.amount} damage to your opponent`
-                        : card.effect.type === "lifesteal"
-                        ? `Deals ${card.effect.amount} damage and heals you for the same amount`
-                        : card.effect.type === "freeze"
-                        ? "Freezes your opponent for 3 seconds"
-                        : card.effect.type === "3x"
-                        ? "Triples the effect of your next card"
-                        : card.effect.type === "block"
-                        ? "3 seconds protection from your opponent's next attack"
-                        : ""}
+            {gameState.displayCards.map((card, index) => {
+              const containerRef = useRef(null);
+              const textRef = useTextFit(card.word, containerRef, 40, 16);
+
+              return (
+                <div
+                  key={`${card.word}-${index}`}
+                  className={`Battle-card ${animatingCards.has(index) ? "animate-card" : ""}`}
+                  data-effect={card.effect.type}
+                  ref={(el) => (cardRefs.current[index] = el)}
+                >
+                  <div className="Battle-card-content">
+                    <div className="Battle-card-effect">{card.effect.type}</div>
+                    <div className="Battle-card-divider"></div>
+                    <div className="Battle-card-middle">
+                      <div
+                        className="Battle-card-word-container"
+                        ref={containerRef}
+                      >
+                        <div
+                          className="Battle-card-word"
+                          ref={textRef}
+                        >
+                          {card.word}
+                        </div>
+                      </div>
+                      <div className="Battle-card-english">{card.english}</div>
+                      <div className="Battle-card-amount">
+                        {card.effect.type === "heal" ? (
+                          <span>+{card.effect.amount} HP</span>
+                        ) : card.effect.type === "attack" ? (
+                          <span>-{card.effect.amount} HP</span>
+                        ) : card.effect.type === "lifesteal" ? (
+                          <span>±{card.effect.amount} HP</span>
+                        ) : card.effect.type === "freeze" ? (
+                          <span>+3 seconds</span>
+                        ) : card.effect.type === "3x" ? (
+                          <span>3x</span>
+                        ) : card.effect.type === "block" ? (
+                          <span>+3 seconds </span>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                      <div className="Battle-card-effect-description">
+                        {card.effect.type === "heal"
+                          ? `Heals you for ${card.effect.amount} HP`
+                          : card.effect.type === "attack"
+                          ? `Deals ${card.effect.amount} damage to your opponent`
+                          : card.effect.type === "lifesteal"
+                          ? `Deals ${card.effect.amount} damage and heals you for the same amount`
+                          : card.effect.type === "freeze"
+                          ? "Freezes your opponent for 3 seconds"
+                          : card.effect.type === "3x"
+                          ? "Triples the effect of your next card"
+                          : card.effect.type === "block"
+                          ? "3 seconds protection from your opponent's next attack"
+                          : ""}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <TypeBar onType={handleTyping} typedText={typedText} isFrozen={isKeyboardFrozen()} />

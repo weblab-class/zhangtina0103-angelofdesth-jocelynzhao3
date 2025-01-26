@@ -790,22 +790,28 @@
   text-shadow: 0 0 20px rgba(139, 69, 19, 0.8);
 }
 
+.Battle-card-word-container {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  position: relative;
+  overflow: hidden;
+}
+
 .Battle-card-word {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin: 0.5rem 0 0 0;
   color: white;
   text-align: center;
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-  padding: 0 0.5rem;
-  word-wrap: break-word;
+  font-weight: bold;
+  width: 100%;
   line-height: 1.1;
-}
-
-.Battle-card-word-long {
-  font-size: 2rem;
-  line-height: 1;
-  margin: 0.3rem 0 0 0;
+  transition: font-size 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .Battle-card-english {
@@ -885,10 +891,6 @@
     font-size: 2.2rem;
   }
 
-  .Battle-card-word-long {
-    font-size: 1.8rem;
-  }
-
   .Battle-card-english {
     font-size: 1.2em;
   }
@@ -920,10 +922,6 @@
   .Battle-card-word {
     font-size: 2em;
     margin: 6px 0;
-  }
-
-  .Battle-card-word-long {
-    font-size: 1.6rem;
   }
 
   .Battle-card-english {
