@@ -7,6 +7,7 @@ import { LanguageContext } from "../App";
 import { UserContext } from "../App";
 import { UserInfoContext } from "../App";
 import { get, post } from "../../utilities";
+import { socket } from "../../client-socket.js";
 
 /**
  * The screen for creating lobbies
@@ -24,7 +25,23 @@ const Lobby = (props) => {
   }
   const [hasJoined, setHasJoined] = useState(checkAlreadyInLobby());
   const [isReady, setIsReady] = useState(false);
+  const [lobbyState, setLobbyState] = useState({});
   const navigate = useNavigate();
+
+  const processUpdate = (update) => {
+    if (update) {
+      console.log("I have received the update to lobby status", update);
+      setLobbyState(update);
+    }
+  };
+
+  useEffect(() => {
+    socket.on(props.lobby.lobbyid, processUpdate) // updates players if people join
+
+    return () => {
+      socket.off(props.lobby.lobbyid);
+    }
+  }, [])
 
   const handleJoinClick = () => {
     post("/api/joinlobby", { lobby: props.lobby.lobbyid, player: userInfo._id }).then((result) => {
@@ -47,6 +64,8 @@ const Lobby = (props) => {
   const handleLeaveClick = () => {
     post("/api/leaveLobby", { lobby: props.lobby.lobbyid, player: userInfo._id }).then((result) => {
       console.log("leave result: ", result);
+      props.setInLobby(false);
+      props.setDisplayedLobby("");
     });
   };
 
@@ -54,12 +73,13 @@ const Lobby = (props) => {
   const [p2, setP2] = useState("");
 
   const formatPlayerDisplay = (playerSetFunc, id) => {
-    console.log("I am asking for the id of",  id)
     if (id) {
-    get("/api/otheruserinfo", {_id:id}).then((userInfo) => {
-      if (userInfo) {
-        const item =  `${userInfo.name} [${userInfo.elo}]`
-        console.log(item)
+    get("/api/otheruserinfo", {_id:id}).then((gotInfo) => {
+      if (gotInfo) {
+        let item =  `${gotInfo.name} [${gotInfo.elo}]`
+        if (gotInfo._id === userInfo._id) {
+          item = item + " (You!)"
+        }
         playerSetFunc(item)
       } else {
         playerSetFunc("Error getting the player from id")
@@ -71,14 +91,17 @@ const Lobby = (props) => {
 
   useEffect(() => {
     formatPlayerDisplay(setP1, props.lobby.p1)
-    // formatPlayerDisplay(setP2, props.lobby.p2)
-  }, []);
+    formatPlayerDisplay(setP2, props.lobby.p2)
+    console.log("the use effect has been triggered by a change in stuff")
+  }, [props.lobby.p1, props.lobby.p2]);
+
   
 
   return (
     <div>
       <h3>Lobby {props.lobby.lobbyid}</h3>
       <div>
+        <p> You are {userInfo.id} with name {userInfo.name} and elo {userInfo.elo} </p>
         <p>
           P1: {p1 ? p1 : "Loading..."}
         </p>
@@ -100,9 +123,9 @@ const Lobby = (props) => {
               </p>
             ) : (
               <>
-                <button className="SingleActiveLobby-readyButton" onClick={handleReadyClick}>
+                {(props.lobby.p1 && props.lobby.p2) ? (<button className="SingleActiveLobby-readyButton" onClick={handleReadyClick}>
                   Ready to Battle!
-                </button>
+                </button>) : ( <p> Waiting for more players...</p>)}
                 <button className="SingleActiveLobby-leaveButton" onClick={handleLeaveClick}>
                   Leave Lobby
                 </button>

@@ -37,6 +37,26 @@ const newLobby = (p1, language) => {
   return lobby;
 };
 
+const leaveLobby = (lobby, player) => {
+  const result = lobbyLogic.leaveLobby(lobby, player);
+  if (result) {
+    activeLobbies = Array.from(lobbyLogic.activeLobbies.values());
+    console.log("emitting in activeLobbies", activeLobbies);
+    io.emit("activeLobbies", activeLobbies);
+  };
+  return result
+}
+
+const joinLobby = (lobby, player) => {
+  const lobbyStatus = lobbyLogic.joinLobby(lobby, player);
+  if (lobbyStatus) {
+    console.log("got join request, now I am sending back", lobbyStatus);
+    io.emit(lobby, lobbyStatus);
+    return true;
+  }
+  return false;
+}
+
 const newBotGame = (p1, language, difficulty) => {
   // starts the game with the player's id as the lobby name
   gameLogic.newGame(p1, p1, "bot", language);
@@ -108,6 +128,8 @@ module.exports = {
   newLobby: newLobby,
   newPVPGame: newPVPGame,
   newBotGame: newBotGame,
+  leaveLobby: leaveLobby,
+  joinLobby: joinLobby,
 
   getIo: () => io,
 };

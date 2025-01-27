@@ -42,20 +42,18 @@ const createLobby = (p1, language) => {
   return lobby;
 };
 
-// angeline this function responds to socket event
 const joinLobby = (lobbyid, player) => {
   const lobby = activeLobbies.get(lobbyid);
   if (!lobby) {
     return false;
   }
-  if (lobby.p1 === null) {
+  if (!lobby.p1) {
     return false;
   }
-  if (lobby.p2 === null) {
+  if (!lobby.p2) {
     lobby.p2 = player;
-    console.log("lobby full: ", lobbyid);
   }
-  return true;
+  return lobby;
 };
 
 const updateReadyStatus = (lobbyid, player, isReady) => {
@@ -78,31 +76,33 @@ const updateReadyStatus = (lobbyid, player, isReady) => {
   return false;
 };
 
-// AI generated, I kept them in case they become useful
 const leaveLobby = (lobbyid, player) => {
+  console.log("my input is", lobbyid, player)
   const lobby = activeLobbies.get(lobbyid);
   if (!lobby) {
-    return false;
+    return "error!";
   }
-  if (lobby[player] === null) {
-    return false;
+  if (lobby.p1 !== player) {
+    if (lobby.p2 !== player) {
+      return "error!";
+    } else {
+      lobby.p2 = "";
+    }
+  } else {
+    lobby.p1 = "";
   }
-  lobby[player] = null;
-  return true;
+  console.log("our lobby is now", lobby) 
+  // now check if lobby is empty. If lobby is empty, remove it
+  if (!lobby.p1 && !lobby.p2) {
+    activeLobbies.delete(lobbyid);
+    return true
+  } else {
+    return false
+  }
 };
 
-const startGame = (lobbyid) => {
-  // add lobby to activeGames, tell clients to start
-};
 
-const removeLobby = (lobbyid) => {
-  const lobby = activeLobbies.get(lobbyid);
-  if (!lobby) {
-    return false;
-  }
-  activeLobbies.delete(lobbyid);
-  return true;
-};
+
 
 module.exports = {
   activeLobbies,
@@ -110,6 +110,4 @@ module.exports = {
   joinLobby,
   updateReadyStatus,
   leaveLobby,
-  removeLobby,
-  startGame,
 };

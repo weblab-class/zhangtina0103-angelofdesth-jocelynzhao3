@@ -21,6 +21,7 @@ const Lobbies = (props) => {
       setActiveLobbies(data.lobbies);
       console.log("initial pull: I have set the lobbies to", data.lobbies);
     });
+    // TODO: if you are in a lobby, set the lobby to be that lobby
   }, []);
 
   useEffect(() => {
@@ -76,7 +77,8 @@ const Lobbies = (props) => {
               ) : (
                 <>
                   {displayedLobby === "newBot" ? <BotLobbyCreation /> : 
-                  <Lobby lobby={displayedLobby}/>}
+                  <Lobby lobby={displayedLobby} setInLobby={setInLobby} 
+                    setDisplayedLobby={setDisplayedLobby}/>}
                 </>
               )}
             </>

@@ -55,12 +55,12 @@ router.get("/activeLobbies", (req, res) => {
 });
 
 router.post("/createLobby", (req, res) => {
-  const lobbyid = socketManager.newLobby(req.body.p1, req.body.language);
-  res.send({ lobbyid: lobbyid });
+  const lobby = socketManager.newLobby(req.body.p1, req.body.language);
+  res.send({ lobby: lobby });
 });
 
 router.post("/joinLobby", (req, res) => {
-  const result = lobbyLogic.joinLobby(req.body.lobby, req.body.player);
+  const result = socketManager.joinLobby(req.body.lobby, req.body.player);
   res.send({ result: result });
 });
 
@@ -70,12 +70,7 @@ router.post("/updateReadyStatus", (req, res) => {
 });
 
 router.post("/leaveLobby", (req, res) => {
-  const result = lobbyLogic.leaveLobby(req.body.lobby, req.body.player);
-  res.send({ result: result });
-});
-
-router.post("/removeLobby", (req, res) => {
-  const result = lobbyLogic.removeLobby(req.body.lobby);
+  const result = socketManager.leaveLobby(req.body.lobby, req.body.player);
   res.send({ result: result });
 });
 
@@ -97,9 +92,7 @@ router.get("/userinfo", (req, res) => {
 });
 
 router.get("/otheruserinfo", (req, res) => {
-  console.log(req.body._id);
-  User.findOne({ _id: req.body._id }).then((userInfo) => {
-    console.log("I got the userInfo", userInfo);
+  User.findOne({ _id: req.query._id }).then((userInfo) => {
     res.send(userInfo);
   });
 });
