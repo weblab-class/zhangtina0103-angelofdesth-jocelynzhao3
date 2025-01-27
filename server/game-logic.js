@@ -199,6 +199,7 @@ const handleGameEnd = async (game, winner) => {
   }
 };
 
+// TODO jocelyn: check player ID to know which player to affect
 const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") => {
   let game = activeGames.get(lobby);
   console.log(game);
