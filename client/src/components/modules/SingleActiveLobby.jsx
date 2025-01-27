@@ -6,13 +6,46 @@ import { get, post } from "../../utilities";
 
 const SingleActiveLobby = (props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
-  const [p1, setP1] = useState("")
-  const [p2, setP2] = useState("")
+  const [p1, setP1] = useState("Loading...");
+  const [p2, setP2] = useState("Loading...");
 
   useEffect(() => {
-    props.formatPlayerDisplay(setP1, props.lobby.p1)
-    props.formatPlayerDisplay(setP2, props.lobby.p2)
-  }, [props.lobby])
+    let isMounted = true;
+
+    const updatePlayerDisplay = async (playerSetFunc, id) => {
+      if (!id) {
+        playerSetFunc("Waiting for player...");
+        return;
+      }
+
+      try {
+        const gotInfo = await get("/api/otheruserinfo", { _id: id });
+        if (!isMounted) return;
+
+        if (gotInfo) {
+          let item = `${gotInfo.name} [${gotInfo.elo}]`;
+          if (userInfo && gotInfo._id === userInfo._id) {
+            item = item + " (You!)";
+          }
+          playerSetFunc(item);
+        } else {
+          playerSetFunc("Error getting the player");
+        }
+      } catch (error) {
+        if (isMounted) {
+          playerSetFunc("Error loading player");
+          console.error("Error fetching player info:", error);
+        }
+      }
+    };
+
+    updatePlayerDisplay(setP1, props.lobby.p1);
+    updatePlayerDisplay(setP2, props.lobby.p2);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [props.lobby, props.lobby.p1, props.lobby.p2, userInfo]);
 
   return (
     <div className={`SingleActiveLobby-container ${(props.active) ?

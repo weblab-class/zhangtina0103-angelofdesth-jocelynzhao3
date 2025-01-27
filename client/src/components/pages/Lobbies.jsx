@@ -40,10 +40,20 @@ const Lobbies = (props) => {
     get("/api/activeLobbies").then((data) => {
       setActiveLobbies(data.lobbies);
       console.log("initial pull: I have set the lobbies to", data.lobbies);
+      
+      // Check if user is already in a lobby
+      if (userInfo && data.lobbies) {
+        const userLobby = data.lobbies.find(
+          (lobby) => lobby.p1 === userInfo._id || lobby.p2 === userInfo._id
+        );
+        if (userLobby) {
+          console.log("User found in lobby:", userLobby.lobbyid);
+          setDisplayedLobby(userLobby.lobbyid);
+          setInLobby(true);
+        }
+      }
     });
-    // TODO: if you are in a lobby, set the lobby to be that lobby
-  }, []);
-
+  }, [userInfo]);
 
   useEffect(() => {
     // this will continuously update all the active lobbies
