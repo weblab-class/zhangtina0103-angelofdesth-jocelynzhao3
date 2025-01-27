@@ -1,6 +1,6 @@
 import "../../utilities.css";
 import "./Start.css";
-import cityscapeSvg from "../../images/cityscape.svg";
+import cityscapeSvg from "../../images/zulu.svg";
 
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
