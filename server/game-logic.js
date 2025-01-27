@@ -201,7 +201,6 @@ const handleGameEnd = async (game, winner) => {
         Language: game.language,
         Date: getCurrentTime(),
       };
-      console.log(game.p1);
 
       const user = await User.findOne({ _id: game.p1 });
       if (user) {
@@ -211,8 +210,6 @@ const handleGameEnd = async (game, winner) => {
         user.elo = Math.max(1, user.elo + (p1Result === "Win" ? 1 : -1));
         // Save the updated user
         await user.save();
-        console.log("User 1 updated successfully:", user);
-        // socket this over?
       } else {
         console.error("User 1 not found");
       }
@@ -232,7 +229,6 @@ const handleGameEnd = async (game, winner) => {
         user.log = [p2Log, ...user.log];
         user.elo = Math.max(1, user.elo + (p2Result === "Win" ? 1 : -1));
         await user.save();
-        console.log("User 2 updated successfully:", user);
       } else {
         console.error("User 2 not found");
       }

@@ -117,7 +117,7 @@ module.exports = {
       console.log(`socket has connected ${socket.id}`);
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
-        console.log("user has disconnected", user);
+        console.log("user disconnet");
         if (user) {
           // check if player socket disconnects, end their lobby
           // if player disconnects, they can rejoin their game? (how are unfinished games cleaned?)
