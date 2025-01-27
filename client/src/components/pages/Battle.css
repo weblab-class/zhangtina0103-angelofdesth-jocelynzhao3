@@ -508,18 +508,21 @@
 
 .Battle-cards-container {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   gap: 2rem;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1rem 0;
+  padding: 1rem 20px;
+  flex-wrap: wrap;
 }
 
 .Battle-card {
   flex: 1;
   max-width: 300px;
-  height: 300px;
+  min-height: 200px;
+  height: auto;
   border-radius: 12px;
   box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
   backdrop-filter: blur(10px);
@@ -682,20 +685,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 12px 0;
-  gap: 8px;
+  padding: 8px;
+  gap: 4px;
+  width: 100%;
 }
 
 .Battle-card-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
   margin: 4px 0;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
   position: relative;
 }
 
 .Battle-card-effect {
-  font-size: 1.8em;
-  padding: 12px 0;
+  font-size: 0.9rem;
+  padding: 4px 0;
   margin-bottom: 6px;
   text-align: center;
   text-transform: uppercase;
@@ -741,11 +745,11 @@
 }
 
 .Battle-card-effect-description {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
-  padding: 6px;
-  margin-top: 6px;
+  padding: 4px;
+  margin-top: 2px;
   font-family: "Codec", sans-serif;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 4px;
@@ -791,27 +795,34 @@
 }
 
 .Battle-card-word {
-  font-size: 2.5rem;
   font-weight: bold;
-  margin: 0.5rem 0 0 0;
+  margin: 0.5rem 0;
   color: white;
   text-align: center;
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-  padding: 0 0.5rem;
-  word-wrap: break-word;
   line-height: 1.1;
+  white-space: nowrap;
+  width: 100%;
+  transition: font-size 0.2s ease;
 }
 
 .Battle-card-word-long {
-  font-size: 2rem;
-  line-height: 1;
-  margin: 0.3rem 0 0 0;
+  font-size: 1.8rem;
+}
+
+/* Add more size reductions for longer words */
+.Battle-card-word[data-length="verylong"] {
+  font-size: 1.5rem;
+}
+
+.Battle-card-word[data-length="superlong"] {
+  font-size: 1.2rem;
 }
 
 .Battle-card-english {
   font-size: 0.7rem;
   color: rgba(255, 255, 255, 0.7);
-  margin: 0 0 0.4rem 0;
+  margin: 0;
   text-align: center;
   font-family: "Orbitron", sans-serif;
   letter-spacing: 0.5px;
@@ -819,10 +830,10 @@
 }
 
 .Battle-card-amount {
-  font-size: 1.8em;
+  font-size: 1.4em;
   font-weight: bold;
   text-align: center;
-  padding: 6px 14px;
+  padding: 4px 14px;
 }
 
 /* Effect-specific amount colors */
@@ -873,7 +884,7 @@
   .Battle-card {
     min-width: 220px;
     max-width: 260px;
-    min-height: 220px;
+    min-height: 200px;
   }
 
   .Battle-card-effect {

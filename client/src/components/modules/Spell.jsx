@@ -1,10 +1,10 @@
 // Word to translate and associated action/spell
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Spell.css";
 
 /**
  * Spell component displays a card with a word to translate and its associated effect
- * 
+ *
  * Proptypes
  * @param {Object} card - The card object containing word, english translation, and effect
  * @param {boolean} isAnimating - Whether the card is currently animating
@@ -12,6 +12,46 @@ import "./Spell.css";
 
 const Spell = ({ card, isAnimating }) => {
   const [wordChanged, setWordChanged] = useState(false);
+  const [fontSize, setFontSize] = useState(40); // Default font size
+  const containerRef = useRef(null);
+  const textRef = useRef(null);
+
+  // Calculate font size based on text width measurement
+  useEffect(() => {
+    // Wait for fonts to load to get accurate measurements
+    document.fonts.ready.then(() => {
+      if (containerRef.current && textRef.current) {
+        const containerWidth = containerRef.current.offsetWidth;
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        
+        // Start with max font size
+        let size = 40;
+        let fits = false;
+        
+        // Binary search for optimal font size
+        let min = 1;
+        let max = 40;
+        
+        while (min <= max) {
+          size = Math.floor((min + max) / 2);
+          context.font = `${size}px Orbitron`;
+          const metrics = context.measureText(card.word);
+          const textWidth = Math.abs(metrics.actualBoundingBoxLeft) + Math.abs(metrics.actualBoundingBoxRight);
+          
+          if (textWidth <= containerWidth * 0.95) {
+            fits = true;
+            min = size + 1;
+          } else {
+            max = size - 1;
+          }
+        }
+        
+        // Use the last fitting size
+        setFontSize(fits ? size : Math.max(1, size - 1));
+      }
+    });
+  }, [card.word]);
 
   // Detect word changes and trigger animation
   useEffect(() => {
@@ -35,11 +75,13 @@ const Spell = ({ card, isAnimating }) => {
         <div className="Battle-card-divider"></div>
         <div className="Battle-card-middle">
           <div
-            className={`Battle-card-word ${
-              card.word.length > 8 ? "Battle-card-word-long" : ""
-            } ${wordChanged ? "word-pulse" : ""}`}
+            className={`Battle-card-word ${wordChanged ? "word-pulse" : ""}`}
+            ref={containerRef}
+            style={{ fontSize: `${fontSize}px` }}
           >
-            {card.word}
+            <span ref={textRef} style={{ display: 'inline-block' }}>
+              {card.word}
+            </span>
           </div>
           <div className="Battle-card-english">{card.english}</div>
           <div className="Battle-card-amount">
