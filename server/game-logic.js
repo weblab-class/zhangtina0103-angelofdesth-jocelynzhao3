@@ -102,16 +102,9 @@ const newGame = async (lobby, p1, p2, language) => {
       p2Effects: { freezeUntil: 0, block: false },
       multiplier: 1,
     };
-    //populate the three starting cards
-
-    let card1 = await newCard(language);
-    game.displayCards.push(card1);
-
-    let card2 = await newCard(language);
-    game.displayCards.push(card2);
-
-    let card3 = await newCard(language);
-    game.displayCards.push(card3);
+    //populate the three starting cards efficiently
+    const cards = await Promise.all([newCard(language), newCard(language), newCard(language)]);
+    game.displayCards.push(...cards);
 
     activeGames.set(lobby, game);
 
