@@ -3,7 +3,8 @@ import "./Start.css";
 
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
-import { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useContext } from "react";
 import { UserContext } from "../App";
 import { LanguageContext } from "../App";
 import { UserInfoContext } from "../App";
@@ -18,6 +19,7 @@ const Start = (props) => {
   const { language, setLanguage } = useContext(LanguageContext);
   const [showEffects, setShowEffects] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [titleText, setTitleText] = useState("");
   const spellEffects = [
     {
       icon: "",
@@ -29,6 +31,21 @@ const Start = (props) => {
     { icon: "", name: "3x", description: "Triple the effect of your next spell" },
     { icon: "", name: "Freeze", description: "Disable your opponent's keyboard for 3 seconds" },
   ];
+
+  useEffect(() => {
+    const text = "BattleLingo";
+    let currentIndex = 0;
+    const typingInterval = setInterval(() => {
+      if (currentIndex <= text.length) {
+        setTitleText(text.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, 250); // Changed from 150ms to 250ms for slower typing
+
+    return () => clearInterval(typingInterval);
+  }, []);
 
   // not needed?
   // useEffect(() => {
@@ -92,7 +109,7 @@ const Start = (props) => {
               </button>
             </div>
           )}
-          <h1 className="Start-title"> BattleLingo </h1>
+          <h1 className="Start-title typing-effect">{titleText}</h1>
           {!userContext.userId && <div className="signin-prompt">Sign in to start battling</div>}
 
           <div className="google-login-container">
