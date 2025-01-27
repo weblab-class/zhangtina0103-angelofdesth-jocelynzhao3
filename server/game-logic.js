@@ -37,10 +37,10 @@ const doEffect = (effectType, game, card, playerNumber) => {
     //p2 attacking
     if (effectType === "attack") {
       // check for block
-      const now = Date.now();
+      const timeNow = Date.now();
       while (game.p1Effects.block.length > 0) {
         const blockTime = game.p1Effects.block[0];
-        if (blockTime > now) {
+        if (blockTime > timeNow) {
           // Block is still active
           console.log("Attack blocked by P1!");
           // Remove just one block
@@ -78,10 +78,10 @@ const doEffect = (effectType, game, card, playerNumber) => {
     //p1 attacking
     if (effectType === "attack") {
       // check for block
-      const now = Date.now();
+      const timeNow = Date.now();
       while (game.p2Effects.block.length > 0) {
         const blockTime = game.p2Effects.block[0];
-        if (blockTime > now) {
+        if (blockTime > timeNow) {
           // Block is still active
           console.log("Attack blocked by P2!");
           // Remove just one block

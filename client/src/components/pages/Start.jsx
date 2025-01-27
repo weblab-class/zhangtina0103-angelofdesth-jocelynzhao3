@@ -98,7 +98,7 @@ const Start = (props) => {
         </div>
       )}
       <div className="Start-content">
-        <h1 className="Start-title"> BattleLingo v2</h1>
+        <h1 className="Start-title"> BattleLingo v3</h1>
         {!userContext.userId && <div className="signin-prompt">Sign in to start battling</div>}
 
         <div className="google-login-container">
