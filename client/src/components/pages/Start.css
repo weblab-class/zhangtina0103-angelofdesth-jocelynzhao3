@@ -479,6 +479,55 @@ select:not([value=""]) {
   pointer-events: none;
 }
 
+.svg-wrapper {
+  position: fixed;
+  bottom: -130px;
+  left: -120px;
+  right: 0;
+  z-index: -1;
+  overflow: visible;
+}
+
+.skyline-svg {
+  width: 105% !important;
+  height: auto;
+  display: block;
+  opacity: 0.7 !important;
+  background: none !important;
+  filter: drop-shadow(0 0 2px #0ff) drop-shadow(0 0 4px #0ff) drop-shadow(0 0 6px #0ff);
+  stroke: #0ff !important;
+  stroke-width: 1px !important;
+  fill: none !important;
+  animation: neonPulse 8.5s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+  0% {
+    filter: drop-shadow(0 0 2px #0ff) drop-shadow(0 0 4px #0ff) drop-shadow(0 0 6px #0ff);
+  }
+  50% {
+    filter: drop-shadow(0 0 3px #0ff) drop-shadow(0 0 6px #0ff) drop-shadow(0 0 9px #0ff);
+  }
+  100% {
+    filter: drop-shadow(0 0 2px #0ff) drop-shadow(0 0 4px #0ff) drop-shadow(0 0 6px #0ff);
+  }
+}
+
+.skyline-svg path {
+  stroke-dasharray: 5000;
+  stroke-dashoffset: 5000;
+  animation: drawLine 8.5s ease-out forwards;
+}
+
+@keyframes drawLine {
+  from {
+    stroke-dashoffset: 5000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 /* Effect highlight colors */
 .highlight-pink {
   color: #ff69b4;

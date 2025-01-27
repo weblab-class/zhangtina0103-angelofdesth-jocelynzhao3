@@ -64,7 +64,9 @@ const Start = (props) => {
     <>
       {showOverlay && <LoadingOverlay />}
       <div className="Start-container">
-        <img src={cityscapeSvg} alt="Cityscape" className="cityscape-background" />
+        <div className="svg-wrapper">
+          <img src={cityscapeSvg} className="skyline-svg" alt="cityscape" />
+        </div>
         <div className="Start-content">
           {userContext.userId && (
             <div className="Start-top-bar">
@@ -100,6 +102,7 @@ const Start = (props) => {
             </div>
           )}
           <h1 className="Start-title"> BattleLingo </h1>
+
           {!userContext.userId && <div className="signin-prompt">Sign in to start battling</div>}
 
           <div className="google-login-container">
