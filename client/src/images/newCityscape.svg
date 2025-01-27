@@ -9,7 +9,8 @@ Created by potrace 1.10, written by Peter Selinger 2001-2011
 </metadata>
 <g transform="translate(0.000000,309.000000) scale(0.100000,-0.100000)"
 fill="FFFFFF" stroke="#FFFFFF">
-<path d="M4267 1965 c6 -2 13 -21 15 -42 l3 -38 65 -3 c35 -2 70 -8 76 -13 7 -5
+  <!-- Add the path with animation -->
+  <path id="draw-path" d="M4267 1965 c6 -2 13 -21 15 -42 l3 -38 65 -3 c35 -2 70 -8 76 -13 7 -5
 24 -7 38 -3 56 14 56 17 56 -407 l0 -389 26 -6 c14 -4 37 -1 50 5 l25 11 -2
 307 c-3 348 -6 333 83 333 37 0 50 4 58 20 6 11 21 20 33 20 12 1 33 7 47 15
 33 19 139 19 164 0 11 -8 30 -15 42 -15 13 0 29 -9 37 -21 14 -20 23 -21 180
@@ -71,6 +72,18 @@ fill="FFFFFF" stroke="#FFFFFF">
 46 -17 46 -41 0 -35 25 -41 175 -40 141 2 178 -4 197 -33 4 -6 8 -97 8 -203 0
 -105 3 -198 6 -207 8 -20 48 -21 68 -1 13 13 15 66 15 364 1 192 3 356 7 365
 4 11 18 16 43 16 45 -1 168 14 174 20 2 3 8 21 13 40 9 33 13 35 59 40 48 6
-147 2 172 -5z"/>
+147 2 172 -5z"
+    stroke="#FFFFFF"
+    stroke-width="3"
+    fill="none"
+    stroke-dasharray="37750"
+    stroke-dashoffset="0">
+    <animate
+        attributeName="stroke-dashoffset"
+        from="0"
+        to="0"
+        dur="10s"
+        repeatCount="1"/>
+  </path>
 </g>
 </svg>
