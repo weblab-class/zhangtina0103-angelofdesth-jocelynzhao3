@@ -1,4 +1,5 @@
 let activeLobbies = new Map();
+let usersInLobby = new Set();
 
 // One single instance of an open lobby is as follows
 // openLobby = {
@@ -29,6 +30,11 @@ const IdGenerator = () => {
 };
 
 const createLobby = (p1, language) => {
+  // check if p1 is already in a lobby
+  if (usersInLobby.has(p1)) {
+    return false;
+  }
+  usersInLobby.add(p1);
   const lobbyid = IdGenerator();
   let lobby = {
     lobbyid: lobbyid,
@@ -55,6 +61,7 @@ const joinLobby = (lobbyid, player) => {
   // }
   if (!lobby.p2) {
     lobby.p2 = player;
+    usersInLobby.add(player);
     return true;
   }
   return false;
@@ -80,6 +87,8 @@ const updateReadyStatus = (lobbyid, player, isReady) => {
     }
     if (lobby.p1ready && lobby.p2ready) {
       console.log("LOBBY READY TO START: ", lobbyid);
+      usersInLobby.delete(lobby.p1); // now battling
+      usersInLobby.delete(lobby.p2); // now battling
       lobby.active = false;
       response.canStart = true;
     }
@@ -98,6 +107,8 @@ const leaveLobby = (lobbyid, player) => {
 
   if (player === lobby.p1) {
     // p1 leaving, lobby is deleted
+    usersInLobby.delete(lobby.p1);
+    usersInLobby.delete(lobby.p2);
     activeLobbies.delete(lobbyid);
     console.log("our lobby is now", lobby);
     return true;
@@ -105,6 +116,7 @@ const leaveLobby = (lobbyid, player) => {
 
   if (player === lobby.p2) {
     // p2 leaving, lobby can stay
+    usersInLobby.delete(lobby.p2);
     lobby.p2 = null;
     lobby.p2ready = false; // just in case
     console.log("our lobby is now", lobby);

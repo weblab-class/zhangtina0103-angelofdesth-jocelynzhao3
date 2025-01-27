@@ -54,10 +54,10 @@ const Lobbies = (props) => {
     };
 
     socket.on("activeLobbies", processLobbiesUpdate);
+    
+    // Cleanup: must use the same function reference
     return () => {
-      socket.off("activeLobbies", (data) => {
-        setActiveLobbies(data);
-      });
+      socket.off("activeLobbies", processLobbiesUpdate);
     };
   }, []);
 

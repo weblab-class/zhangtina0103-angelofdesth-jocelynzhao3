@@ -23,8 +23,8 @@ const LobbyList = (props) => {
             <p> Here are the active lobbies: </p>
             {props.lobbies.filter((lobby) => lobby.active)
             .map((lobby) => (
-                <>
                 <SingleActiveLobby 
+                    key={lobby.lobbyid}
                     lobby={lobby}
                     setDisplayedLobby={props.setDisplayedLobby}
                     active={ props.displayedLobby ? 
@@ -32,8 +32,6 @@ const LobbyList = (props) => {
                     setInLobby={props.setInLobby}
                     formatPlayerDisplay={props.formatPlayerDisplay}
                 />
-                </>
-                
             ))}
             </div>
             ) : (

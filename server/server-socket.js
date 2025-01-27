@@ -117,6 +117,7 @@ module.exports = {
       console.log(`socket has connected ${socket.id}`);
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
+        console.log("user has disconnected", user);
         if (user) {
           // check if player socket disconnects, end their lobby
           // if player disconnects, they can rejoin their game? (how are unfinished games cleaned?)
@@ -130,7 +131,7 @@ module.exports = {
       });
       socket.on("cards", (card) => {
         console.log("I have received the card", card);
-        gameLogic.playerTakeCard(card.lobby, card.userId, card.card);
+        gameLogic.playerTakeCard(card.lobby, card.userId, card.cardIndex);
       });
     });
   },
