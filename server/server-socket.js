@@ -131,7 +131,7 @@ module.exports = {
       });
       socket.on("cards", (card) => {
         console.log("I have received the card", card);
-        gameLogic.playerTakeCard(card.lobby, card.userId, card.cardIndex);
+        gameLogic.playerTakeCard(card.lobby, card.userId, card.card);
       });
     });
   },

@@ -122,7 +122,7 @@ const Battle = (props) => {
       const matchedWord = gameState.displayCards[matchIndex];
       console.log("Match found!", matchedWord);
       setTypedText("");
-      takeCard(matchIndex, userContext.userId, gameState.lobby);
+      takeCard(matchedWord, userContext.userId, gameState.lobby);
     }
   };
 

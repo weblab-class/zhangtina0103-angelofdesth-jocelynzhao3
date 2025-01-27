@@ -59,7 +59,7 @@ const SingleActiveLobby = (props) => {
     >
       <div className="SingleActiveLobby-info">
         <p>Lobby ID: {props.lobby.lobbyid}</p>
-        <p>P1/Host/Creator: {p1} </p>
+        <p>P1 (Host): {p1} </p>
         <p>P2: {p2} </p>
         <p>Language: {props.lobby.language}</p>
       </div>

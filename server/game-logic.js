@@ -238,14 +238,24 @@ const handleGameEnd = async (game, winner) => {
   }
 };
 
-const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") => {
+const playerTakeCard = async (lobby, player, cardData, playerType = "player") => {
   let game = activeGames.get(lobby);
   console.log("Current game state:", game);
-  const takenCard = game.displayCards[cardIndex];
-  console.log("Taking card:", takenCard, "at index:", cardIndex);
+  const takenCard = cardData; // Handle both {card: cardObj} and direct cardObj
+  console.log("Taking card:", takenCard, "from data", cardData);
 
   if (!game) {
     console.error("No game found for lobby:", lobby);
+    return;
+  }
+
+  const cardIndex = game.displayCards.findIndex(
+    (card) => card.word === takenCard.word
+  );
+
+
+  if (cardIndex === -1) {
+    console.error("Card not found in display cards:", takenCard);
     return;
   }
 
@@ -262,7 +272,7 @@ const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") =
   }
 
   if (!takenCard) {
-    console.error("No card found at index:", cardIndex);
+    console.error("No card found", takenCard );
     return;
   }
 
@@ -333,7 +343,7 @@ const botTakeCard = (game) => {
   const randomCardIndex = getRandomInt(0, 3);
   console.log("Bot is taking card at index:", randomCardIndex);
   if (game.p2Effects.freezeUntil <= Date.now()) {
-    playerTakeCard(game.lobby, "bot", randomCardIndex, "bot");
+    playerTakeCard(game.lobby, "bot", game.displayCards[randomCardIndex], "bot");
   }
 };
 
