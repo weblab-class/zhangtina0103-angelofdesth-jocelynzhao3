@@ -35,7 +35,6 @@ const updateLobbies = () => {
   io.emit("activeLobbies", activeLobbies);
 };
 
-
 const newLobby = (p1, language) => {
   const lobby = lobbyLogic.createLobby(p1, language);
   updateLobbies();
@@ -46,9 +45,9 @@ const leaveLobby = (lobbyid, player) => {
   const result = lobbyLogic.leaveLobby(lobbyid, player);
   if (result) {
     updateLobbies();
-  };
-  return result
-}
+  }
+  return result;
+};
 
 const joinLobby = (lobbyid, player) => {
   const joined = lobbyLogic.joinLobby(lobbyid, player);
@@ -56,19 +55,19 @@ const joinLobby = (lobbyid, player) => {
     updateLobbies();
   }
   return joined;
-}
+};
 
 const updateReadyStatus = (lobbyid, player, newReadyState) => {
   const response = lobbyLogic.updateReadyStatus(lobbyid, player, newReadyState);
   if (response.success) {
     if (response.canStart) {
       gameLogic.newGame(response.lobbyid, response.p1, response.p2, response.language);
-    } 
+    }
+    updateLobbies(); // okay, we don't need to tell everyone that this was updated
   }
-  updateLobbies()  // okay, we don't need to tell everyone that this was updated
-  // TODO: implement it such that only the affected lobby is updated 
-  return response
-}
+  // TODO: implement it such that only the affected lobby is updated
+  return response;
+};
 
 const newBotGame = (p1, language, difficulty) => {
   // starts the game with the player's id as the lobby name
@@ -118,11 +117,21 @@ module.exports = {
       console.log(`socket has connected ${socket.id}`);
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
+        console.log("user disconnet");
+        if (user) {
+          // check if player socket disconnects, end their lobby
+          // if player disconnects, they can rejoin their game? (how are unfinished games cleaned?)
+          for (const [lobbyId, lobby] of lobbyLogic.activeLobbies) {
+            if (lobby.p1 === user._id || lobby.p2 === user._id) {
+              leaveLobby(lobbyId, user._id);
+            }
+          }
+        }
         removeUser(user, socket);
       });
       socket.on("cards", (card) => {
         console.log("I have received the card", card);
-        gameLogic.playerTakeCard(card.lobby, card.userId, card.card);
+        gameLogic.playerTakeCard(card.lobby, card.userId, card.cardIndex);
       });
     });
   },

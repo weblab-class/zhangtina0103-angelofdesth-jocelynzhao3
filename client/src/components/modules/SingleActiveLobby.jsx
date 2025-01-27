@@ -48,16 +48,18 @@ const SingleActiveLobby = (props) => {
   }, [props.lobby, props.lobby.p1, props.lobby.p2, userInfo]);
 
   return (
-    <div className={`SingleActiveLobby-container ${(props.active) ?
-      "SingleActiveLobby-container-active" : ""
+    <div
+      className={`SingleActiveLobby-container ${
+        props.active ? "SingleActiveLobby-container-active" : ""
       }`}
-    onClick={() => {
-      props.setDisplayedLobby(props.lobby.lobbyid);
-      props.setInLobby(true);
-    }}>
+      onClick={() => {
+        props.setDisplayedLobby(props.lobby.lobbyid);
+        props.setInLobby(true);
+      }}
+    >
       <div className="SingleActiveLobby-info">
         <p>Lobby ID: {props.lobby.lobbyid}</p>
-        <p>P1: {p1} </p>
+        <p>P1/Host/Creator: {p1} </p>
         <p>P2: {p2} </p>
         <p>Language: {props.lobby.language}</p>
       </div>

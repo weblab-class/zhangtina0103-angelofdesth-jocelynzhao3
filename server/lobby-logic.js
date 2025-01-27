@@ -1,4 +1,5 @@
 let activeLobbies = new Map();
+let usersInLobby = new Set();
 
 // One single instance of an open lobby is as follows
 // openLobby = {
@@ -29,6 +30,11 @@ const IdGenerator = () => {
 };
 
 const createLobby = (p1, language) => {
+  // check if p1 is already in a lobby
+  if (usersInLobby.has(p1)) {
+    return false;
+  }
+  usersInLobby.add(p1);
   const lobbyid = IdGenerator();
   let lobby = {
     lobbyid: lobbyid,
@@ -37,7 +43,7 @@ const createLobby = (p1, language) => {
     language: language,
     p1ready: false,
     p2ready: false,
-    active: true
+    active: true,
   };
   activeLobbies.set(lobbyid, lobby);
   console.log(activeLobbies);
@@ -49,12 +55,13 @@ const joinLobby = (lobbyid, player) => {
   if (!lobby) {
     return false;
   }
-  if (!lobby.p1) {
-    lobby.p1 = player;
-    return true;
-  }
+  // if (!lobby.p1) {       // if there is a lobby there must be a p1
+  //   lobby.p1 = player;
+  //   return true;
+  // }
   if (!lobby.p2) {
     lobby.p2 = player;
+    usersInLobby.add(player);
     return true;
   }
   return false;
@@ -62,12 +69,14 @@ const joinLobby = (lobbyid, player) => {
 
 const updateReadyStatus = (lobbyid, player, isReady) => {
   const lobby = activeLobbies.get(lobbyid);
-  let response = {success: false, 
-    canStart: false, 
+  let response = {
+    success: false,
+    canStart: false,
     lobbyid: lobby.lobbyid,
     p1: lobby.p1,
     p2: lobby.p2,
-    language: lobby.language}
+    language: lobby.language,
+  };
   if (lobby) {
     if (player === lobby.p1) {
       lobby.p1ready = isReady;
@@ -78,6 +87,8 @@ const updateReadyStatus = (lobbyid, player, isReady) => {
     }
     if (lobby.p1ready && lobby.p2ready) {
       console.log("LOBBY READY TO START: ", lobbyid);
+      usersInLobby.delete(lobby.p1); // now battling
+      usersInLobby.delete(lobby.p2); // now battling
       lobby.active = false;
       response.canStart = true;
     }
@@ -87,28 +98,37 @@ const updateReadyStatus = (lobbyid, player, isReady) => {
 };
 
 const leaveLobby = (lobbyid, player) => {
-  console.log("my input is", lobbyid, player)
+  console.log("my input is", lobbyid, player);
   const lobby = activeLobbies.get(lobbyid);
   if (!lobby) {
-    return "error!";
+    console.log("Error: lobby not found");
+    return false;
   }
-  if (lobby.p1 !== player) {
-    if (lobby.p2 !== player) {
-      return "error!";
-    } else {
-      lobby.p2 = "";
-    }
-  } else {
-    lobby.p1 = "";
-  }
-  console.log("our lobby is now", lobby) 
-  // now check if lobby is empty. If lobby is empty, remove it
-  if (!lobby.p1 && !lobby.p2) {
-    activeLobbies.delete(lobbyid);
-  }
-  return true
-};
 
+  if (player === lobby.p1) {
+    // p1 leaving, lobby is deleted
+    usersInLobby.delete(lobby.p1);
+    usersInLobby.delete(lobby.p2);
+    activeLobbies.delete(lobbyid);
+    console.log("our lobby is now", lobby);
+    return true;
+  }
+
+  if (player === lobby.p2) {
+    // p2 leaving, lobby can stay
+    usersInLobby.delete(lobby.p2);
+    lobby.p2 = null;
+    lobby.p2ready = false; // just in case
+    console.log("our lobby is now", lobby);
+    return true;
+  }
+
+  // // now check if lobby is empty. If lobby is empty, remove it
+  // if (!lobby.p1 && !lobby.p2) {
+  //   activeLobbies.delete(lobbyid);
+  // }
+  return false; //
+};
 
 module.exports = {
   activeLobbies,
