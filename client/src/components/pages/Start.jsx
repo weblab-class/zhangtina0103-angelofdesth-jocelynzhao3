@@ -1,5 +1,6 @@
 import "../../utilities.css";
 import "./Start.css";
+import cityscapeSvg from "../../images/cityscape.svg";
 
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
@@ -63,6 +64,7 @@ const Start = (props) => {
     <>
       {showOverlay && <LoadingOverlay />}
       <div className="Start-container">
+        <img src={cityscapeSvg} alt="Cityscape" className="cityscape-background" />
         <div className="Start-content">
           {userContext.userId && (
             <div className="Start-top-bar">
