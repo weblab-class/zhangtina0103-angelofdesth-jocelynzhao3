@@ -1,5 +1,24 @@
 import "../../utilities.css";
 import "./Start.css";
+import zuluSvg from "../../images/zulu.svg";
+import spanishSvg from "../../images/spanish.svg";
+import chineseSvg from "../../images/chinese.svg";
+import arabicSvg from "../../images/arabic.svg";
+import frenchSvg from "../../images/french.svg";
+import germanSvg from "../../images/german.svg";
+import koreanSvg from "../../images/korean.svg";
+import hindiSvg from "../../images/hindi.svg";
+import portugueseSvg from "../../images/portuguese.svg";
+import afrikaansSvg from "../../images/afrikaans.svg";
+import vietnameseSvg from "../../images/vietnamese.svg";
+import japaneseSvg from "../../images/japanese.svg";
+import teluguSvg from "../../images/telugu.svg";
+import russianSvg from "../../images/russian.svg";
+import italianSvg from "../../images/italian.svg";
+import turkishSvg from "../../images/turkish.svg";
+import questionIcon from "../../assets/question.png";
+import trophyIcon from "../../assets/trophy.png";
+import doorIcon from "../../assets/door.png";
 
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
@@ -8,6 +27,7 @@ import { UserContext } from "../App";
 import { LanguageContext } from "../App";
 import { UserInfoContext } from "../App";
 import { get, post } from "../../utilities";
+import LoadingOverlay from "../modules/LoadingOverlay";
 
 const Start = (props) => {
   const userContext = useContext(UserContext);
@@ -16,6 +36,7 @@ const Start = (props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const { language, setLanguage } = useContext(LanguageContext);
   const [showEffects, setShowEffects] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
   const spellEffects = [
     {
       icon: "",
@@ -28,20 +49,23 @@ const Start = (props) => {
     { icon: "", name: "Freeze", description: "Disable your opponent's keyboard for 3 seconds" },
   ];
 
-  // not needed?
-  // useEffect(() => {
-  //   if (userContext.userId) {
-  //     get("/api/whoami").then((userData) => {
-  //       if (userData._id) {
-  //         setUserName(userData.name);
-  //         setUserInfo(userData); // Update userInfo with full user data
-  //         console.log("user data here " + userData);
-  //       }
-  //     });
-  //   } else {
-  //     setUserInfo({}); // Clear userInfo when user logs out
-  //   }
-  // }, [userContext.userId]);
+  const [typedText, setTypedText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+  const text = "BattleLingo";
+
+  useEffect(() => {
+    let currentChar = 0;
+    const typeChar = () => {
+      if (currentChar < text.length) {
+        setTypedText(text.slice(0, currentChar + 1));
+        currentChar++;
+        setTimeout(typeChar, 200);
+      } else {
+        setShowCursor(false); // Hide cursor after typing is complete
+      }
+    };
+    typeChar();
+  }, []);
 
   const handleStartClick = () => {
     if (userContext.userId) {

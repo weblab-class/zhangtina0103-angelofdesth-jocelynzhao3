@@ -51,16 +51,47 @@ const doEffect = (effectType, game, card, playerNumber) => {
         game.p1Effects.block.shift();
       }
 
+      // check for block
+      const now = Date.now();
+      while (game.p1Effects.block.length > 0) {
+        const blockTime = game.p1Effects.block[0];
+        if (blockTime > now) {
+          // Block is still active
+          console.log("Attack blocked by P1!");
+          // Remove just one block
+          game.p1Effects.block.shift();
+          return game;
+        }
+        // Remove expired block
+        game.p1Effects.block.shift();
+      }
+
       game.p1HP = Math.max(0, game.p1HP - amount); // Don't let HP go below 0
       console.log(`Attacked for ${amount} damage. P1 HP now: ${game.p1HP}`);
     } else if (effectType === "heal") {
       game.p2HP = Math.min(100, game.p2HP + amount); // Don't let HP go above 100
+      console.log(`Healed for ${amount} HP. P2 HP now: ${game.p2HP}`);
       console.log(`Healed for ${amount} HP. P2 HP now: ${game.p2HP}`);
     }
   } else {
     // playerNumber === 1
     //p1 attacking
     if (effectType === "attack") {
+      // check for block
+      const now = Date.now();
+      while (game.p2Effects.block.length > 0) {
+        const blockTime = game.p2Effects.block[0];
+        if (blockTime > now) {
+          // Block is still active
+          console.log("Attack blocked by P2!");
+          // Remove just one block
+          game.p2Effects.block.shift();
+          return game;
+        }
+        // Remove expired block
+        game.p2Effects.block.shift();
+      }
+
       // check for block
       const now = Date.now();
       while (game.p2Effects.block.length > 0) {
@@ -249,10 +280,7 @@ const playerTakeCard = async (lobby, player, cardData, playerType = "player") =>
     return;
   }
 
-  const cardIndex = game.displayCards.findIndex(
-    (card) => card.word === takenCard.word
-  );
-
+  const cardIndex = game.displayCards.findIndex((card) => card.word === takenCard.word);
 
   if (cardIndex === -1) {
     console.error("Card not found in display cards:", takenCard);
@@ -272,7 +300,7 @@ const playerTakeCard = async (lobby, player, cardData, playerType = "player") =>
   }
 
   if (!takenCard) {
-    console.error("No card found", takenCard );
+    console.error("No card found", takenCard);
     return;
   }
 

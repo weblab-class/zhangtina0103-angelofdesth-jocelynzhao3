@@ -112,6 +112,12 @@ router.get("/word", (req, res) => {
     });
 });
 
+router.get("/leaderboard", (req, res) => {
+  User.find().then((users) => {
+    res.send(users);
+  });
+});
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   console.log(`API route not found: ${req.method} ${req.url}`);

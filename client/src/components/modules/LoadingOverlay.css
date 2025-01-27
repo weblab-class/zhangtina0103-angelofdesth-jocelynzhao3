@@ -1,0 +1,69 @@
+.LoadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0a0a1f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  font-family: "Aerglo", sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+body.loading-active {
+  overflow: hidden;
+}
+
+.LoadingOverlay-content {
+  font-size: 8rem;
+  color: #4dffff;
+  text-shadow: 0 0 20px rgba(77, 255, 255, 0.6);
+  min-width: 200px;
+  text-align: center;
+  animation: numberAppear 0.8s ease-out;
+}
+
+.LoadingOverlay-content.go {
+  color: #ff4d4d;
+  text-shadow: 0 0 30px rgba(255, 77, 77, 0.8);
+  animation: goAnimation 1s forwards;
+  font-size: 10rem;
+}
+
+@keyframes numberAppear {
+  0% {
+    transform: scale(2);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes goAnimation {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}

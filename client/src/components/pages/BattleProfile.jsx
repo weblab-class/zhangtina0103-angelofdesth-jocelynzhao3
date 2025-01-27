@@ -1,15 +1,19 @@
 import "../../utilities.css";
-import "./BattleEnd.css";
+import "./BattleProfile.css";
 
 import React, { useContext, useState, useEffect } from "react";
 import { UserInfoContext } from "../App";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { get } from "../../utilities";
 
 const BattleProfile = (props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const [showAllResults, setShowAllResults] = useState(false);
   const INITIAL_RESULTS_COUNT = 10;
+
+  const [countdown, setCountdown] = useState(3);
+  const REDIRECT_DELAY = 3000; // 3 seconds delay before redirect
+  const navigate = useNavigate();
 
   // Fetch latest user info on component mount and when needed
   useEffect(() => {
@@ -23,15 +27,50 @@ const BattleProfile = (props) => {
     });
   }, []); // Run once on component mount
 
-  console.log("BattleEnd userInfo", userInfo);
-
-  if (!userInfo || !userInfo.name) {
-    return <div>Loading...</div>;
-  }
-
-  const displayedResults = showAllResults 
-    ? userInfo?.log 
+  const displayedResults = showAllResults
+    ? userInfo?.log
     : userInfo?.log?.slice(0, INITIAL_RESULTS_COUNT);
+
+  // Redirect effect for non-logged in users
+  useEffect(() => {
+    if (!userInfo?.name) {
+      const redirectTimer = setTimeout(() => {
+        navigate("/");
+      }, REDIRECT_DELAY);
+
+      // Update countdown every second
+      const countdownInterval = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(countdownInterval);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      // Cleanup timers if component unmounts
+      return () => {
+        clearTimeout(redirectTimer);
+        clearInterval(countdownInterval);
+      };
+    }
+  }, [userInfo, navigate]);
+
+  if (!userInfo) {
+    return (
+      <div className="BattleEnd-container">
+        <div className="BattleEnd-userinfo" style={{ textAlign: "center" }}>
+          <h2 style={{ color: "#ff4d4d" }}>Access Denied</h2>
+          <p>Please log in to view your battle profile.</p>
+          <p>Redirecting to start page in {countdown} seconds...</p>
+          <Link to="/" className="BattleEnd-button" style={{ marginTop: "20px" }}>
+            Go to Start Page
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="BattleEnd-container">
@@ -42,11 +81,19 @@ const BattleProfile = (props) => {
         <h2>Player Information</h2>
         <div className="BattleEnd-header">
           <div className="BattleEnd-player-info">
-            <img 
-              src={userInfo.avatarURL || "/default-avatar.png"} 
-              alt={`${userInfo.name}'s avatar`}
-              className="BattleEnd-avatar"
-            />
+            <div className="battle-profile-container">
+              <img
+                src={userInfo.picture || "/default-avatar.png"}
+                alt={userInfo.name}
+                className="profile-picture"
+                onError={(e) => {
+                  e.target.onerror = null; // Prevent infinite loop
+                  e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    userInfo.name
+                  )}&background=0D8ABC&color=fff`;
+                }}
+              />
+            </div>
             <div className="BattleEnd-player-details">
               <p>Name: {userInfo.name}</p>
               <p className="elo">ELO Rating: {userInfo.elo}</p>
@@ -85,10 +132,7 @@ const BattleProfile = (props) => {
                 </tbody>
               </table>
               {userInfo.log?.length > INITIAL_RESULTS_COUNT && !showAllResults && (
-                <button 
-                  className="BattleEnd-show-more" 
-                  onClick={() => setShowAllResults(true)}
-                >
+                <button className="BattleEnd-show-more" onClick={() => setShowAllResults(true)}>
                   Show More Results ({userInfo.log.length - INITIAL_RESULTS_COUNT} more)
                 </button>
               )}

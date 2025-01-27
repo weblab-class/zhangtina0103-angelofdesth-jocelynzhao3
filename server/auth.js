@@ -21,11 +21,25 @@ function verify(token) {
 function getOrCreateUser(user) {
   // the "sub" field means "subject", which is a unique identifier for each user
   return User.findOne({ googleid: user.sub }).then((existingUser) => {
-    if (existingUser) return existingUser;
+    if (existingUser) {
+      console.log("Comparing pictures:");
+      console.log("New picture URL:", user.picture);
+      console.log("Existing picture URL:", existingUser.picture);
+      
+      if (user.picture !== existingUser.picture) {
+        console.log("Picture URLs are different, updating...");
+        existingUser.picture = user.picture;
+        return existingUser.save();
+      } else {
+        console.log("Picture URLs are the same, no update needed");
+        return existingUser;
+      }
+    }
 
     const newUser = new User({
       name: user.name,
       googleid: user.sub,
+      picture: user.picture,
     });
 
     return newUser.save();

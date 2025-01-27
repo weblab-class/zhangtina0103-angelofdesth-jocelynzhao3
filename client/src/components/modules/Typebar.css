@@ -10,6 +10,11 @@
   box-sizing: border-box;
 }
 
+.type-bar {
+  position: relative;
+  width: 100%;
+}
+
 .target-text {
   margin-bottom: 10px; /* Space between prompt and input box */
   word-wrap: break-word;
@@ -70,4 +75,61 @@
   background-color: #e0f7ff;
   border-color: #80d8ff;
   cursor: not-allowed;
+}
+
+/* Snow and icicle images */
+.snow-right {
+  position: absolute;
+  top: 12px;
+  right: -245px;
+  z-index: 1;
+  height: 65px;
+}
+
+.snow-right-1 {
+  position: absolute;
+  top: -18px;
+  right: -197px;
+  z-index: 1;
+  height: 55px;
+}
+
+.icicle-1 {
+  position: absolute;
+  top: -10.7px;
+  left: 270px;
+  z-index: 1;
+  height: 60px;
+}
+
+.icicle-2 {
+  position: absolute;
+  top: -10.7px;
+  right: 180px;
+  z-index: 1;
+  height: 70px;
+}
+
+.icicle-3 {
+  position: absolute;
+  top: -10.7px;
+  left: 370px;
+  z-index: 1;
+  height: 60px;
+}
+
+.icicle-4 {
+  position: absolute;
+  top: -6px;
+  right: 80px;
+  z-index: 1;
+  height: 40px;
+}
+
+.icicle-5 {
+  position: absolute;
+  top: -10.7px;
+  right: 130px;
+  z-index: 1;
+  height: 60px;
 }
