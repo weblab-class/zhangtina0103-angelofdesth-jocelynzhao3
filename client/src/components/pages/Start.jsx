@@ -1,6 +1,24 @@
 import "../../utilities.css";
 import "./Start.css";
-import cityscapeSvg from "../../images/zulu.svg";
+import zuluSvg from "../../images/zulu.svg";
+import spanishSvg from "../../images/spanish.svg";
+import chineseSvg from "../../images/chinese.svg";
+import arabicSvg from "../../images/arabic.svg";
+import frenchSvg from "../../images/french.svg";
+import germanSvg from "../../images/german.svg";
+import koreanSvg from "../../images/korean.svg";
+import hindiSvg from "../../images/hindi.svg";
+import portugueseSvg from "../../images/portuguese.svg";
+import afrikaansSvg from "../../images/afrikaans.svg";
+import vietnameseSvg from "../../images/vietnamese.svg";
+import japaneseSvg from "../../images/japanese.svg";
+import teluguSvg from "../../images/telugu.svg";
+import russianSvg from "../../images/russian.svg";
+import italianSvg from "../../images/italian.svg";
+import turkishSvg from "../../images/turkish.svg";
+import questionIcon from "../../assets/question.png";
+import trophyIcon from "../../assets/trophy.png";
+import doorIcon from "../../assets/door.png";
 
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
@@ -31,20 +49,23 @@ const Start = (props) => {
     { icon: "", name: "Freeze", description: "Disable your opponent's keyboard for 3 seconds" },
   ];
 
-  // not needed?
-  // useEffect(() => {
-  //   if (userContext.userId) {
-  //     get("/api/whoami").then((userData) => {
-  //       if (userData._id) {
-  //         setUserName(userData.name);
-  //         setUserInfo(userData); // Update userInfo with full user data
-  //         console.log("user data here " + userData);
-  //       }
-  //     });
-  //   } else {
-  //     setUserInfo({}); // Clear userInfo when user logs out
-  //   }
-  // }, [userContext.userId]);
+  const [typedText, setTypedText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+  const text = "BattleLingo";
+
+  useEffect(() => {
+    let currentChar = 0;
+    const typeChar = () => {
+      if (currentChar < text.length) {
+        setTypedText(text.slice(0, currentChar + 1));
+        currentChar++;
+        setTimeout(typeChar, 200);
+      } else {
+        setShowCursor(false); // Hide cursor after typing is complete
+      }
+    };
+    typeChar();
+  }, []);
 
   const handleBattleClick = () => {
     if (userContext.userId) {
@@ -65,7 +86,52 @@ const Start = (props) => {
       {showOverlay && <LoadingOverlay />}
       <div className="Start-container">
         <div className="svg-wrapper">
-          <img src={cityscapeSvg} className="skyline-svg" alt="cityscape" />
+          {language === "Zulu" && <img src={zuluSvg} className="skyline-svg" alt="zulu design" />}
+          {language === "Spanish" && (
+            <img src={spanishSvg} className="skyline-svg" alt="spanish design" />
+          )}
+          {language === "Chinese" && (
+            <img src={chineseSvg} className="skyline-svg" alt="chinese design" />
+          )}
+          {language === "Arabic" && (
+            <img src={arabicSvg} className="skyline-svg" alt="arabic design" />
+          )}
+          {language === "French" && (
+            <img src={frenchSvg} className="skyline-svg" alt="french design" />
+          )}
+          {language === "German" && (
+            <img src={germanSvg} className="skyline-svg" alt="german design" />
+          )}
+          {language === "Korean" && (
+            <img src={koreanSvg} className="skyline-svg" alt="korean design" />
+          )}
+          {language === "Hindi" && (
+            <img src={hindiSvg} className="skyline-svg" alt="hindi design" />
+          )}
+          {language === "Portuguese" && (
+            <img src={portugueseSvg} className="skyline-svg" alt="portuguese design" />
+          )}
+          {language === "Afrikaans" && (
+            <img src={afrikaansSvg} className="skyline-svg" alt="afrikaans design" />
+          )}
+          {language === "Vietnamese" && (
+            <img src={vietnameseSvg} className="skyline-svg" alt="vietnamese design" />
+          )}
+          {language === "Japanese" && (
+            <img src={japaneseSvg} className="skyline-svg" alt="japanese design" />
+          )}
+          {language === "Telugu" && (
+            <img src={teluguSvg} className="skyline-svg" alt="telugu design" />
+          )}
+          {language === "Russian" && (
+            <img src={russianSvg} className="skyline-svg" alt="russian design" />
+          )}
+          {language === "Italian" && (
+            <img src={italianSvg} className="skyline-svg" alt="italian design" />
+          )}
+          {language === "Turkish" && (
+            <img src={turkishSvg} className="skyline-svg" alt="turkish design" />
+          )}
         </div>
         <div className="Start-content">
           {userContext.userId && (
@@ -87,21 +153,31 @@ const Start = (props) => {
                   </Link>
                 )}
               </div>
-              <Link to="/instructions" className="instructions-button">
-                ❓
-              </Link>
-              <Link to="/leaderboard" className="leaderboard-button">
-                🏆
-              </Link>
-              <button
-                onClick={userContext.handleLogout}
-                className="logout-button button-base neon-bg neon-border neon-text"
-              >
-                Sign out
-              </button>
+              <div className="icon-container">
+                <Link to="/instructions" className="instructions-button">
+                  <img src={questionIcon} alt="question mark" className="question-icon" />
+                </Link>
+                <Link to="/leaderboard" className="leaderboard-button">
+                  <img src={trophyIcon} alt="trophy" className="trophy-icon" />
+                </Link>
+                <button
+                  onClick={userContext.handleLogout}
+                  className="logout-button"
+                  aria-label="Sign Out"
+                >
+                  <img src={doorIcon} alt="sign out" className="door-icon" />
+                </button>
+              </div>
             </div>
           )}
-          <h1 className="Start-title"> BattleLingo </h1>
+          <h1 className="Start-title">
+            <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+              <div style={{ position: "relative", display: "inline-block" }}>
+                {typedText}
+                {showCursor && <span className="cursor">|</span>}
+              </div>
+            </div>
+          </h1>
 
           {!userContext.userId && <div className="signin-prompt">Sign in to start battling</div>}
 
@@ -152,6 +228,17 @@ const Start = (props) => {
                     <option value="German">German</option>
                     <option value="French">French</option>
                     <option value="Arabic">Arabic</option>
+                    <option value="Zulu">Zulu</option>
+                    <option value="Korean">Korean</option>
+                    <option value="Portuguese">Portuguese</option>
+                    <option value="Afrikaans">Afrikaans</option>
+                    <option value="Hindi">Hindi</option>
+                    <option value="Vietnamese">Vietnamese</option>
+                    <option value="Japanese">Japanese</option>
+                    <option value="Telugu">Telugu</option>
+                    <option value="Russian">Russian</option>
+                    <option value="Italian">Italian</option>
+                    <option value="Turkish">Turkish</option>
                   </select>
                 </div>
                 <div className={`battle-button-container ${language ? "visible" : ""}`}>
