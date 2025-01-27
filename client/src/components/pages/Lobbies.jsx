@@ -5,7 +5,8 @@ import LobbyList from "../modules/LobbyList";
 import PVPLobbyCreation from "../modules/PVPLobbyCreation";
 import Lobby from "../modules/Lobby";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { UserInfoContext } from "../App.jsx";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities.js";
 
@@ -14,6 +15,25 @@ const Lobbies = (props) => {
   // the possible states for the lobby will be {null, newPVP, newBot, #lobbyid}
   const [activeLobbies, setActiveLobbies] = useState([]);
   const [inLobby, setInLobby] = useState(false);
+  // TODO: update inLobby by having a useEffect that checks if a player is in any lobby in active games
+  const { userInfo, setUserInfo } = useContext(UserInfoContext);
+  
+  const formatPlayerDisplay = (playerSetFunc, id) => {
+    if (id) {
+    get("/api/otheruserinfo", {_id:id}).then((gotInfo) => {
+      if (gotInfo) {
+        let item =  `${gotInfo.name} [${gotInfo.elo}]`
+        if (gotInfo._id === userInfo._id) {
+          item = item + " (You!)"
+        }
+        playerSetFunc(item)
+      } else {
+        playerSetFunc("Error getting the player from id")
+      }
+    }) } else {
+      playerSetFunc("Waiting for player...")
+    }
+  }
 
   useEffect(() => {
     // initial pulling of the active lobbies
@@ -24,15 +44,16 @@ const Lobbies = (props) => {
     // TODO: if you are in a lobby, set the lobby to be that lobby
   }, []);
 
+
   useEffect(() => {
     // this will continuously update all the active lobbies
-    const callback = (data) => {
+    const processLobbiesUpdate = (data) => {
       console.log("I received", data);
       setActiveLobbies(data);
       console.log("now we have as active lobbies", activeLobbies);
     };
 
-    socket.on("activeLobbies", callback);
+    socket.on("activeLobbies", processLobbiesUpdate);
     return () => {
       socket.off("activeLobbies", (data) => {
         setActiveLobbies(data);
@@ -67,7 +88,8 @@ const Lobbies = (props) => {
           <LobbyList lobbies={activeLobbies} 
                       setDisplayedLobby={setDisplayedLobby} 
                       displayedLobby={displayedLobby}
-                      setInLobby={setInLobby}/>
+                      setInLobby={setInLobby}
+                      formatPlayerDisplay={formatPlayerDisplay}/>
         </div>
         <div>
           {displayedLobby ? (
@@ -77,8 +99,11 @@ const Lobbies = (props) => {
               ) : (
                 <>
                   {displayedLobby === "newBot" ? <BotLobbyCreation /> : 
-                  <Lobby lobby={displayedLobby} setInLobby={setInLobby} 
-                    setDisplayedLobby={setDisplayedLobby}/>}
+                  <Lobby lobbyid={displayedLobby} 
+                    activeLobbies={activeLobbies}
+                    setInLobby={setInLobby} 
+                    setDisplayedLobby={setDisplayedLobby}
+                    formatPlayerDisplay={formatPlayerDisplay}/>}
                 </>
               )}
             </>

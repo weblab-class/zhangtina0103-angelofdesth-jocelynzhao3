@@ -29,41 +29,51 @@ const removeUser = (user, socket) => {
   delete socketToUserMap[socket.id];
 };
 // LOBBY STUFF
-const newLobby = (p1, language) => {
-  const lobby = lobbyLogic.createLobby(p1, language);
+const updateLobbies = () => {
   activeLobbies = Array.from(lobbyLogic.activeLobbies.values());
   console.log("emitting in activeLobbies", activeLobbies);
   io.emit("activeLobbies", activeLobbies);
+};
+
+
+const newLobby = (p1, language) => {
+  const lobby = lobbyLogic.createLobby(p1, language);
+  updateLobbies();
   return lobby;
 };
 
-const leaveLobby = (lobby, player) => {
-  const result = lobbyLogic.leaveLobby(lobby, player);
+const leaveLobby = (lobbyid, player) => {
+  const result = lobbyLogic.leaveLobby(lobbyid, player);
   if (result) {
-    activeLobbies = Array.from(lobbyLogic.activeLobbies.values());
-    console.log("emitting in activeLobbies", activeLobbies);
-    io.emit("activeLobbies", activeLobbies);
+    updateLobbies();
   };
   return result
 }
 
-const joinLobby = (lobby, player) => {
-  const lobbyStatus = lobbyLogic.joinLobby(lobby, player);
-  if (lobbyStatus) {
-    console.log("got join request, now I am sending back", lobbyStatus);
-    io.emit(lobby, lobbyStatus);
-    return true;
+const joinLobby = (lobbyid, player) => {
+  const joined = lobbyLogic.joinLobby(lobbyid, player);
+  if (joined) {
+    updateLobbies();
   }
-  return false;
+  return joined;
+}
+
+const updateReadyStatus = (lobbyid, player, newReadyState) => {
+  const response = lobbyLogic.updateReadyStatus(lobbyid, player, newReadyState);
+  if (response.success) {
+    if (response.canStart) {
+      gameLogic.newGame(response.lobby.lobbyid, response.lobby.p1, response.lobby.p2, response.lobby.language);
+      lobbyLogic.deleteLobby(lobbyid)
+    } 
+  }
+  updateLobbies()  // okay, we don't need to tell everyone that this was updated
+  // TODO: implement it such that only the affected lobby is updated 
+  return response
 }
 
 const newBotGame = (p1, language, difficulty) => {
   // starts the game with the player's id as the lobby name
   gameLogic.newGame(p1, p1, "bot", language);
-};
-
-const newPVPGame = (lobby, p1, p2, language) => {
-  gameLogic.newGame(lobby, p1, p2, language);
 };
 
 // GAME STUFF
@@ -126,10 +136,10 @@ module.exports = {
   getSocketFromSocketID: getSocketFromSocketID,
 
   newLobby: newLobby,
-  newPVPGame: newPVPGame,
   newBotGame: newBotGame,
   leaveLobby: leaveLobby,
   joinLobby: joinLobby,
+  updateReadyStatus: updateReadyStatus,
 
   getIo: () => io,
 };

@@ -27,7 +27,7 @@ const PVPLobbyCreation = (props) => {
         // TODO: implement difficulty. Difficulty hardcoded to 1 for now
         post("/api/createLobby", { p1: userInfo._id, language: language}).then((lobby) => {
           console.log("the new lobby id is", lobby.lobby);
-          props.setDisplayedLobby(lobby.lobby);
+          props.setDisplayedLobby(lobby.lobby.lobbyid);
         });
       };
 

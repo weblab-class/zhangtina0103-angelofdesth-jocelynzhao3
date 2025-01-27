@@ -27,8 +27,9 @@ const LobbyList = (props) => {
                     lobby={lobby}
                     setDisplayedLobby={props.setDisplayedLobby}
                     active={ props.displayedLobby ? 
-                        props.displayedLobby.lobbyid === lobby.lobbyid : false}
+                        props.displayedLobby === lobby.lobbyid : false}
                     setInLobby={props.setInLobby}
+                    formatPlayerDisplay={props.formatPlayerDisplay}
                 />
                 </>
                 

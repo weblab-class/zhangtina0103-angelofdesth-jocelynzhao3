@@ -13,46 +13,55 @@ import { socket } from "../../client-socket.js";
  * The screen for creating lobbies
  *
  * Proptypes
- * @param {lobbyState} lobby - the displayed lobby that we're seeing
+ * @param {lobbyState} lobbyid - the displayed lobby that we're seeing
  */
 
 const Lobby = (props) => {
   const userContext = useContext(UserContext);
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
+  const [hasJoined, setHasJoined] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const [lobby, setLobby] = useState({  });
+  const [p1, setP1] = useState("");
+  const [p2, setP2] = useState("");
+
+
   const checkAlreadyInLobby = () => {
     const yourId = userContext.userId
-    return (yourId === props.lobby.p1) || (yourId === props.lobby.p2)
+    setHasJoined((yourId === lobby.p1) || (yourId === lobby.p2))
   }
-  const [hasJoined, setHasJoined] = useState(checkAlreadyInLobby());
-  const [isReady, setIsReady] = useState(false);
-  const [lobbyState, setLobbyState] = useState({});
-  const navigate = useNavigate();
-
-  const processUpdate = (update) => {
-    if (update) {
-      console.log("I have received the update to lobby status", update);
-      setLobbyState(update);
-    }
-  };
 
   useEffect(() => {
-    socket.on(props.lobby.lobbyid, processUpdate) // updates players if people join
+    console.log(props.activeLobbies)
+    console.log("checking against", props.lobbyid);
+    const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid)
+    setLobby(newlobby);
+  }, [props.activeLobbies, props.lobbyid]);
 
-    return () => {
-      socket.off(props.lobby.lobbyid);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    console.log("Lobby state updated:", lobby);
+    props.formatPlayerDisplay(setP1, lobby.p1)
+    props.formatPlayerDisplay(setP2, lobby.p2)
+    checkAlreadyInLobby();
+
+    if (lobby.p1ready && lobby.p2ready) {
+      navigate("/battle/" + lobby.lobbyid)
     }
-  }, [])
+  }, [lobby]);
+
 
   const handleJoinClick = () => {
-    post("/api/joinlobby", { lobby: props.lobby.lobbyid, player: userInfo._id }).then((result) => {
+    post("/api/joinlobby", { lobbyid: lobby.lobbyid, player: userInfo._id }).then((result) => {
       console.log("joined result: ", result);
       setHasJoined(result);
     });
   };
 
   const handleReadyClick = () => {
-    post("/api/updatereadystatus", {
-      lobby: props.lobby.lobbyid,
+    post("/api/updateReadyStatus", {
+      lobbyid: lobby.lobbyid,
       player: userInfo._id,
       isReady: true,
     }).then((result) => {
@@ -62,44 +71,19 @@ const Lobby = (props) => {
   };
 
   const handleLeaveClick = () => {
-    post("/api/leaveLobby", { lobby: props.lobby.lobbyid, player: userInfo._id }).then((result) => {
+    post("/api/leaveLobby", { lobbyid: lobby.lobbyid, player: userInfo._id }).then((result) => {
       console.log("leave result: ", result);
       props.setInLobby(false);
       props.setDisplayedLobby("");
     });
   };
 
-  const [p1, setP1] = useState("");
-  const [p2, setP2] = useState("");
-
-  const formatPlayerDisplay = (playerSetFunc, id) => {
-    if (id) {
-    get("/api/otheruserinfo", {_id:id}).then((gotInfo) => {
-      if (gotInfo) {
-        let item =  `${gotInfo.name} [${gotInfo.elo}]`
-        if (gotInfo._id === userInfo._id) {
-          item = item + " (You!)"
-        }
-        playerSetFunc(item)
-      } else {
-        playerSetFunc("Error getting the player from id")
-      }
-    }) } else {
-      playerSetFunc("Waiting for player...")
-    }
-  }
-
-  useEffect(() => {
-    formatPlayerDisplay(setP1, props.lobby.p1)
-    formatPlayerDisplay(setP2, props.lobby.p2)
-    console.log("the use effect has been triggered by a change in stuff")
-  }, [props.lobby.p1, props.lobby.p2]);
-
+  
   
 
   return (
     <div>
-      <h3>Lobby {props.lobby.lobbyid}</h3>
+      <h3>Lobby {lobby.lobbyid}</h3>
       <div>
         <p> You are {userInfo.id} with name {userInfo.name} and elo {userInfo.elo} </p>
         <p>
@@ -123,7 +107,7 @@ const Lobby = (props) => {
               </p>
             ) : (
               <>
-                {(props.lobby.p1 && props.lobby.p2) ? (<button className="SingleActiveLobby-readyButton" onClick={handleReadyClick}>
+                {(lobby.p1 && lobby.p2) ? (<button className="SingleActiveLobby-readyButton" onClick={handleReadyClick}>
                   Ready to Battle!
                 </button>) : ( <p> Waiting for more players...</p>)}
                 <button className="SingleActiveLobby-leaveButton" onClick={handleLeaveClick}>

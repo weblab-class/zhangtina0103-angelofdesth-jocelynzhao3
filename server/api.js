@@ -60,17 +60,17 @@ router.post("/createLobby", (req, res) => {
 });
 
 router.post("/joinLobby", (req, res) => {
-  const result = socketManager.joinLobby(req.body.lobby, req.body.player);
+  const result = socketManager.joinLobby(req.body.lobbyid, req.body.player);
   res.send({ result: result });
 });
 
 router.post("/updateReadyStatus", (req, res) => {
-  const result = lobbyLogic.updateReadyStatus(req.body.lobby, req.body.player, req.body.isReady);
-  res.send({ result: result });
+  const result = socketManager.updateReadyStatus(req.body.lobbyid, req.body.player, req.body.isReady);
+  res.send(result);
 });
 
 router.post("/leaveLobby", (req, res) => {
-  const result = socketManager.leaveLobby(req.body.lobby, req.body.player);
+  const result = socketManager.leaveLobby(req.body.lobbyid, req.body.player);
   res.send({ result: result });
 });
 
