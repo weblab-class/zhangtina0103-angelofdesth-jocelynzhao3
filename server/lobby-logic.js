@@ -1,5 +1,3 @@
-const { activeGames } = require("./game-logic");
-
 let activeLobbies = new Map();
 
 // One single instance of an open lobby is as follows
@@ -10,6 +8,7 @@ let activeLobbies = new Map();
 //     language: - language of the game
 //     p1ready: true/false
 //     p2ready: true/false
+//     active: true
 // }
 
 const IdGenerator = () => {
@@ -38,6 +37,7 @@ const createLobby = (p1, language) => {
     language: language,
     p1ready: false,
     p2ready: false,
+    active: true
   };
   activeLobbies.set(lobbyid, lobby);
   console.log(activeLobbies);
@@ -62,7 +62,12 @@ const joinLobby = (lobbyid, player) => {
 
 const updateReadyStatus = (lobbyid, player, isReady) => {
   const lobby = activeLobbies.get(lobbyid);
-  let response = {success: false, canStart: false, lobby: lobby}
+  let response = {success: false, 
+    canStart: false, 
+    lobbyid: lobby.lobbyid,
+    p1: lobby.p1,
+    p2: lobby.p2,
+    language: lobby.language}
   if (lobby) {
     if (player === lobby.p1) {
       lobby.p1ready = isReady;
@@ -73,9 +78,10 @@ const updateReadyStatus = (lobbyid, player, isReady) => {
     }
     if (lobby.p1ready && lobby.p2ready) {
       console.log("LOBBY READY TO START: ", lobbyid);
-      response.canStart = true
+      lobby.active = false;
+      response.canStart = true;
     }
-    response.success = true
+    response.success = true;
   }
   return response;
 };
@@ -103,11 +109,6 @@ const leaveLobby = (lobbyid, player) => {
   return true
 };
 
-const deleteLobby = (lobbyid) => {
-  activeGames.delete(lobbyid)
-}
-
-
 
 module.exports = {
   activeLobbies,
@@ -115,5 +116,4 @@ module.exports = {
   joinLobby,
   updateReadyStatus,
   leaveLobby,
-  deleteLobby,
 };

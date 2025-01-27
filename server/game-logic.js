@@ -3,6 +3,7 @@
 /** Utils! */
 const Word = require("./models/word");
 const User = require("./user");
+const { activeLobbies } = require("./lobby-logic");
 
 /** Helper to generate a random integer */
 const getRandomInt = (min, max) => {
@@ -153,6 +154,7 @@ const getCurrentTime = () => {
 const handleGameEnd = async (game, winner) => {
   try {
     activeGames.delete(game.lobby);
+    activeLobbies.delete(game.lobby);
 
     // Only update database if players are not bots
     if (game.p1 !== "bot") {

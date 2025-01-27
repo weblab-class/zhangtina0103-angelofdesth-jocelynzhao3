@@ -21,7 +21,8 @@ const LobbyList = (props) => {
             {props.lobbies.length > 0 ? (
             <div>
             <p> Here are the active lobbies: </p>
-            {props.lobbies.map((lobby) => (
+            {props.lobbies.filter((lobby) => lobby.active)
+            .map((lobby) => (
                 <>
                 <SingleActiveLobby 
                     lobby={lobby}

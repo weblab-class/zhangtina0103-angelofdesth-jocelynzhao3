@@ -15,7 +15,7 @@ const SingleActiveLobby = (props) => {
   }, [props.lobby])
 
   return (
-    <div className={`SingleActiveLobby-container ${props.active ?
+    <div className={`SingleActiveLobby-container ${(props.active) ?
       "SingleActiveLobby-container-active" : ""
       }`}
     onClick={() => {

@@ -62,8 +62,7 @@ const updateReadyStatus = (lobbyid, player, newReadyState) => {
   const response = lobbyLogic.updateReadyStatus(lobbyid, player, newReadyState);
   if (response.success) {
     if (response.canStart) {
-      gameLogic.newGame(response.lobby.lobbyid, response.lobby.p1, response.lobby.p2, response.lobby.language);
-      lobbyLogic.deleteLobby(lobbyid)
+      gameLogic.newGame(response.lobbyid, response.p1, response.p2, response.language);
     } 
   }
   updateLobbies()  // okay, we don't need to tell everyone that this was updated
@@ -94,7 +93,7 @@ const startRunningGames = (activeGames) => {
       }
     } else {
       sendGameState(game);
-      console.log("I have sent the game", game);
+      // console.log("I have sent the game", game);
     }
   };
 

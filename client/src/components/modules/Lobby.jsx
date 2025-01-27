@@ -35,7 +35,12 @@ const Lobby = (props) => {
     console.log(props.activeLobbies)
     console.log("checking against", props.lobbyid);
     const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid)
-    setLobby(newlobby);
+    if (newlobby) {
+      setLobby(newlobby);
+    } else {
+      setLobby("");
+    }
+    
   }, [props.activeLobbies, props.lobbyid]);
 
   const navigate = useNavigate();
