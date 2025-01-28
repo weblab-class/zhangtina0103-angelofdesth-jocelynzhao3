@@ -96,15 +96,16 @@ const startRunningGames = (activeGames) => {
     }
   };
 
-  const runAllGames = () => {
+  const runAllGames = async () => {
     if (activeGames) {
-      activeGames.forEach((game, lobbyname) => {
-        runGame(game);
-      });
+      const gamePromises = Array.from(activeGames).map(([lobbyname, game]) => runGame(game));
+      await Promise.all(gamePromises);
     }
   };
 
-  setInterval(runAllGames, 1000 / 60); // 60 frames per second
+  setInterval(async () => {
+    await runAllGames();
+  }, 1000 / 60); // 60 frames per second
 };
 
 startRunningGames(gameLogic.activeGames);
