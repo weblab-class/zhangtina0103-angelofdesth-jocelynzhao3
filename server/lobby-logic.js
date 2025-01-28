@@ -60,8 +60,19 @@ const joinLobby = (lobbyid, player) => {
   //   return true;
   // }
   if (!lobby.p2) {
+    // if there is no p2, we can add the player
+
+    if (usersInLobby.has(player)) {
+      // remove them from current lobby
+      for (const lobby of activeLobbies.values()) {
+        if (lobby.p1 === player || lobby.p2 === player) {
+          leaveLobby(lobby.lobbyid, player);
+        }
+      }
+    } else {
+      usersInLobby.add(player);
+    }
     lobby.p2 = player;
-    usersInLobby.add(player);
     return true;
   }
   return false;

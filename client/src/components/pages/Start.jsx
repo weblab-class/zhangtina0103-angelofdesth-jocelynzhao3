@@ -85,10 +85,13 @@ const Start = (props) => {
               <img src={trophyIcon} alt="leaderboard" className="trophy-icon" />
             </Link>
             <Link to="/battleProfile" className="profile-button">
-              <img 
-                src={userInfo?.picture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                alt="profile" 
-                className="profile-icon" 
+              <img
+                src={
+                  userInfo?.picture ||
+                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                }
+                alt="profile"
+                className="profile-icon"
               />
             </Link>
             <button onClick={userContext.handleLogout} className="logout-button">
@@ -98,7 +101,7 @@ const Start = (props) => {
         </div>
       )}
       <div className="Start-content">
-        <h1 className="Start-title"> BattleLingo v3</h1>
+        <h1 className="Start-title"> BattleLingo v4</h1>
         {!userContext.userId && <div className="signin-prompt">Sign in to start battling</div>}
 
         <div className="google-login-container">
