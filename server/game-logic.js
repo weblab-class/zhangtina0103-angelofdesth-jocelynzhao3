@@ -394,6 +394,8 @@ const startBotPlay = (lobby, difficulty) => {
     waitTime = 9000;
   } else if (difficulty === 3) {
     waitTime = 3000;
+  } else {
+    waitTime = 15000;
   }
 
   const interval = setInterval(() => {
