@@ -1,0 +1,84 @@
+.SingleActiveLobby-container {
+  border: 2px solid white;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+  color: white;
+  transition: border-width 0.2s ease;
+}
+
+
+
+.SingleActiveLobby-container.joined {
+  border-width: 4px;
+}
+
+.SingleActiveLobby-container p {
+  margin: 8px 0;
+  color: white;
+}
+
+.SingleActiveLobby-container-active {
+  background-color: darkcyan
+}
+
+.SingleActiveLobby-joinButton,
+.SingleActiveLobby-readyButton {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.SingleActiveLobby-joinButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.SingleActiveLobby-readyButton {
+  border-width: 2px;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.SingleActiveLobby-readyButton:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.SingleActiveLobby-buttonContainer {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.SingleActiveLobby-leaveButton {
+  background-color: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.SingleActiveLobby-leaveButton:hover {
+  background-color: rgba(255, 0, 0, 0.1);
+  border-color: white;
+}
+
+.SingleActiveLobby-waitingMessage {
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+  margin: 0;
+  padding: 8px 0;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}

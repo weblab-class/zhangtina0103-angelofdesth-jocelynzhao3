@@ -28,14 +28,29 @@ const basefreezeDuration = 3000;
 
 const activeGames = new Map();
 
-const doEffect = (effectType, game, card, player = "player") => {
+const doEffect = (effectType, game, card, playerNumber) => {
   if (effectType === "freeze") return game; // no need to change HP
 
   const amount = card.effect.amount * game.multiplier;
 
-  if (player === "bot") {
+  if (playerNumber === 2) {
     //p2 attacking
     if (effectType === "attack") {
+      // check for block
+      const timeNow = Date.now();
+      while (game.p1Effects.block.length > 0) {
+        const blockTime = game.p1Effects.block[0];
+        if (blockTime > timeNow) {
+          // Block is still active
+          console.log("Attack blocked by P1!");
+          // Remove just one block
+          game.p1Effects.block.shift();
+          return game;
+        }
+        // Remove expired block
+        game.p1Effects.block.shift();
+      }
+
       // check for block
       const now = Date.now();
       while (game.p1Effects.block.length > 0) {
@@ -56,10 +71,27 @@ const doEffect = (effectType, game, card, player = "player") => {
     } else if (effectType === "heal") {
       game.p2HP = Math.min(100, game.p2HP + amount); // Don't let HP go above 100
       console.log(`Healed for ${amount} HP. P2 HP now: ${game.p2HP}`);
+      console.log(`Healed for ${amount} HP. P2 HP now: ${game.p2HP}`);
     }
   } else {
+    // playerNumber === 1
     //p1 attacking
     if (effectType === "attack") {
+      // check for block
+      const timeNow = Date.now();
+      while (game.p2Effects.block.length > 0) {
+        const blockTime = game.p2Effects.block[0];
+        if (blockTime > timeNow) {
+          // Block is still active
+          console.log("Attack blocked by P2!");
+          // Remove just one block
+          game.p2Effects.block.shift();
+          return game;
+        }
+        // Remove expired block
+        game.p2Effects.block.shift();
+      }
+
       // check for block
       const now = Date.now();
       while (game.p2Effects.block.length > 0) {
@@ -85,10 +117,6 @@ const doEffect = (effectType, game, card, player = "player") => {
 
   if (effectType === "3x") {
     game.multiplier = game.multiplier * 3; // multiply by 3 each time
-  } else if (effectType === "block") {
-    game.multiplier = 1; // resets multiplier for block cards
-  } else if (effectType === "freeze") {
-    game.multiplier = 1; // resets multiplier for freeze cards
   } else {
     game.multiplier = 1; // resets multiplier for non-3x cards
   }
@@ -148,16 +176,10 @@ const newGame = async (lobby, p1, p2, language) => {
       multiplier: 1, // Start with 1x multiplier
       lastCardEffect: null, // Initialize lastCardEffect to null
     };
-    //populate the three starting cards
 
-    let card1 = await newCard(language);
-    game.displayCards.push(card1);
-
-    let card2 = await newCard(language);
-    game.displayCards.push(card2);
-
-    let card3 = await newCard(language);
-    game.displayCards.push(card3);
+    //populate the three starting cards efficiently
+    const cards = await Promise.all([newCard(language), newCard(language), newCard(language)]);
+    game.displayCards.push(...cards);
 
     activeGames.set(lobby, game);
 
@@ -210,7 +232,6 @@ const handleGameEnd = async (game, winner) => {
         Language: game.language,
         Date: getCurrentTime(),
       };
-      console.log(game.p1);
 
       const user = await User.findOne({ _id: game.p1 });
       if (user) {
@@ -220,8 +241,6 @@ const handleGameEnd = async (game, winner) => {
         user.elo = Math.max(1, user.elo + (p1Result === "Win" ? 1 : -1));
         // Save the updated user
         await user.save();
-        console.log("User 1 updated successfully:", user);
-        // socket this over?
       } else {
         console.error("User 1 not found");
       }
@@ -241,7 +260,6 @@ const handleGameEnd = async (game, winner) => {
         user.log = [p2Log, ...user.log];
         user.elo = Math.max(1, user.elo + (p2Result === "Win" ? 1 : -1));
         await user.save();
-        console.log("User 2 updated successfully:", user);
       } else {
         console.error("User 2 not found");
       }
@@ -251,40 +269,69 @@ const handleGameEnd = async (game, winner) => {
   }
 };
 
-const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") => {
+const playerTakeCard = async (lobby, player, cardData, playerType = "player") => {
   let game = activeGames.get(lobby);
-  console.log(game);
-  const takenCard = game.displayCards[cardIndex];
-  console.log("I have received the card", takenCard);
+  console.log("Current game state:", game);
+  const takenCard = cardData; // Handle both {card: cardObj} and direct cardObj
+  console.log("Taking card:", takenCard, "from data", cardData);
+
+  if (!game) {
+    console.error("No game found for lobby:", lobby);
+    return;
+  }
+
+  const cardIndex = game.displayCards.findIndex((card) => card.word === takenCard.word);
+
+  if (cardIndex === -1) {
+    console.error("Card not found in display cards:", takenCard);
+    return;
+  }
+
+  let playerNumber;
+  if (player === game.p1) {
+    playerNumber = 1;
+    console.log("Player 1 taking card");
+  } else if (player === game.p2) {
+    playerNumber = 2;
+    console.log("Player 2 taking card");
+  } else {
+    console.error("Invalid player:", player);
+    return;
+  }
+
+  if (!takenCard) {
+    console.error("No card found", takenCard);
+    return;
+  }
 
   if (takenCard.effect.type === "attack" || takenCard.effect.type === "heal") {
-    game = doEffect(takenCard.effect.type, game, takenCard, playerType);
+    game = doEffect(takenCard.effect.type, game, takenCard, playerNumber);
   } else if (takenCard.effect.type === "lifesteal") {
     // do attack and heal
-    game = doEffect("attack", game, takenCard, playerType);
-    game = doEffect("heal", game, takenCard, playerType);
+    game = doEffect("attack", game, takenCard, playerNumber);
+    game = doEffect("heal", game, takenCard, playerNumber);
   } else if (takenCard.effect.type === "freeze") {
     // Calculate freeze duration before resetting multiplier
     const freezeDuration = basefreezeDuration * game.multiplier;
     console.log(`Applying freeze for ${freezeDuration}ms with multiplier ${game.multiplier}`);
 
     // Then reset multiplier through doEffect
-    game = doEffect("freeze", game, takenCard, playerType);
+    game = doEffect("freeze", game, takenCard, playerNumber);
 
     // Apply freeze effect with saved duration
-    if (playerType === "bot") {
+    if (playerNumber === 2) {
       game.p1Effects.freezeUntil = Date.now() + freezeDuration;
     } else {
       game.p2Effects.freezeUntil = Date.now() + freezeDuration;
     }
   } else if (takenCard.effect.type === "3x") {
-    game = doEffect("3x", game, takenCard, playerType);
+    game = doEffect("3x", game, takenCard, playerNumber);
   } else if (takenCard.effect.type === "block") {
     // Save current multiplier
     const currentMultiplier = game.multiplier;
 
     // Apply block effect with current multiplier
-    if (playerType === "bot") {
+    if (playerNumber === 2) {
       game.p2Effects.block = game.p2Effects.block.concat(
         new Array(currentMultiplier).fill(Date.now() + 3000) // Block for 3 seconds
       );
@@ -295,12 +342,16 @@ const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") =
     }
     console.log(`Block effect applied with multiplier ${currentMultiplier}!`);
 
-    // Then reset multiplier through doEffect
-    game = doEffect("block", game, takenCard, playerType);
+    // Reset multiplier
+    game = doEffect("block", game, takenCard, playerNumber);
   }
 
   // Update last card effect for either player or bot
   game.lastCardEffect = takenCard.effect.type;
+
+  // Update the game in activeGames map
+  activeGames.set(lobby, game);
+  console.log("Updated game state:", game);
 
   // checks if the game is complete with the new updated hps
   await checkWin(game);
@@ -308,7 +359,7 @@ const playerTakeCard = async (lobby, player, cardIndex, playerType = "player") =
   // removes the card and replaces it with a new card
   let replacement = await newCard(game.language);
   game.displayCards[cardIndex] = replacement;
-  activeGames.set(game.lobby, { ...game });
+  activeGames.set(lobby, { ...game });
   console.log("new cards are now", game.displayCards);
 };
 
@@ -320,7 +371,7 @@ const botTakeCard = (game) => {
   const randomCardIndex = getRandomInt(0, 3);
   console.log("Bot is taking card at index:", randomCardIndex);
   if (game.p2Effects.freezeUntil <= Date.now()) {
-    playerTakeCard(game.lobby, "bot", randomCardIndex, "bot");
+    playerTakeCard(game.lobby, "bot", game.displayCards[randomCardIndex], "bot");
   }
 };
 

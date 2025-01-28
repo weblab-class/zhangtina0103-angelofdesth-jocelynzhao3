@@ -16,6 +16,9 @@ const Word = require("./models/word");
 // import authentication library
 const auth = require("./auth");
 
+// lobby logic for sending
+const lobbyLogic = require("./lobby-logic");
+
 // api endpoints: all these paths will be prefixed with "/api/"
 const router = express.Router();
 
@@ -44,9 +47,41 @@ router.post("/initsocket", (req, res) => {
 // | write your API methods below!|
 // |------------------------------|
 
-//grab a word from the database filtered by language
-router.post("/startGame", (req, res) => {
-  socketManager.newGame(req.body.playerId, req.body.language);
+//Lobby APIs
+router.get("/activeLobbies", (req, res) => {
+  const activeLobbies = Array.from(lobbyLogic.activeLobbies.values());
+  console.log("got a request to show all the active lobbies, sending", activeLobbies);
+  res.send({ lobbies: activeLobbies });
+});
+
+router.post("/createLobby", (req, res) => {
+  const lobby = socketManager.newLobby(req.body.p1, req.body.language);
+  res.send({ lobby: lobby });
+});
+
+router.post("/joinLobby", (req, res) => {
+  const result = socketManager.joinLobby(req.body.lobbyid, req.body.player);
+  res.send({ result: result });
+});
+
+router.post("/updateReadyStatus", (req, res) => {
+  const result = socketManager.updateReadyStatus(req.body.lobbyid, req.body.player, req.body.isReady);
+  res.send(result);
+});
+
+router.post("/leaveLobby", (req, res) => {
+  const result = socketManager.leaveLobby(req.body.lobbyid, req.body.player);
+  res.send({ result: result });
+});
+
+//Game APIs
+router.post("/startPVPGame", (req, res) => {
+  socketManager.newPVPGame(req.body.lobby, req.body.p1, req.body.p2, req.body.language);
+  res.send({});
+});
+
+router.post("/startBotGame", (req, res) => {
+  socketManager.newBotGame(req.body.p1, req.body.language, req.body.difficulty);
   res.send({});
 });
 
@@ -56,6 +91,13 @@ router.get("/userinfo", (req, res) => {
   });
 });
 
+router.get("/otheruserinfo", (req, res) => {
+  User.findOne({ _id: req.query._id }).then((userInfo) => {
+    res.send(userInfo);
+  });
+});
+
+// gets one word from the database
 router.get("/word", (req, res) => {
   Word.aggregate([
     { $match: { language: req.query.language } },

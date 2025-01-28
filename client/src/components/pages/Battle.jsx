@@ -56,38 +56,42 @@ const Battle = (props) => {
     textRefs.current = textRefs.current.slice(0, gameState.displayCards.length);
   }, [gameState.displayCards.length]);
 
+  const processUpdate = (update) => {
+    if (update) {
+      if (update !== "over") {
+        console.log("I have received the update", update);
+        setGameState(update);
+      } else {
+        console.log("Game over");
+        // Make API call to get updated user info (including new ELO)
+        get("/api/userinfo", { _id: userContext.userId })
+          .then((userData) => {
+            if (userData._id) {
+              console.log("Got updated user data");
+              setUserInfo(userData); // Update global user info context
+              // Only navigate after user info is updated
+              navigate("/battleProfile/");
+            }
+          })
+          .catch((err) => {
+            console.error("Error getting updated user info:", err);
+            navigate("/battleProfile/"); // Navigate anyway if there's an error
+          });
+      }
+    }
+  };
+
   // gets the Game state on mount
   useEffect(() => {
-    socket.on("update", (update) => {
-      if (update) {
-        if (update !== "over") {
-          console.log("I have received the update", update);
-          // Keep the lastCardEffect from the update if it exists, otherwise keep current value
-          setGameState((prevState) => ({
-            ...update,
-            lastCardEffect: update.lastCardEffect || prevState.lastCardEffect,
-          }));
-        } else {
-          console.log("Game over");
-          // Make API call to get updated user info (including new ELO)
-          get("/api/userinfo", { _id: userContext.userId })
-            .then((userData) => {
-              if (userData._id) {
-                console.log("Got updated user data");
-                setUserInfo(userData); // Update global user info context
-                // Only navigate after user info is updated
-                navigate("/battleProfile/");
-              }
-            })
-            .catch((err) => {
-              console.error("Error getting updated user info:", err);
-              navigate("/battleProfile/"); // Navigate anyway if there's an error
-            });
-        }
-      }
-    });
+    if (lobby) {
+      socket.on(lobby, processUpdate);
+    } else {
+      socket.on(userContext.userId, processUpdate);
+    }
+
     return () => {
-      socket.off("update");
+      socket.off(lobby);
+      socket.off(userContext.userId);
     };
   }, []);
 
@@ -128,12 +132,7 @@ const Battle = (props) => {
       const matchedWord = gameState.displayCards[matchIndex];
       console.log("Match found!", matchedWord);
       setTypedText("");
-      // Update last card effect before taking the card
-      setGameState((prevState) => ({
-        ...prevState,
-        lastCardEffect: matchedWord.effect.type,
-      }));
-      takeCard(matchIndex, userContext.userId, gameState.lobby);
+      takeCard(matchedWord, userContext.userId, gameState.lobby);
     }
   };
 
@@ -340,14 +339,8 @@ const Battle = (props) => {
                     <div className="Battle-card-effect">{card.effect.type}</div>
                     <div className="Battle-card-divider"></div>
                     <div className="Battle-card-middle">
-                      <div
-                        className="Battle-card-word-container"
-                        ref={containerRef}
-                      >
-                        <div
-                          className="Battle-card-word"
-                          ref={textRef}
-                        >
+                      <div className="Battle-card-word-container" ref={containerRef}>
+                        <div className="Battle-card-word" ref={textRef}>
                           {card.word}
                         </div>
                       </div>

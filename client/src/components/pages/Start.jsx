@@ -1,10 +1,28 @@
 import "../../utilities.css";
 import "./Start.css";
+import zuluSvg from "../../images/zulu.svg";
+import spanishSvg from "../../images/spanish.svg";
+import chineseSvg from "../../images/chinese.svg";
+import arabicSvg from "../../images/arabic.svg";
+import frenchSvg from "../../images/french.svg";
+import germanSvg from "../../images/german.svg";
+import koreanSvg from "../../images/korean.svg";
+import hindiSvg from "../../images/hindi.svg";
+import portugueseSvg from "../../images/portuguese.svg";
+import afrikaansSvg from "../../images/afrikaans.svg";
+import vietnameseSvg from "../../images/vietnamese.svg";
+import japaneseSvg from "../../images/japanese.svg";
+import teluguSvg from "../../images/telugu.svg";
+import russianSvg from "../../images/russian.svg";
+import italianSvg from "../../images/italian.svg";
+import turkishSvg from "../../images/turkish.svg";
+import questionIcon from "../../assets/question.png";
+import trophyIcon from "../../assets/trophy.png";
+import doorIcon from "../../assets/door.png";
 
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
-import React, { useState, useEffect } from "react";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../App";
 import { LanguageContext } from "../App";
 import { UserInfoContext } from "../App";
@@ -19,7 +37,6 @@ const Start = (props) => {
   const { language, setLanguage } = useContext(LanguageContext);
   const [showEffects, setShowEffects] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
-  const [titleText, setTitleText] = useState("");
   const spellEffects = [
     {
       icon: "",
@@ -32,149 +49,101 @@ const Start = (props) => {
     { icon: "", name: "Freeze", description: "Disable your opponent's keyboard for 3 seconds" },
   ];
 
-  useEffect(() => {
-    const text = "BattleLingo";
-    let currentIndex = 0;
-    const typingInterval = setInterval(() => {
-      if (currentIndex <= text.length) {
-        setTitleText(text.slice(0, currentIndex));
-        currentIndex++;
-      } else {
-        clearInterval(typingInterval);
-      }
-    }, 250); // Changed from 150ms to 250ms for slower typing
+  const [typedText, setTypedText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+  const text = "BattleLingo";
 
-    return () => clearInterval(typingInterval);
+  useEffect(() => {
+    let currentChar = 0;
+    const typeChar = () => {
+      if (currentChar < text.length) {
+        setTypedText(text.slice(0, currentChar + 1));
+        currentChar++;
+        setTimeout(typeChar, 200);
+      } else {
+        setShowCursor(false); // Hide cursor after typing is complete
+      }
+    };
+    typeChar();
   }, []);
 
-  // not needed?
-  // useEffect(() => {
-  //   if (userContext.userId) {
-  //     get("/api/whoami").then((userData) => {
-  //       if (userData._id) {
-  //         setUserName(userData.name);
-  //         setUserInfo(userData); // Update userInfo with full user data
-  //         console.log("user data here " + userData);
-  //       }
-  //     });
-  //   } else {
-  //     setUserInfo({}); // Clear userInfo when user logs out
-  //   }
-  // }, [userContext.userId]);
-
-  const handleBattleClick = () => {
+  const handleStartClick = () => {
     if (userContext.userId) {
-      setShowOverlay(true); // Show the overlay first
-
-      // Start the game setup
-      post("/api/startGame", { playerId: userContext.userId, language: language }).then(() => {
-        // Wait for 4 seconds (3,2,1,GO!) before navigating
-        setTimeout(() => {
-          navigate("/battle/");
-        }, 4000);
-      });
+      navigate("/lobbies/");
     }
   };
 
   return (
-    <>
-      {showOverlay && <LoadingOverlay />}
-      <div className="Start-container">
-        <div className="Start-content">
+    <div className="Start-container">
+      {userContext.userId && (
+        <div className="Start-top-bar">
+          <Link
+            to="/battleProfile"
+            className="profile-button button-base neon-bg neon-border neon-text"
+          >
+            Profile
+          </Link>
+          <Link
+            to="/instructions"
+            className="profile-button button-base neon-bg neon-border neon-text"
+          >
+            Instructions
+          </Link>
+          <button
+            onClick={userContext.handleLogout}
+            className="logout-button button-base neon-bg neon-border neon-text"
+          >
+            Sign out
+          </button>
+        </div>
+      )}
+      <div className="Start-content">
+        <h1 className="Start-title"> BattleLingo v3</h1>
+        {!userContext.userId && <div className="signin-prompt">Sign in to start battling</div>}
+
+        <div className="google-login-container">
+          {!userContext.userId && (
+            <GoogleLogin
+              onSuccess={userContext.handleLogin}
+              onFailure={(err) => console.log(err)}
+              useOneTap
+              type="standard"
+              theme="filled_black"
+              shape="rectangular"
+              locale="en"
+              text="signin_with"
+            />
+          )}
+        </div>
+
+        {showEffects && (
+          <div className="effects-modal">
+            <div className="effects-content">
+              <h2>Spell Effects</h2>
+              <div className="effects-grid">
+                {spellEffects.map((effect, index) => (
+                  <div key={index} className="effect-item">
+                    <div className="effect-icon">{effect.icon}</div>
+                    <div className="effect-name">{effect.name}</div>
+                    <div className="effect-description">{effect.description}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+        <div>
           {userContext.userId && (
-            <div className="Start-top-bar">
-              <Link
-                to="/battleProfile"
-                className="profile-button button-base neon-bg neon-border neon-text"
-              >
-                Profile
-              </Link>
-              <Link
-                to="/instructions"
-                className="profile-button button-base neon-bg neon-border neon-text"
-              >
-                Instructions
-              </Link>
-              <Link
-                to="/leaderboard"
-                className="profile-button button-base neon-bg neon-border neon-text"
-              >
-                Leaderboard
-              </Link>
-              <button
-                onClick={userContext.handleLogout}
-                className="logout-button button-base neon-bg neon-border neon-text"
-              >
-                Sign out
-              </button>
-            </div>
+            <button
+              onClick={handleStartClick}
+              className="battle-button button-base neon-bg neon-border neon-text"
+            >
+              Start A Game
+            </button>
           )}
-          <h1 className="Start-title typing-effect">{titleText}</h1>
-          {!userContext.userId && <div className="signin-prompt">Sign in to start battling</div>}
-
-          <div className="google-login-container">
-            {!userContext.userId && (
-              <GoogleLogin
-                onSuccess={userContext.handleLogin}
-                onFailure={(err) => console.log(err)}
-                useOneTap
-                type="standard"
-                theme="filled_black"
-                shape="rectangular"
-                locale="en"
-                text="signin_with"
-              />
-            )}
-          </div>
-
-          {showEffects && (
-            <div className="effects-modal">
-              <div className="effects-content">
-                <h2>Spell Effects</h2>
-                <div className="effects-grid">
-                  {spellEffects.map((effect, index) => (
-                    <div key={index} className="effect-item">
-                      <div className="effect-icon">{effect.icon}</div>
-                      <div className="effect-name">{effect.name}</div>
-                      <div className="effect-description">{effect.description}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-          <div>
-            {userContext.userId && (
-              <div className="bottom-content-wrapper">
-                <div className="language-selector-container">
-                  <select
-                    name="language"
-                    id="language-select"
-                    value={language}
-                    onChange={(e) => setLanguage(e.target.value)}
-                  >
-                    <option value="">Choose your language...</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="Chinese">Chinese</option>
-                    <option value="German">German</option>
-                    <option value="French">French</option>
-                    <option value="Arabic">Arabic</option>
-                  </select>
-                </div>
-                <div className={`battle-button-container ${language ? "visible" : ""}`}>
-                  <button
-                    onClick={handleBattleClick}
-                    className="battle-button button-base neon-bg neon-border neon-text"
-                  >
-                    Enter Battle
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
