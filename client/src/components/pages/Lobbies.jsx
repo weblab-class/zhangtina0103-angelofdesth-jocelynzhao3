@@ -5,6 +5,11 @@ import LobbyList from "../modules/LobbyList";
 import PVPLobbyCreation from "../modules/PVPLobbyCreation";
 import Lobby from "../modules/Lobby";
 
+// Import icons
+import questionIcon from "../../assets/question.png";
+import trophyIcon from "../../assets/trophy.png";
+import doorIcon from "../../assets/door.png";
+
 // Import SVGs
 import zuluSvg from "../../images/zulu.svg";
 import spanishSvg from "../../images/spanish.svg";
@@ -27,6 +32,7 @@ import { useState, useEffect, useContext } from "react";
 import { UserInfoContext } from "../App.jsx";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities.js";
+import { Link } from "react-router-dom";
 
 const Lobbies = (props) => {
   const [displayedLobby, setDisplayedLobby] = useState(null);
@@ -109,6 +115,27 @@ const Lobbies = (props) => {
 
   return (
     <div className="Lobbies-container">
+      <div className="Lobbies-top-bar">
+        <div className="icon-container">
+          <Link to="/instructions" className="instructions-button">
+            <img src={questionIcon} alt="instructions" className="question-icon" />
+          </Link>
+          <Link to="/leaderboard" className="leaderboard-button">
+            <img src={trophyIcon} alt="leaderboard" className="trophy-icon" />
+          </Link>
+          <Link to="/battleProfile" className="profile-button">
+            <img 
+              src={userInfo.picture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+              alt="profile" 
+              className="profile-icon" 
+            />
+          </Link>
+          <button onClick={() => setUserInfo(null)} className="logout-button">
+            <img src={doorIcon} alt="sign out" className="door-icon" />
+          </button>
+        </div>
+      </div>
+
       <div className="svg-wrapper">
         {language === "Zulu" && <img src={zuluSvg} className="skyline-svg" alt="zulu design" />}
         {language === "Spanish" && <img src={spanishSvg} className="skyline-svg" alt="spanish design" />}

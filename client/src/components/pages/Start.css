@@ -177,50 +177,71 @@
 }
 
 .Start-container {
-  min-height: 100vh;
-  width: 100vw;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(to bottom, #000000, #1a1a2e);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  font-family: "Codec", sans-serif;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #000;
   color: #fff;
-}
-
-/* All text elements should inherit white color */
-.Start-container * {
-  color: inherit;
 }
 
 .Start-top-bar {
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
   padding: 1rem;
-  z-index: 10;
-  width: 100%;
+  z-index: 2;
   display: flex;
   justify-content: flex-end;
-  box-sizing: border-box;
-  background: rgba(10, 10, 31, 0.7);
-  backdrop-filter: blur(10px);
-  font-family: "Orbitron", sans-serif;
-  letter-spacing: 1px;
-  opacity: 1;
-  transform: none;
-  animation: fadeIn 0.8s ease-in;
 }
 
-.Start-top-bar button {
-  font-family: "Orbitron", sans-serif;
-  letter-spacing: 1px;
+.icon-container {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.instructions-button,
+.leaderboard-button,
+.logout-button,
+.profile-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  text-decoration: none;
+}
+
+.instructions-button:hover,
+.leaderboard-button:hover,
+.logout-button:hover,
+.profile-button:hover {
+  transform: scale(1.1);
+}
+
+.question-icon,
+.trophy-icon,
+.door-icon,
+.profile-icon {
+  width: 32px;
+  height: 32px;
+  filter: invert(1) drop-shadow(0 0 5px rgba(77, 255, 255, 0.5));
+}
+
+.door-icon {
+  filter: drop-shadow(0 0 5px rgba(77, 255, 255, 0.5));
+}
+
+.profile-icon {
+  border-radius: 50%;
+  object-fit: cover;
+  filter: drop-shadow(0 0 5px rgba(77, 255, 255, 0.5));
 }
 
 .Start-content {
@@ -715,7 +736,7 @@ select:not([value=""]) {
 .icon-container {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.75rem;
 }
 
 .instructions-button,
@@ -725,7 +746,7 @@ select:not([value=""]) {
   align-items: center;
   background: none;
   border: none;
-  padding: 0;
+  padding: 0.25rem;
   cursor: pointer;
 }
 

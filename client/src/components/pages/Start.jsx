@@ -77,24 +77,24 @@ const Start = (props) => {
     <div className="Start-container">
       {userContext.userId && (
         <div className="Start-top-bar">
-          <Link
-            to="/battleProfile"
-            className="profile-button button-base neon-bg neon-border neon-text"
-          >
-            Profile
-          </Link>
-          <Link
-            to="/instructions"
-            className="profile-button button-base neon-bg neon-border neon-text"
-          >
-            Instructions
-          </Link>
-          <button
-            onClick={userContext.handleLogout}
-            className="logout-button button-base neon-bg neon-border neon-text"
-          >
-            Sign out
-          </button>
+          <div className="icon-container">
+            <Link to="/instructions" className="instructions-button">
+              <img src={questionIcon} alt="instructions" className="question-icon" />
+            </Link>
+            <Link to="/leaderboard" className="leaderboard-button">
+              <img src={trophyIcon} alt="leaderboard" className="trophy-icon" />
+            </Link>
+            <Link to="/battleProfile" className="profile-button">
+              <img 
+                src={userContext.picture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                alt="profile" 
+                className="profile-icon" 
+              />
+            </Link>
+            <button onClick={userContext.handleLogout} className="logout-button">
+              <img src={doorIcon} alt="sign out" className="door-icon" />
+            </button>
+          </div>
         </div>
       )}
       <div className="Start-content">
@@ -136,7 +136,7 @@ const Start = (props) => {
           {userContext.userId && (
             <button
               onClick={handleStartClick}
-              className="battle-button button-base neon-bg neon-border neon-text"
+              className="battle-button"
             >
               Start A Game
             </button>
