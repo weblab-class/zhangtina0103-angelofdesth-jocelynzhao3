@@ -1,7 +1,7 @@
 import "../../utilities.css";
 import "./BattleProfile.css";
 
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, Component } from "react";
 import { UserInfoContext } from "../App";
 import { Link, useNavigate } from "react-router-dom";
 import { get } from "../../utilities";
@@ -10,6 +10,25 @@ import { Pie } from "react-chartjs-2";
 
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);
+
+// Chart Error Boundary Component
+class ChartErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return null; // Return nothing if there's an error
+    }
+    return this.props.children;
+  }
+}
 
 const BattleProfile = (props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
@@ -184,55 +203,57 @@ const BattleProfile = (props) => {
 
           {/* Language Distribution Chart */}
           <div className="BattleEnd-chart-container">
-            <div className="BattleEnd-chart-title">Language Breakdown</div>
             {languageStats ? (
-              <Pie
-                data={languageStats}
-                options={{
-                  plugins: {
-                    legend: {
-                      display: false,
-                    },
-                    tooltip: {
-                      callbacks: {
-                        label: function (context) {
-                          const label = context.label || "";
-                          const value = context.raw;
-                          const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                          const percentage = Math.round((value / total) * 100);
-                          return `${label}: ${percentage}%`;
+              <ChartErrorBoundary>
+                <div className="BattleEnd-chart-title">Language Breakdown</div>
+                <Pie
+                  data={languageStats}
+                  options={{
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
+                      tooltip: {
+                        callbacks: {
+                          label: function (context) {
+                            const label = context.label || "";
+                            const value = context.raw;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = Math.round((value / total) * 100);
+                            return `${label}: ${percentage}%`;
+                          },
                         },
+                        backgroundColor: "rgba(0, 0, 0, 0.8)",
+                        titleFont: {
+                          size: 11,
+                          family: "'Orbitron', sans-serif",
+                        },
+                        bodyFont: {
+                          size: 11,
+                          family: "'Orbitron', sans-serif",
+                        },
+                        padding: 6,
+                        cornerRadius: 4,
+                        displayColors: true,
                       },
-                      backgroundColor: "rgba(0, 0, 0, 0.8)",
-                      titleFont: {
-                        size: 11,
-                        family: "'Orbitron', sans-serif",
-                      },
-                      bodyFont: {
-                        size: 11,
-                        family: "'Orbitron', sans-serif",
-                      },
-                      padding: 6,
-                      cornerRadius: 4,
-                      displayColors: true,
                     },
-                  },
-                  layout: {
-                    padding: 20,
-                  },
-                  elements: {
-                    arc: {
-                      borderWidth: 0,
+                    layout: {
+                      padding: 20,
                     },
-                  },
-                  hover: {
-                    mode: "nearest",
-                  },
-                  responsive: true,
-                  maintainAspectRatio: false,
-                }}
-                className="BattleEnd-chart"
-              />
+                    elements: {
+                      arc: {
+                        borderWidth: 0,
+                      },
+                    },
+                    hover: {
+                      mode: "nearest",
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                  }}
+                  className="BattleEnd-chart"
+                />
+              </ChartErrorBoundary>
             ) : (
               <p>No language data available</p>
             )}
