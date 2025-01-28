@@ -94,7 +94,15 @@ body {
 }
 
 .BattleEnd-recent-battle {
-  background: rgba(77, 255, 255, 0.05);
+  background: rgba(77, 255, 255, 0.25);
+  box-shadow: 0 0 15px rgba(77, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.BattleEnd-recent-battle:hover {
+  background: rgba(77, 255, 255, 0.35);
+  box-shadow: 0 0 20px rgba(77, 255, 255, 0.3);
 }
 
 .BattleEnd-recent-label {

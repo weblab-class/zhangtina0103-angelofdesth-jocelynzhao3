@@ -279,7 +279,6 @@ const BattleProfile = (props) => {
               {displayedResults?.map((entry, index) => (
                 <tr key={index} className={index === 0 ? "BattleEnd-recent-battle" : ""}>
                   <td>
-                    {index === 0 && userInfo?.log?.length > 0 && <span className="BattleEnd-recent-label">Latest</span>}
                     <span className={`result-text ${entry.Result === "Win" ? "win" : "lose"}`}>
                       {entry.Result}
                     </span>
