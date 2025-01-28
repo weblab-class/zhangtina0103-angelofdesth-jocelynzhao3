@@ -114,7 +114,14 @@ const Lobby = (props) => {
         </p>
 
         {!hasJoined ? (
-          <button onClick={handleJoinClick}>Join</button>
+          <>
+            <button 
+              onClick={handleJoinClick} 
+              disabled={newlobby && newlobby.p2}
+            >
+              {newlobby && newlobby.p2 ? "Lobby Full" : "Join"}
+            </button>
+          </>
         ) : (
           <div>
             {isReady ? (
