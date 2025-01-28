@@ -99,7 +99,11 @@ const Lobby = (props) => {
               <p>Waiting for opponent to be ready...</p>
             ) : (
               <>
-                <button onClick={handleReadyClick}>Ready</button>
+                {newlobby && newlobby.p2 ? (
+                  <button onClick={handleReadyClick}>Ready</button>
+                ) : (
+                  <p>Waiting for another player to join...</p>
+                )}
                 <button onClick={handleLeaveClick}>Leave</button>
               </>
             )}
