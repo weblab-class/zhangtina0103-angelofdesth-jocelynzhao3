@@ -1,25 +1,38 @@
 .SingleActiveLobby-container {
-  border: 2px solid white;
-  border-radius: 8px;
-  padding: 16px;
-  margin: 12px 0;
-  color: white;
-  transition: border-width 0.2s ease;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(77, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
-
-
-.SingleActiveLobby-container.joined {
-  border-width: 4px;
-}
-
-.SingleActiveLobby-container p {
-  margin: 8px 0;
-  color: white;
+.SingleActiveLobby-container:hover {
+  background-color: rgba(77, 255, 255, 0.1);
+  border-color: rgba(77, 255, 255, 0.4);
 }
 
 .SingleActiveLobby-container-active {
-  background-color: darkcyan
+  background-color: rgba(77, 255, 255, 0.15);
+  border-color: #4dffff;
+}
+
+.SingleActiveLobby-container p {
+  color: #fff;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+}
+
+.SingleActiveLobby-language {
+  background-color: rgba(77, 255, 255, 0.1);
+  color: #4dffff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
 }
 
 .SingleActiveLobby-joinButton,
@@ -78,7 +91,13 @@
 }
 
 @keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
 }

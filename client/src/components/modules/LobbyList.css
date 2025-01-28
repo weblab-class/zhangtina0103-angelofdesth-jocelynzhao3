@@ -1,0 +1,45 @@
+.lobby-list-container {
+  width: 100%;
+}
+
+.lobby-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: separate;
+}
+
+.lobby-table-header {
+  margin-bottom: 1rem;
+}
+
+.lobby-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(77, 255, 255, 0.2);
+}
+
+.lobby-table-header .lobby-row {
+  background-color: rgba(77, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.lobby-cell {
+  color: #4dffff;
+  font-weight: 500;
+  text-align: left;
+}
+
+.lobby-table-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.no-lobbies-message {
+  color: #4dffff;
+  text-align: center;
+  padding: 2rem;
+  font-style: italic;
+}

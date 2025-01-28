@@ -1,5 +1,6 @@
 import "../../utilities.css";
 import "./Lobby.css";
+import "./PVPLobbyCreation.css";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -47,6 +48,7 @@ const PVPLobbyCreation = (props) => {
           id="language-select"
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
+          className="pvp-language-select"
         >
           {/* language value becomes empty string when selected, add more lan */}
           <option value="">Select a language...</option>
@@ -60,7 +62,7 @@ const PVPLobbyCreation = (props) => {
         {language && (
           <button
             onClick={handleCreateClick}
-            className="battle-button button-base neon-bg neon-border neon-text"
+            className="pvp-create-button button-base neon-bg neon-border neon-text"
           >
             Create a Lobby
           </button>

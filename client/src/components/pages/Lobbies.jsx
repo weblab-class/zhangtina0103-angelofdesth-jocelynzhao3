@@ -42,7 +42,6 @@ const Lobbies = (props) => {
   const [activeLobbies, setActiveLobbies] = useState([]);
   const [inLobby, setInLobby] = useState(false);
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
-  const [language, setLanguage] = useState("");
   const navigate = useNavigate();
 
   const formatPlayerDisplay = (playerSetFunc, id) => {
@@ -100,19 +99,11 @@ const Lobbies = (props) => {
   }, []);
 
   const handleNewPVP = () => {
-    if (!language) {
-      alert("Please select a language first!");
-      return;
-    }
     setDisplayedLobby("newPVP");
     setInLobby(true);
   };
 
   const handleNewBot = () => {
-    if (!language) {
-      alert("Please select a language first!");
-      return;
-    }
     setDisplayedLobby("newBot");
     setInLobby(true);
   };
@@ -149,142 +140,70 @@ const Lobbies = (props) => {
         </div>
       </div>
 
-      <div className="svg-wrapper">
-        {language === "Zulu" && <img src={zuluSvg} className="skyline-svg" alt="zulu design" />}
-        {language === "Spanish" && (
-          <img src={spanishSvg} className="skyline-svg" alt="spanish design" />
+      <div className="lobbies-main-content">
+        {!inLobby && (
+          <div className="lobby-buttons">
+            <button onClick={handleNewPVP} className="button-base neon-bg neon-border neon-text">
+              Create New PVP Lobby
+            </button>
+            <button onClick={handleNewBot} className="button-base neon-bg neon-border neon-text">
+              Create New vs Bot Lobby
+            </button>
+          </div>
         )}
-        {language === "Chinese" && (
-          <img src={chineseSvg} className="skyline-svg" alt="chinese design" />
-        )}
-        {language === "Arabic" && (
-          <img src={arabicSvg} className="skyline-svg" alt="arabic design" />
-        )}
-        {language === "French" && (
-          <img src={frenchSvg} className="skyline-svg" alt="french design" />
-        )}
-        {language === "German" && (
-          <img src={germanSvg} className="skyline-svg" alt="german design" />
-        )}
-        {language === "Korean" && (
-          <img src={koreanSvg} className="skyline-svg" alt="korean design" />
-        )}
-        {language === "Hindi" && <img src={hindiSvg} className="skyline-svg" alt="hindi design" />}
-        {language === "Portuguese" && (
-          <img src={portugueseSvg} className="skyline-svg" alt="portuguese design" />
-        )}
-        {language === "Afrikaans" && (
-          <img src={afrikaansSvg} className="skyline-svg" alt="afrikaans design" />
-        )}
-        {language === "Vietnamese" && (
-          <img src={vietnameseSvg} className="skyline-svg" alt="vietnamese design" />
-        )}
-        {language === "Japanese" && (
-          <img src={japaneseSvg} className="skyline-svg" alt="japanese design" />
-        )}
-        {language === "Telugu" && (
-          <img src={teluguSvg} className="skyline-svg" alt="telugu design" />
-        )}
-        {language === "Russian" && (
-          <img src={russianSvg} className="skyline-svg" alt="russian design" />
-        )}
-        {language === "Italian" && (
-          <img src={italianSvg} className="skyline-svg" alt="italian design" />
-        )}
-        {language === "Turkish" && (
-          <img src={turkishSvg} className="skyline-svg" alt="turkish design" />
-        )}
-      </div>
+        
+        <div className="lobbies-content">
+          <div className="lobbies-list">
+            <div className="lobbies-header">
+              <h2>Active Lobbies</h2>
+            </div>
+            
+            {(() => {
+              const userLobby = activeLobbies.find(
+                (lobby) =>
+                  (lobby.p1 === userInfo._id && lobby.p1ready) ||
+                  (lobby.p2 === userInfo._id && lobby.p2ready)
+              );
 
-      <div className="language-selector-container">
-        <select
-          name="language"
-          id="language-select"
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
-          className="language-select"
-        >
-          <option value="">Choose your language...</option>
-          <option value="Spanish">Spanish</option>
-          <option value="Chinese">Chinese</option>
-          <option value="German">German</option>
-          <option value="French">French</option>
-          <option value="Arabic">Arabic</option>
-          <option value="Zulu">Zulu</option>
-          <option value="Korean">Korean</option>
-          <option value="Portuguese">Portuguese</option>
-          <option value="Afrikaans">Afrikaans</option>
-          <option value="Hindi">Hindi</option>
-          <option value="Vietnamese">Vietnamese</option>
-          <option value="Japanese">Japanese</option>
-          <option value="Telugu">Telugu</option>
-          <option value="Russian">Russian</option>
-          <option value="Italian">Italian</option>
-          <option value="Turkish">Turkish</option>
-        </select>
-      </div>
+              if (userLobby) {
+                return <p className="waiting-message">Waiting for opponent to be ready...</p>;
+              }
 
-      {inLobby ? (
-        <p>You are already in a lobby</p>
-      ) : (
-        <div className="lobby-buttons">
-          <button onClick={handleNewPVP} className="button-base neon-bg neon-border neon-text">
-            Create New PVP Lobby
-          </button>
-          <button onClick={handleNewBot} className="button-base neon-bg neon-border neon-text">
-            Create New vs Bot Lobby
-          </button>
-        </div>
-      )}
-      <div className="u-flex">
-        <div>
-          {(() => {
-            // Check if user is ready in any lobby
-            const userLobby = activeLobbies.find(
-              (lobby) =>
-                (lobby.p1 === userInfo._id && lobby.p1ready) ||
-                (lobby.p2 === userInfo._id && lobby.p2ready)
-            );
+              return (
+                <LobbyList
+                  lobbies={activeLobbies}
+                  setDisplayedLobby={setDisplayedLobby}
+                  displayedLobby={displayedLobby}
+                  setInLobby={setInLobby}
+                  formatPlayerDisplay={formatPlayerDisplay}
+                />
+              );
+            })()}
+          </div>
 
-            if (userLobby) {
-              return <p>Waiting for opponent to be ready...</p>;
-            }
-
-            return (
-              <LobbyList
-                lobbies={activeLobbies}
-                setDisplayedLobby={setDisplayedLobby}
-                displayedLobby={displayedLobby}
-                setInLobby={setInLobby}
-                formatPlayerDisplay={formatPlayerDisplay}
-              />
-            );
-          })()}
-        </div>
-        <div>
-          {displayedLobby ? (
-            <>
-              {displayedLobby === "newPVP" ? (
-                <PVPLobbyCreation setDisplayedLobby={setDisplayedLobby} />
-              ) : (
-                <>
-                  {displayedLobby === "newBot" ? (
-                    <BotLobbyCreation />
-                  ) : (
-                    <Lobby
-                      lobbyid={displayedLobby}
-                      activeLobbies={activeLobbies}
-                      setInLobby={setInLobby}
-                      setDisplayedLobby={setDisplayedLobby}
-                      formatPlayerDisplay={formatPlayerDisplay}
-                    />
-                  )}
-                </>
-              )}
-            </>
-          ) : (
-            <p> please choose a lobby or create your own! </p>
-          )}
+          <div className="lobby-details">
+            {displayedLobby ? (
+              <>
+                {displayedLobby === "newPVP" ? (
+                  <PVPLobbyCreation setDisplayedLobby={setDisplayedLobby} />
+                ) : displayedLobby === "newBot" ? (
+                  <BotLobbyCreation />
+                ) : (
+                  <Lobby
+                    lobbyid={displayedLobby}
+                    activeLobbies={activeLobbies}
+                    setInLobby={setInLobby}
+                    setDisplayedLobby={setDisplayedLobby}
+                    formatPlayerDisplay={formatPlayerDisplay}
+                  />
+                )}
+              </>
+            ) : (
+              <div className="select-lobby-message">
+                <p>Please choose a lobby or create your own!</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

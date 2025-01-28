@@ -15,25 +15,33 @@ import SingleActiveLobby from "./SingleActiveLobby";
 const LobbyList = (props) => {
   console.log("trying to render", props.lobbies);
   return (
-    <div>
+    <div className="lobby-list-container">
       {props.lobbies.length > 0 ? (
-        <div>
-          <p> Here are the active lobbies: </p>
-          {props.lobbies
-            .filter((lobby) => lobby.active)
-            .map((lobby) => (
-              <SingleActiveLobby
-                key={lobby.lobbyid}
-                lobby={lobby}
-                setDisplayedLobby={props.setDisplayedLobby}
-                active={props.displayedLobby ? props.displayedLobby === lobby.lobbyid : false}
-                setInLobby={props.setInLobby}
-                formatPlayerDisplay={props.formatPlayerDisplay}
-              />
-            ))}
+        <div className="lobby-table">
+          <div className="lobby-table-header">
+            <div className="lobby-row">
+              <div className="lobby-cell">Player 1</div>
+              <div className="lobby-cell">Player 2</div>
+              <div className="lobby-cell">Status</div>
+            </div>
+          </div>
+          <div className="lobby-table-body">
+            {props.lobbies
+              .filter((lobby) => lobby.active)
+              .map((lobby) => (
+                <SingleActiveLobby
+                  key={lobby.lobbyid}
+                  lobby={lobby}
+                  setDisplayedLobby={props.setDisplayedLobby}
+                  active={props.displayedLobby ? props.displayedLobby === lobby.lobbyid : false}
+                  setInLobby={props.setInLobby}
+                  formatPlayerDisplay={props.formatPlayerDisplay}
+                />
+              ))}
+          </div>
         </div>
       ) : (
-        <p> There are no active lobbies. You can change that! </p>
+        <p className="no-lobbies-message">There are no active lobbies. You can change that!</p>
       )}
     </div>
   );

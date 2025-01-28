@@ -11,10 +11,83 @@ body {
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
   min-height: 100vh;
   background-color: #000;
   color: #fff;
+}
+
+.lobbies-main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  height: calc(100vh - 4rem);
+}
+
+.lobby-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.lobby-buttons button {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.lobbies-content {
+  display: flex;
+  gap: 2rem;
+  flex: 1;
+  min-height: 0; /* This is important for the flex container to respect child's overflow */
+}
+
+.lobbies-list {
+  flex: 1;
+  max-width: 50%;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #4dffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.lobbies-header {
+  margin-bottom: 1.5rem;
+}
+
+.lobbies-header h2 {
+  color: #4dffff;
+  margin-bottom: 1rem;
+}
+
+.lobby-details {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #4dffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.select-lobby-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #4dffff;
+  font-size: 1.2rem;
+}
+
+.waiting-message {
+  color: #4dffff;
+  text-align: center;
+  margin: 1rem 0;
 }
 
 .Lobbies-top-bar {
@@ -119,27 +192,6 @@ body {
   color: #4dffff;
 }
 
-.lobby-buttons {
-  display: flex;
-  gap: 1rem;
-  margin: 1rem 0;
-  z-index: 1;
-  position: relative;
-}
-
-.lobby-buttons button {
-  padding: 0.8rem 1.5rem;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.u-flex {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-}
-
 /* Neon effects */
 .neon-bg {
   background-color: rgba(0, 0, 0, 0.8);
@@ -147,6 +199,7 @@ body {
 
 .neon-border {
   border: 2px solid #4dffff;
+  border-radius: 4px;
 }
 
 .neon-text {

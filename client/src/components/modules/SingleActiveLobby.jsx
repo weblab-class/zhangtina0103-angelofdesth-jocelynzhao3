@@ -49,19 +49,16 @@ const SingleActiveLobby = (props) => {
 
   return (
     <div
-      className={`SingleActiveLobby-container ${
-        props.active ? "SingleActiveLobby-container-active" : ""
-      }`}
+      className={`lobby-row ${props.active ? "lobby-row-active" : ""}`}
       onClick={() => {
         props.setDisplayedLobby(props.lobby.lobbyid);
         props.setInLobby(true);
       }}
     >
-      <div className="SingleActiveLobby-info">
-        <p>Lobby ID: {props.lobby.lobbyid}</p>
-        <p>P1 (Host): {p1} </p>
-        <p>P2: {p2} </p>
-        <p>Language: {props.lobby.language}</p>
+      <div className="lobby-cell">{p1}</div>
+      <div className="lobby-cell">{p2}</div>
+      <div className="lobby-cell">
+        <span className="lobby-language">{props.lobby.language}</span>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import "../../utilities.css";
 import "./Lobby.css";
+import "./BotLobbyCreation.css";
 
 import { Link, useNavigate } from "react-router-dom";
 import {useContext} from "react";
@@ -32,6 +33,7 @@ const BotLobbyCreation = (props) => {
             id="language-select"
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
+            className="bot-language-select"
             >
             {/* language value becomes empty string when selected, add more lan */}
             <option value="">Select a language...</option>
@@ -45,7 +47,7 @@ const BotLobbyCreation = (props) => {
         {language && (
             <button
               onClick={handleStartClick}
-              className="battle-button button-base neon-bg neon-border neon-text"
+              className="bot-create-button button-base neon-bg neon-border neon-text"
             >
               Start A Game
             </button>

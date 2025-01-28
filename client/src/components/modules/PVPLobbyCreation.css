@@ -1,0 +1,28 @@
+.pvp-create-button {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pvp-create-button:hover {
+  box-shadow: 0 0 15px rgba(77, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.pvp-language-select {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #4dffff;
+  border: 1px solid #4dffff;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
+.pvp-language-select:hover {
+  border-color: #4dffff;
+  box-shadow: 0 0 10px rgba(77, 255, 255, 0.3);
+}
