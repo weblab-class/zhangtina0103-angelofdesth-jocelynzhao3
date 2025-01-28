@@ -5,6 +5,9 @@ let io;
 
 const userToSocketMap = {}; // maps user ID to socket object
 const socketToUserMap = {}; // maps socket ID to user object
+const userToTimeout = new Map(); // maps user ID -> timeout object
+
+const LOBBY_TIMEOUT = 60 * 1000; // 1 minute in milliseconds
 
 const getAllConnectedUsers = () => Object.values(socketToUserMap);
 const getSocketFromUserID = (userid) => userToSocketMap[userid];
@@ -22,12 +25,44 @@ const addUser = (user, socket) => {
 
   userToSocketMap[user._id] = socket;
   socketToUserMap[socket.id] = user;
+
+  // If there was a pending timeout for this user, clear it
+  if (userToTimeout.has(user._id)) {
+    clearTimeout(userToTimeout.get(user._id));
+    userToTimeout.delete(user._id);
+  }
 };
 
 const removeUser = (user, socket) => {
   if (user) delete userToSocketMap[user._id];
   delete socketToUserMap[socket.id];
+
+  // Set a timeout to remove the user's lobby if they don't reconnect
+  if (user) {
+    // Clear any existing timeout for this user
+    if (userToTimeout.has(user._id)) {
+      clearTimeout(userToTimeout.get(user._id));
+    }
+
+    // Set new timeout
+    const timeout = setTimeout(() => {
+      console.log(
+        `User ${user._id} did not reconnect within ${
+          LOBBY_TIMEOUT / 1000
+        } seconds, cleaning up their lobby`
+      );
+      for (const [lobbyId, lobby] of lobbyLogic.activeLobbies) {
+        if (lobby.p1 === user._id || lobby.p2 === user._id) {
+          leaveLobby(lobbyId, user._id);
+        }
+      }
+      userToTimeout.delete(user._id);
+    }, LOBBY_TIMEOUT);
+
+    userToTimeout.set(user._id, timeout);
+  }
 };
+
 // LOBBY STUFF
 const updateLobbies = () => {
   activeLobbies = Array.from(lobbyLogic.activeLobbies.values());
@@ -119,15 +154,15 @@ module.exports = {
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
         console.log("user disconnet");
-        if (user) {
-          // check if player socket disconnects, end their lobby
-          // if player disconnects, they can rejoin their game? (how are unfinished games cleaned?)
-          for (const [lobbyId, lobby] of lobbyLogic.activeLobbies) {
-            if (lobby.p1 === user._id || lobby.p2 === user._id) {
-              leaveLobby(lobbyId, user._id);
-            }
-          }
-        }
+        // if (user) {
+        // check if player socket disconnects, end their lobby
+        // if player disconnects, they can rejoin their game? (how are unfinished games cleaned?)
+        // for (const [lobbyId, lobby] of lobbyLogic.activeLobbies) {
+        //   if (lobby.p1 === user._id || lobby.p2 === user._id) {
+        //     leaveLobby(lobbyId, user._id);
+        //   }
+        // }
+        // }
         removeUser(user, socket);
       });
       socket.on("cards", (card) => {
