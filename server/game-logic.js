@@ -232,10 +232,11 @@ const checkWin = async (game) => {
 
 const handleGameEnd = async (game, winner) => {
   try {
-    const p1Info = await get("otheruserinfo", { _id: game.p1 });
+    const p1Info = get("otheruserinfo", { _id: game.p1 });
     if (game.p2 !== "bot") {
-      const p2Info = await get("otheruserinfo", { _id: game.p2 });
+      const p2Info = get("otheruserinfo", { _id: game.p2 });
     }
+    await Promise.all([p1Info, p2Info]);
     activeGames.delete(game.lobby);
 
     const currentDate = new Date();
