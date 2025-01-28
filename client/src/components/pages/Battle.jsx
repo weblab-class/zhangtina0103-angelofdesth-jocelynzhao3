@@ -32,6 +32,11 @@ const Battle = (props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const { language } = useContext(LanguageContext);
   const canvasRef = useRef(null);
+
+  // Add state for opponent info and player position
+  const [opponentInfo, setOpponentInfo] = useState(null);
+  const [isPlayerOne, setIsPlayerOne] = useState(true);
+
   const [gameState, setGameState] = useState({
     lobby: lobby || "hardcodedlobbyname", // Use URL lobby parameter or fallback to default
     language: language,
@@ -174,6 +179,70 @@ const Battle = (props) => {
     };
   };
 
+  // Add effect to fetch opponent info when game state updates
+  useEffect(() => {
+    const fetchOpponentInfo = async () => {
+      // Determine if we're player 1 or 2
+      const amIPlayerOne = gameState.p1 === userInfo._id;
+      setIsPlayerOne(amIPlayerOne);
+
+      // Get opponent's ID
+      const opponentId = amIPlayerOne ? gameState.p2 : gameState.p1;
+
+      // Only fetch if we don't have opponent info yet and have a valid opponent ID
+      if (!opponentInfo && opponentId && opponentId !== "bot") {
+        try {
+          const data = await get("/api/otheruserinfo", { _id: opponentId });
+          if (data) {
+            setOpponentInfo(data);
+          }
+        } catch (error) {
+          console.error("Failed to fetch opponent info:", error);
+        }
+      }
+    };
+
+    fetchOpponentInfo();
+  }, [gameState.p1, gameState.p2, userInfo._id]);
+
+  // Helper function to get player info for display
+  const getPlayerInfo = (isLeft) => {
+    // Left side is p1, right side is p2
+    const isP1Side = isLeft;
+
+    // If we're player one, we go on the left
+    if (isPlayerOne) {
+      return isP1Side
+        ? {
+            name: userInfo.name,
+            picture: userInfo.picture,
+            hp: gameState.p1HP,
+            blocks: numberBlocks().p1Blocks,
+          }
+        : {
+            name: opponentInfo?.name || "Bot",
+            picture: opponentInfo?.picture,
+            hp: gameState.p2HP,
+            blocks: numberBlocks().p2Blocks,
+          };
+    } else {
+      // If we're player two, we go on the right
+      return isP1Side
+        ? {
+            name: opponentInfo?.name || "Bot",
+            picture: opponentInfo?.picture,
+            hp: gameState.p1HP,
+            blocks: numberBlocks().p1Blocks,
+          }
+        : {
+            name: userInfo.name,
+            picture: userInfo.picture,
+            hp: gameState.p2HP,
+            blocks: numberBlocks().p2Blocks,
+          };
+    }
+  };
+
   // Add class to App container when component mounts
   useEffect(() => {
     const appContainer = document.querySelector(".App-container");
@@ -189,24 +258,6 @@ const Battle = (props) => {
       }
     };
   }, []);
-
-  // Get user's name and picture when component mounts
-  // TO DO this should be backend, not front end
-  // useEffect(() => {
-  //   const getUserData = async () => {
-  //     if (userContext && userContext.userId) {
-  //       const userData = await get("/api/whoami");
-  //       console.log("Battle: Got user data:", userData);
-  //       if (userData._id) {
-  //         setGameState((prevState) => ({
-  //           ...prevState,
-  //           p1Picture: userData.picture,
-  //         }));
-  //       }
-  //     }
-  //   };
-  //   getUserData();
-  // }, [userContext, userContext.userId]);
 
   useEffect(() => {
     console.log("Battle: Current gameState:", gameState);
@@ -280,40 +331,22 @@ const Battle = (props) => {
 
         {/* HP Bars and Avatars */}
         <div className="Battle-players">
-          {/* Player 1 */}
-          <div className="Battle-player">
-            <Player
-              player={{
-                name: userInfo?.name || gameState.p1,
-                picture: userInfo?.picture,
-                hp: gameState.p1HP,
-                blocks: numberBlocks().p1Blocks,
-                remainingSeconds: numberBlocks().p1RemainingSeconds,
-              }}
-              isEnemy={false}
-            />
-            <div className="Battle-hp-bar">
-              <div className="Battle-hp-fill" style={{ width: `${gameState.p1HP}%` }}></div>
+          <div className="Battle-player-left">
+            <Player player={getPlayerInfo(true)} isEnemy={!isPlayerOne} />
+            <div className="Battle-healthbar">
+              <div
+                className="Battle-healthbar-fill"
+                style={{ width: `${getPlayerInfo(true).hp}%` }}
+              />
             </div>
           </div>
-
-          {/* Player 2 */}
-          <div className="Battle-player enemy">
-            <Player
-              player={{
-                name: gameState.p2,
-                picture: gameState.p2Picture,
-                hp: gameState.p2HP,
-                blocks: numberBlocks().p2Blocks,
-                remainingSeconds: numberBlocks().p2RemainingSeconds,
-              }}
-              isEnemy={true}
-            />
-            <div className="Battle-hp-bar">
+          <div className="Battle-player-right">
+            <Player player={getPlayerInfo(false)} isEnemy={isPlayerOne} />
+            <div className="Battle-healthbar">
               <div
-                className="Battle-hp-fill enemy-hp"
-                style={{ width: `${gameState.p2HP}%` }}
-              ></div>
+                className="Battle-healthbar-fill"
+                style={{ width: `${getPlayerInfo(false).hp}%` }}
+              />
             </div>
           </div>
         </div>

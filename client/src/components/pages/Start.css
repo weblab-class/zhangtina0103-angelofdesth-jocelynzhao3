@@ -270,15 +270,15 @@
   text-shadow: 0 0 15px rgba(0, 255, 255, 0.4), 0 0 25px rgba(0, 255, 255, 0.2),
     0 0 35px rgba(0, 255, 255, 0.1);
   font-family: "Aerglo", sans-serif;
-  margin: 4rem 2rem 2rem 2rem;
+  margin: 4rem auto 2rem auto;
   letter-spacing: 2px;
   line-height: 1.1;
   transform: perspective(500px) rotateX(5deg);
   white-space: nowrap;
   transition: all 0.3s ease;
   cursor: default;
-  width: 100%;
-  text-align: left;
+  width: fit-content;
+  text-align: center;
 }
 
 .typed-text {
