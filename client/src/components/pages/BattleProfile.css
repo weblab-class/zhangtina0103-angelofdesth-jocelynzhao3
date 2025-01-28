@@ -22,11 +22,14 @@ body {
 .BattleEnd-container h1 {
   color: #4dffff;
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-  text-shadow: 0 0 10px rgba(77, 255, 255, 0.5);
+  font-size: 3.7rem;
+  margin-bottom: 0rem;
+  margin-top: 0rem;
+  text-shadow: 0 0 10px rgba(77, 255, 255, 0.5), 0 0 20px rgba(77, 255, 255, 0.3),
+    0 0 30px rgba(77, 255, 255, 0.2);
   font-family: "Press Start 2P", "Orbitron", sans-serif;
   letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .BattleEnd-userinfo {
@@ -115,9 +118,7 @@ body {
 
 .result-text.lose {
   color: #ff00ff;
-  text-shadow: 
-    0 0 10px rgba(255, 0, 255, 0.4),
-    0 0 20px rgba(255, 0, 255, 0.2);
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.4), 0 0 20px rgba(255, 0, 255, 0.2);
   font-weight: bold;
   letter-spacing: 1px;
 }
@@ -172,9 +173,7 @@ body {
 .BattleEnd-player-details .player-name {
   color: rgba(255, 255, 255, 0.8);
   font-weight: bold;
-  text-shadow: 
-    0 0 10px rgba(255, 255, 255, 0.3),
-    0 0 20px rgba(255, 255, 255, 0.2),
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.2),
     0 0 30px rgba(255, 255, 255, 0.1);
   margin: 0 0 8px 0;
   font-size: 1.3rem;
@@ -239,21 +238,15 @@ body {
 
 @keyframes nameGlow {
   0% {
-    text-shadow: 
-      0 0 10px rgba(255, 255, 255, 0.4),
-      0 0 20px rgba(255, 255, 255, 0.3),
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4), 0 0 20px rgba(255, 255, 255, 0.3),
       0 0 30px rgba(255, 255, 255, 0.2);
   }
   50% {
-    text-shadow: 
-      0 0 15px rgba(255, 255, 255, 0.5),
-      0 0 25px rgba(255, 255, 255, 0.4),
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 25px rgba(255, 255, 255, 0.4),
       0 0 35px rgba(255, 255, 255, 0.3);
   }
   100% {
-    text-shadow: 
-      0 0 10px rgba(255, 255, 255, 0.4),
-      0 0 20px rgba(255, 255, 255, 0.3),
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4), 0 0 20px rgba(255, 255, 255, 0.3),
       0 0 30px rgba(255, 255, 255, 0.2);
   }
 }

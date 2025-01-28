@@ -54,25 +54,33 @@ const BattleProfile = (props) => {
             {
               data: Object.values(stats),
               backgroundColor: [
-                "rgba(0, 255, 255, 0.7)",  // Cyan
-                "rgba(255, 0, 255, 0.7)",  // Magenta
-                "rgba(0, 255, 128, 0.7)",  // Neon Green
-                "rgba(255, 0, 128, 0.7)",  // Neon Pink
-                "rgba(128, 0, 255, 0.7)",  // Neon Purple
-                "rgba(0, 128, 255, 0.7)",  // Neon Blue
+                "#00ffff", // Cyan
+                "#ff00ff", // Magenta
+                "#00ff00", // Neon Green
+                "#ff3366", // Neon Pink
+                "#9933ff", // Neon Purple
+                "#ff9933", // Neon Orange
+                "#ffff00", // Neon Yellow
+                "#33ccff", // Light Blue
+                "#ff3300", // Neon Red
+                "#66ff66", // Light Green
               ],
               hoverBackgroundColor: [
-                "rgba(0, 255, 255, 0.9)",  // Cyan
-                "rgba(255, 0, 255, 0.9)",  // Magenta
-                "rgba(0, 255, 128, 0.9)",  // Neon Green
-                "rgba(255, 0, 128, 0.9)",  // Neon Pink
-                "rgba(128, 0, 255, 0.9)",  // Neon Purple
-                "rgba(0, 128, 255, 0.9)",  // Neon Blue
+                "#4dffff", // Cyan
+                "#ff4dff", // Magenta
+                "#4dff4d", // Neon Green
+                "#ff6699", // Neon Pink
+                "#b366ff", // Neon Purple
+                "#ffb366", // Neon Orange
+                "#ffff4d", // Neon Yellow
+                "#66e0ff", // Light Blue
+                "#ff664d", // Neon Red
+                "#99ff99", // Light Green
               ],
               borderWidth: 0,
               hoverOffset: 20,
               cutout: 0,
-              radius: "100%"
+              radius: "100%",
             },
           ],
         };
@@ -131,7 +139,7 @@ const BattleProfile = (props) => {
   return (
     <div className="BattleEnd-container">
       <div>
-        <h1>Profile</h1>
+        <h1 className="BattleEnd-title">Battle Profile</h1>
       </div>
       <div className="BattleEnd-userinfo">
         <h2>Player Information</h2>
@@ -202,7 +210,7 @@ const BattleProfile = (props) => {
                   elements: {
                     arc: {
                       borderWidth: 0,
-                    }
+                    },
                   },
                   hover: {
                     mode: "nearest",
@@ -244,17 +252,14 @@ const BattleProfile = (props) => {
                   </td>
                   <td>{entry.Opponent}</td>
                   <td>{entry.Language}</td>
-                  <td>{new Date(entry.Time).toLocaleString()}</td>
+                  <td>{new Date(entry.Date).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
         {userInfo?.log?.length > INITIAL_RESULTS_COUNT && (
-          <button
-            onClick={() => setShowAllResults(!showAllResults)}
-            className="BattleEnd-button"
-          >
+          <button onClick={() => setShowAllResults(!showAllResults)} className="BattleEnd-button">
             {showAllResults ? "Show Less" : "Show More"}
           </button>
         )}
