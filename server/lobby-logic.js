@@ -29,7 +29,7 @@ const IdGenerator = () => {
   }
 };
 
-const createLobby = (p1, language) => {
+const createLobby = (p1, language, isBot = false) => {
   // check if p1 is already in a lobby
   if (usersInLobby.has(p1)) {
     return false;
@@ -43,6 +43,7 @@ const createLobby = (p1, language) => {
     p1ready: false,
     p2ready: false,
     active: true,
+    isBot: isBot
   };
   activeLobbies.set(lobbyid, lobby);
   usersInLobby.set(p1, lobbyid);

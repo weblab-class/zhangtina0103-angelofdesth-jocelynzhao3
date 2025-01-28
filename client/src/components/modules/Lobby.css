@@ -1,2 +1,52 @@
 /* I assumed that we wanted the different lobby options to look the same
 so I linked all of them to this file. Feel free to edit as you see fit */
+
+.Lobby-container {
+  padding: 2rem;
+  border: 2px solid #4dffff;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+.Lobby-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.Lobby-details p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.Lobby-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.Lobby-buttons button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  min-width: 120px;
+  transition: all 0.3s ease;
+}
+
+.Lobby-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(77, 255, 255, 0.4);
+}
+
+.Lobby-buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.Lobby-status {
+  color: #4dffff;
+  text-shadow: 0 0 5px rgba(77, 255, 255, 0.5);
+  font-style: italic;
+}

@@ -145,62 +145,116 @@ const getEffectAmount = (type, difficulty) => {
 };
 
 /** Game logic */
-const newCard = (language) => {
-  // queries the word from the database given the language
-  return Word.aggregate([
-    { $match: { language: language } },
-    { $sample: { size: 1 } }, // Get exactly 1 random word - they'll be unique
-  ])
-    .then((word) => {
-      const type = possibleEffects[getRandomInt(0, possibleEffects.length)];
-      const card = {
-        word: word[0].word,
-        english: word[0].english,
-        effect: {
-          type: type,
-          amount: getEffectAmount(type, word[0].difficulty),
-        },
-        difficulty: word[0].difficulty,
-      };
-      return card;
-    })
-    .catch((err) => {
-      console.log(`Failed to get random words: ${err}`);
-    });
+const newCard = async (language) => {
+  try {
+    // Log the input language
+    console.log("Fetching word for language:", language);
+
+    // First check if we have any words for this language
+    const count = await Word.countDocuments({ language: language });
+    console.log(`Found ${count} words for language ${language}`);
+
+    if (count === 0) {
+      console.log("No words found for language:", language);
+      // Add some default words if none exist
+      const defaultWords = [
+        { language: language, word: "hola", english: "hello", difficulty: 1 },
+        { language: language, word: "gracias", english: "thank you", difficulty: 1 },
+        { language: language, word: "adios", english: "goodbye", difficulty: 1 },
+      ];
+      await Word.insertMany(defaultWords);
+      console.log("Added default words for language:", language);
+    }
+
+    // queries the word from the database given the language
+    const words = await Word.aggregate([
+      { $match: { language: language } },
+      { $sample: { size: 1 } }, // Get exactly 1 random word - they'll be unique
+    ]);
+
+    console.log("Found word:", words[0]);
+
+    if (!words || words.length === 0) {
+      throw new Error("No words returned from database");
+    }
+
+    const type = possibleEffects[getRandomInt(0, possibleEffects.length)];
+    const card = {
+      word: words[0].word,
+      english: words[0].english,
+      effect: {
+        type: type,
+        amount: getEffectAmount(type, words[0].difficulty),
+      },
+      difficulty: words[0].difficulty,
+    };
+
+    console.log("Created card:", card);
+    return card;
+  } catch (err) {
+    console.error("Error in newCard:", err);
+    // Return a default card instead of null
+    return {
+      word: "error",
+      english: "loading failed",
+      effect: {
+        type: "attack",
+        amount: 10,
+      },
+      difficulty: 1,
+    };
+  }
 };
 
 const newGame = async (lobby, p1, p2, language) => {
   if (activeGames.get(lobby)) {
     console.log("This game already exists! Nothing added.");
-  } else {
-    game = {
-      lobby: lobby,
-      language: language,
-      winner: null,
-      p1: p1,
-      p2: p2,
-      p1HP: 100,
-      p2HP: 100,
-      displayCards: [], // this is where we'd populate the initial cards
-      p1Effects: { freezeUntil: 0, block: [] }, // block is an increasing array of times when the player is blocked
-      p2Effects: { freezeUntil: 0, block: [] },
-      multiplier: 1, // Start with 1x multiplier
-      lastCardEffect: null, // Initialize lastCardEffect to null
-    };
+    return;
+  }
 
-    //populate the three starting cards efficiently
-    const cards = await Promise.all([newCard(language), newCard(language), newCard(language)]);
-    game.displayCards.push(...cards);
+  // Get initial words from database
+  const words = await Word.aggregate([
+    { $match: { language: language } },
+    { $sample: { size: 3 } }
+  ]);
 
-    activeGames.set(lobby, game);
+  if (!words || words.length < 3) {
+    console.error("Not enough words found for language:", language);
+    return;
+  }
 
-    console.log("new game started with params", game);
-    console.log("current active games are", activeGames);
+  // Create initial cards
+  const displayCards = words.map(word => ({
+    word: word.word,
+    english: word.english,
+    effect: {
+      type: possibleEffects[getRandomInt(0, possibleEffects.length)],
+      amount: getEffectAmount(possibleEffects[getRandomInt(0, possibleEffects.length)], word.difficulty),
+    },
+    difficulty: word.difficulty,
+  }));
 
-    // Start bot play when game starts
-    if (p2 === "bot") {
-      startBotPlay(lobby);
-    }
+  const game = {
+    lobby: lobby,
+    language: language,
+    winner: null,
+    p1: p1,
+    p2: p2,
+    p1HP: 100,
+    p2HP: 100,
+    displayCards: displayCards,
+    p1Effects: { freezeUntil: 0, block: [] },
+    p2Effects: { freezeUntil: 0, block: [] },
+    multiplier: 1,
+    lastCardEffect: null,
+  };
+
+  activeGames.set(lobby, game);
+  console.log("new game started with params", game);
+
+  // Start bot play when game starts
+  if (p2 === "bot") {
+    startBotPlay(lobby);
   }
 };
 
@@ -283,8 +337,8 @@ const handleGameEnd = async (game, winner) => {
 const playerTakeCard = async (lobby, player, cardData, playerType = "player") => {
   let game = activeGames.get(lobby);
   console.log("Current game state:", game);
-  const takenCard = cardData; // Handle both {card: cardObj} and direct cardObj
-  console.log("Taking card:", takenCard, "from data", cardData);
+  const takenCard = cardData;
+  console.log("Taking card:", takenCard);
 
   if (!game) {
     console.error("No game found for lobby:", lobby);
@@ -292,7 +346,6 @@ const playerTakeCard = async (lobby, player, cardData, playerType = "player") =>
   }
 
   const cardIndex = game.displayCards.findIndex((card) => card.word === takenCard.word);
-
   if (cardIndex === -1) {
     console.error("Card not found in display cards:", takenCard);
     return;
@@ -301,76 +354,91 @@ const playerTakeCard = async (lobby, player, cardData, playerType = "player") =>
   let playerNumber;
   if (player === game.p1) {
     playerNumber = 1;
-    console.log("Player 1 taking card");
   } else if (player === game.p2) {
     playerNumber = 2;
-    console.log("Player 2 taking card");
   } else {
     console.error("Invalid player:", player);
     return;
   }
 
-  if (!takenCard) {
-    console.error("No card found", takenCard);
-    return;
-  }
-
+  // Apply effect
   if (takenCard.effect.type === "attack" || takenCard.effect.type === "heal") {
     game = doEffect(takenCard.effect.type, game, takenCard, playerNumber);
   } else if (takenCard.effect.type === "lifesteal") {
-    // do attack and heal
     game = doEffect("lifesteal", game, takenCard, playerNumber);
   } else if (takenCard.effect.type === "freeze") {
-    // Calculate freeze duration before resetting multiplier
-    const freezeDuration = basefreezeDuration * game.multiplier;
-    console.log(`Applying freeze for ${freezeDuration}ms with multiplier ${game.multiplier}`);
-
-    // Then reset multiplier through doEffect
-    game = doEffect("freeze", game, takenCard, playerNumber);
-
-    // Apply freeze effect with saved duration
-    if (playerNumber === 2) {
-      game.p1Effects.freezeUntil = Date.now() + freezeDuration;
+    const now = Date.now();
+    if (playerNumber === 1) {
+      game.p2Effects.freezeUntil = now + basefreezeDuration;
     } else {
-      game.p2Effects.freezeUntil = Date.now() + freezeDuration;
+      game.p1Effects.freezeUntil = now + basefreezeDuration;
     }
   } else if (takenCard.effect.type === "3x") {
-    game = doEffect("3x", game, takenCard, playerNumber);
+    game.multiplier = 3;
+    game.lastCardEffect = "3x multiplier active";
   } else if (takenCard.effect.type === "block") {
-    // Save current multiplier
-    const currentMultiplier = game.multiplier;
-
-    // Apply block effect with current multiplier
-    if (playerNumber === 2) {
-      game.p2Effects.block = game.p2Effects.block.concat(
-        new Array(currentMultiplier).fill(Date.now() + 3000) // Block for 3 seconds
-      );
+    const now = Date.now();
+    if (playerNumber === 1) {
+      game.p1Effects.block.push(now + basefreezeDuration);
     } else {
-      game.p1Effects.block = game.p1Effects.block.concat(
-        new Array(currentMultiplier).fill(Date.now() + 3000)
-      );
+      game.p2Effects.block.push(now + basefreezeDuration);
     }
-    console.log(`Block effect applied with multiplier ${currentMultiplier}!`);
-
-    // Reset multiplier
-    game = doEffect("block", game, takenCard, playerNumber);
   }
 
-  // Update last card effect for either player or bot
-  game.lastCardEffect = takenCard.effect.type;
+  // Get new word from database
+  const newWord = await Word.aggregate([
+    { $match: { language: game.language } },
+    { $sample: { size: 1 } }
+  ]);
 
-  // Update the game in activeGames map
+  if (newWord && newWord[0]) {
+    // Replace the used card with a new one
+    game.displayCards[cardIndex] = {
+      word: newWord[0].word,
+      english: newWord[0].english,
+      effect: {
+        type: possibleEffects[getRandomInt(0, possibleEffects.length)],
+        amount: getEffectAmount(type, newWord[0].difficulty),
+      },
+      difficulty: newWord[0].difficulty,
+    };
+  }
+
+  // Reset multiplier if it was used (unless we just activated it)
+  if (game.multiplier === 3 && takenCard.effect.type !== "3x") {
+    game.multiplier = 1;
+    game.lastCardEffect = null;
+  }
+
+  // Update game state
   activeGames.set(lobby, game);
-  console.log("Updated game state:", game);
 
-  // checks if the game is complete with the new updated hps
+  // Check for win condition
   await checkWin(game);
+  if (game.winner) {
+    handleGameEnd(game, game.winner);
+    return "over";
+  }
 
-  // removes the card and replaces it with a new card
-  let replacement = await newCard(game.language);
-  game.displayCards[cardIndex] = replacement;
-  activeGames.set(lobby, { ...game });
-  console.log("new cards are now", game.displayCards);
+  return game;
+};
+
+// Helper function to generate a new card
+const generateNewCard = async (language) => {
+  try {
+    return await newCard(language);
+  } catch (err) {
+    console.error("Error generating new card:", err);
+    return {
+      word: "error",
+      english: "loading failed",
+      effect: {
+        type: "attack",
+        amount: 10,
+      },
+      difficulty: 1,
+    };
+  }
 };
 
 // bot takes card

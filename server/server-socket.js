@@ -35,8 +35,8 @@ const updateLobbies = () => {
   io.emit("activeLobbies", activeLobbies);
 };
 
-const newLobby = (p1, language) => {
-  const lobby = lobbyLogic.createLobby(p1, language);
+const newLobby = (p1, language, isBot = false) => {
+  const lobby = lobbyLogic.createLobby(p1, language, isBot);
   updateLobbies();
   return lobby;
 };
@@ -69,9 +69,18 @@ const updateReadyStatus = (lobbyid, player, newReadyState) => {
   return response;
 };
 
-const newBotGame = (p1, language, difficulty) => {
-  // starts the game with the player's id as the lobby name
-  gameLogic.newGame(p1, p1, "bot", language);
+const newBotGame = (p1, language, difficulty, lobbyid) => {
+  // Get the lobby using the lobby ID
+  const lobby = lobbyLogic.activeLobbies.get(lobbyid);
+  if (lobby) {
+    // Set bot as p2 and mark both as ready
+    lobby.p2 = "bot";
+    lobby.p1ready = true;
+    lobby.p2ready = true;
+    updateLobbies();
+    // Start the game with the lobby ID
+    gameLogic.newGame(lobby.lobbyid, p1, "bot", language);
+  }
 };
 
 // GAME STUFF

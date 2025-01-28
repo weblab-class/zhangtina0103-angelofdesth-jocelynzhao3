@@ -14,45 +14,55 @@ const BotLobbyCreation = (props) => {
     const { userInfo, setUserInfo } = useContext(UserInfoContext);
     const navigate = useNavigate();
 
-    const handleStartClick = () => {
-        // TODO: put player name in here too?
-        console.log(userContext);
-        // TODO: implement difficulty. Difficulty hardcoded to 1 for now
-        post("/api/startBotGame", { p1: userInfo._id, language: language, difficulty: 1}).then(
-            navigate("/battle/")
-        );
-      };
+    const handleCreateLobby = () => {
+        // Create a bot lobby
+        post("/api/createLobby", { 
+            p1: userInfo._id, 
+            language: language,
+            isBot: true // Mark this as a bot lobby
+        }).then((res) => {
+            if (res.lobby) {
+                // Set the displayed lobby and select it
+                props.setDisplayedLobby(res.lobby.lobbyid);
+                props.setSelectedLobby(res.lobby);
+                props.setShowBotCreation(false);
+            }
+        });
+    };
 
     return (
-    <div>
-        <h3>New vs Bot Game</h3>
         <div>
-        <select
-            name="language"
-            id="language-select"
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            >
-            {/* language value becomes empty string when selected, add more lan */}
-            <option value="">Select a language...</option>
-            <option value="Spanish">Spanish</option>
-            <option value="Chinese">Chinese</option>
-            <option value="German">German</option>
-            <option value="French">French</option>
-            <option value="Arabic">Arabic</option>
-        </select>
+            <h3>New vs Bot Game</h3>
+            <div>
+                <p>
+                    P1: {userInfo.name} [{userInfo.elo}]
+                </p>
+                <select
+                    name="language"
+                    id="language-select"
+                    value={language}
+                    onChange={(e) => setLanguage(e.target.value)}
+                >
+                    {/* language value becomes empty string when selected, add more lan */}
+                    <option value="">Select a language...</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="German">German</option>
+                    <option value="French">French</option>
+                    <option value="Arabic">Arabic</option>
+                </select>
 
-        {language && (
-            <button
-              onClick={handleStartClick}
-              className="battle-button button-base neon-bg neon-border neon-text"
-            >
-              Start A Game
-            </button>
-          )}
+                {language && (
+                    <button
+                        onClick={handleCreateLobby}
+                        className="battle-button button-base neon-bg neon-border neon-text"
+                    >
+                        Create a Lobby
+                    </button>
+                )}
+            </div>
         </div>
-    </div>
-    )
-}
+    );
+};
 
 export default BotLobbyCreation;

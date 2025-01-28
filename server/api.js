@@ -55,7 +55,7 @@ router.get("/activeLobbies", (req, res) => {
 });
 
 router.post("/createLobby", (req, res) => {
-  const lobby = socketManager.newLobby(req.body.p1, req.body.language);
+  const lobby = socketManager.newLobby(req.body.p1, req.body.language, req.body.isBot);
   res.send({ lobby: lobby });
 });
 
@@ -65,13 +65,17 @@ router.post("/joinLobby", (req, res) => {
 });
 
 router.post("/updateReadyStatus", (req, res) => {
-  const result = socketManager.updateReadyStatus(req.body.lobbyid, req.body.player, req.body.isReady);
+  const result = socketManager.updateReadyStatus(
+    req.body.lobbyid,
+    req.body.player,
+    req.body.isReady
+  );
   res.send(result);
 });
 
 router.post("/leaveLobby", (req, res) => {
   const result = socketManager.leaveLobby(req.body.lobbyid, req.body.player);
-  res.send({ result: result });
+  res.send({ success: result });
 });
 
 //Game APIs
@@ -81,7 +85,7 @@ router.post("/startPVPGame", (req, res) => {
 });
 
 router.post("/startBotGame", (req, res) => {
-  socketManager.newBotGame(req.body.p1, req.body.language, req.body.difficulty);
+  socketManager.newBotGame(req.body.p1, req.body.language, req.body.difficulty, req.body.lobbyid);
   res.send({});
 });
 

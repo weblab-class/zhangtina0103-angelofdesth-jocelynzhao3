@@ -182,7 +182,17 @@ const Battle = (props) => {
   // Add effect to fetch opponent info when game state updates
   useEffect(() => {
     const fetchOpponentInfo = async () => {
-      // Determine if we're player 1 or 2
+      // For bot games, player is always p1 and bot is p2
+      if (gameState.p2 === "bot") {
+        setIsPlayerOne(true);
+        setOpponentInfo({
+          name: "AI Bot",
+          picture: "https://cdn.pixabay.com/photo/2017/01/31/15/33/android-2025100_1280.png",
+        });
+        return;
+      }
+
+      // For PvP games, determine position normally
       const amIPlayerOne = gameState.p1 === userInfo._id;
       setIsPlayerOne(amIPlayerOne);
 
@@ -207,10 +217,25 @@ const Battle = (props) => {
 
   // Helper function to get player info for display
   const getPlayerInfo = (isLeft) => {
-    // Left side is p1, right side is p2
-    const isP1Side = isLeft;
+    // For bot games, player is always on left, bot on right
+    if (gameState.p2 === "bot") {
+      return isLeft
+        ? {
+            name: userInfo.name,
+            picture: userInfo.picture,
+            hp: gameState.p1HP,
+            blocks: numberBlocks().p1Blocks,
+          }
+        : {
+            name: "AI Bot",
+            picture: "https://cdn.pixabay.com/photo/2017/01/31/15/33/android-2025100_1280.png",
+            hp: gameState.p2HP,
+            blocks: numberBlocks().p2Blocks,
+          };
+    }
 
-    // If we're player one, we go on the left
+    // For PvP games, handle normally
+    const isP1Side = isLeft;
     if (isPlayerOne) {
       return isP1Side
         ? {
@@ -220,16 +245,15 @@ const Battle = (props) => {
             blocks: numberBlocks().p1Blocks,
           }
         : {
-            name: opponentInfo?.name || "Bot",
+            name: opponentInfo?.name || "Loading...",
             picture: opponentInfo?.picture,
             hp: gameState.p2HP,
             blocks: numberBlocks().p2Blocks,
           };
     } else {
-      // If we're player two, we go on the right
       return isP1Side
         ? {
-            name: opponentInfo?.name || "Bot",
+            name: opponentInfo?.name || "Loading...",
             picture: opponentInfo?.picture,
             hp: gameState.p1HP,
             blocks: numberBlocks().p1Blocks,
@@ -299,12 +323,32 @@ const Battle = (props) => {
           <div className="Battle-hp-bar" data-hp={gameState.p1HP <= 30 ? "low" : "normal"}>
             <div
               className={`Battle-hp-fill player-hp`}
-              style={{ width: `${(gameState.p1HP / 100) * 100}%` }}
-            />
-            <div className="Battle-hp-text" data-hp={gameState.p1HP <= 30 ? "low" : "normal"}>
-              {gameState.p1HP} HP
-            </div>
+              style={{ width: `${gameState.p1HP}%` }}
+            ></div>
+            <div className="Battle-hp-text">{gameState.p1HP}%</div>
           </div>
+        </div>
+
+        {/* Game Effects */}
+        <div className="Battle-effects">
+          {gameState.lastCardEffect && (
+            <div className="Battle-effect-text">{gameState.lastCardEffect}</div>
+          )}
+          {gameState.multiplier > 1 && (
+            <div className="Battle-multiplier">
+              {gameState.multiplier}x Multiplier Active
+            </div>
+          )}
+          {numberBlocks().p1Blocks > 0 && (
+            <div className="Battle-block">
+              Player 1: {numberBlocks().p1Blocks} blocks ({numberBlocks().p1RemainingSeconds}s)
+            </div>
+          )}
+          {numberBlocks().p2Blocks > 0 && (
+            <div className="Battle-block">
+              Player 2: {numberBlocks().p2Blocks} blocks ({numberBlocks().p2RemainingSeconds}s)
+            </div>
+          )}
         </div>
 
         {/* Enemy HP (Right) */}
@@ -312,11 +356,9 @@ const Battle = (props) => {
           <div className="Battle-hp-bar" data-hp={gameState.p2HP <= 30 ? "low" : "normal"}>
             <div
               className={`Battle-hp-fill enemy-hp`}
-              style={{ width: `${(gameState.p2HP / 100) * 100}%` }}
-            />
-            <div className="Battle-hp-text" data-hp={gameState.p2HP <= 30 ? "low" : "normal"}>
-              {gameState.p2HP} HP
-            </div>
+              style={{ width: `${gameState.p2HP}%` }}
+            ></div>
+            <div className="Battle-hp-text">{gameState.p2HP}%</div>
           </div>
         </div>
       </div>

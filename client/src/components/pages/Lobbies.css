@@ -1,34 +1,37 @@
-/* Ensure dark background for the entire page */
-html,
-body {
-  background-color: var(--darkgrey);
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
+@import url("../../fonts/fonts.css");
+
+.App-container {
+  background: #0a0a1f !important;
+  max-width: none !important;
+  padding: 0 !important;
 }
 
 .Lobbies-container {
-  padding: 2rem;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
   min-height: 100vh;
-  background-color: #000;
+  width: 100%;
   color: #fff;
+  position: relative;
+  background: #0a0a1f;
 }
 
 .Lobbies-top-bar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  padding: 1rem;
+  width: 100%;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: flex-end;
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: 2;
+  box-sizing: border-box;
+  backdrop-filter: blur(10px);
 }
 
 .icon-container {
   display: flex;
-  gap: 0.75rem;
   align-items: center;
+  gap: 0.75rem;
 }
 
 .instructions-button,
@@ -75,74 +78,115 @@ body {
   filter: drop-shadow(0 0 5px rgba(77, 255, 255, 0.5));
 }
 
-.svg-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
+.main-content {
+  flex: 1;
+  padding: 2rem;
   width: 100%;
-  height: 100%;
-  z-index: 0;
-  opacity: 0.3;
-  pointer-events: none;
+  box-sizing: border-box;
 }
 
-.skyline-svg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.language-selector-container {
-  margin: 2rem 0;
-  z-index: 1;
-  position: relative;
-}
-
-.language-select {
-  padding: 0.5rem 1rem;
-  font-size: 1.2rem;
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: #4dffff;
-  border: 2px solid #4dffff;
-  outline: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.language-select:hover {
-  box-shadow: 0 0 15px rgba(77, 255, 255, 0.5);
-}
-
-.language-select option {
-  background-color: #000;
-  color: #4dffff;
-}
-
-.lobby-buttons {
+.action-buttons {
   display: flex;
   gap: 1rem;
-  margin: 1rem 0;
-  z-index: 1;
-  position: relative;
+  margin-bottom: 2rem;
+  align-items: flex-start;
 }
 
-.lobby-buttons button {
-  padding: 0.8rem 1.5rem;
-  font-size: 1.1rem;
+.action-buttons button {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  min-width: 180px;
+  transition: all 0.3s ease;
+}
+
+.action-buttons button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(77, 255, 255, 0.4);
+}
+
+.lobby-content {
+  display: grid;
+  grid-template-columns: minmax(400px, 1fr) minmax(300px, 1fr);
+  gap: 2rem;
+  align-items: start;
+  height: 100%;
+}
+
+.creation-box,
+.selected-lobby {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 2px solid #4dffff;
+  border-radius: 8px;
+  padding: 2rem;
+  height: fit-content;
+  backdrop-filter: blur(10px);
+}
+
+.lobbies-table {
+  width: 100%;
+}
+
+.lobbies-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+.lobbies-table th,
+.lobbies-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(77, 255, 255, 0.2);
+}
+
+.lobbies-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.lobbies-table th {
+  color: #4dffff;
+  text-shadow: 0 0 5px rgba(77, 255, 255, 0.5);
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.lobbies-table tbody tr {
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.u-flex {
-  position: relative;
-  z-index: 1;
-  width: 100%;
+.lobbies-table tbody tr:hover {
+  background-color: rgba(77, 255, 255, 0.1);
+}
+
+.lobbies-table tbody tr.selected {
+  background-color: rgba(77, 255, 255, 0.2);
+}
+
+.lobby-details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.lobby-details p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.lobby-details strong {
+  color: #4dffff;
+  margin-right: 0.5rem;
 }
 
 /* Neon effects */
 .neon-bg {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
 }
 
 .neon-border {
@@ -154,20 +198,6 @@ body {
   text-shadow: 0 0 5px rgba(77, 255, 255, 0.5);
 }
 
-.button-base:hover {
-  box-shadow: 0 0 15px rgba(77, 255, 255, 0.5);
-  transform: translateY(-2px);
-}
-
-.Lobbies-title {
-  color: white;
-  margin-bottom: 20px;
-}
-
-.Lobbies-content {
-  color: white;
-}
-
 /* Ensure all text within the lobbies page is white */
 .Lobbies-container p,
 .Lobbies-container h1,
@@ -175,4 +205,10 @@ body {
 .Lobbies-container h3,
 .Lobbies-container div {
   color: white;
+}
+
+h2 {
+  color: #4dffff;
+  text-shadow: 0 0 5px rgba(77, 255, 255, 0.5);
+  margin-bottom: 1.5rem;
 }

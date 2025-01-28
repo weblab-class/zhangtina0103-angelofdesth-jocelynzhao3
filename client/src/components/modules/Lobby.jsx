@@ -40,7 +40,7 @@ const Lobby = (props) => {
       props.formatPlayerDisplay(setP1, newlobby.p1);
       props.formatPlayerDisplay(setP2, newlobby.p2);
 
-      if (newlobby.p1ready && newlobby.p2ready) {
+      if (newlobby.p1ready && newlobby.p2ready && !newlobby.isBot) {
         navigate("/battle/" + newlobby.lobbyid);
       }
     }
@@ -52,6 +52,7 @@ const Lobby = (props) => {
 
     post("/api/joinlobby", { lobbyid: newlobby.lobbyid, player: userInfo._id }).then((result) => {
       console.log("joined result: ", result);
+      props.setInLobby(true);
     });
   };
 
@@ -84,6 +85,20 @@ const Lobby = (props) => {
     });
   };
 
+  const handleStartBotGame = () => {
+    const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid);
+    if (!newlobby) return;
+
+    post("/api/startBotGame", { 
+      lobbyid: newlobby.lobbyid,
+      player: userInfo._id 
+    }).then((result) => {
+      console.log("start bot game result: ", result);
+      // Navigate to battle page after starting bot game
+      navigate(`/battle/${newlobby.lobbyid}`);
+    });
+  };
+
   // Get current lobby data
   const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid);
   
@@ -95,48 +110,77 @@ const Lobby = (props) => {
   // Check if the current user has joined this lobby
   const hasJoined = newlobby && (userInfo._id === newlobby.p1 || userInfo._id === newlobby.p2);
   
+  // Check if both players are present
+  const hasTwoPlayers = newlobby && newlobby.p1 && newlobby.p2;
+  
   // Check if the current user is ready
   const isReady = newlobby && ((userInfo._id === newlobby.p1 && newlobby.p1ready) || 
                   (userInfo._id === newlobby.p2 && newlobby.p2ready));
 
   return (
-    <div>
+    <div className="Lobby-container">
       <h3>Lobby {props.lobbyid}</h3>
-      <div>
+      <div className="Lobby-details">
         <p>
           You are {userInfo.name} (Elo: {userInfo.elo})
         </p>
         <p>
-          P1: {p1 ? `${p1}${newlobby && newlobby.p1ready ? " (Ready)" : ""}` : "Loading..."}
+          Host: {p1 ? `${p1}` : "Loading..."}
         </p>
+        {newlobby && newlobby.isBot ? (
+          <p>Opponent: AI Bot</p>
+        ) : (
+          <p>
+            Player 2: {p2 ? `${p2}${newlobby && newlobby.p2ready ? " (Ready)" : ""}` : "Waiting for player..."}
+          </p>
+        )}
         <p>
-          P2: {p2 ? `${p2}${newlobby && newlobby.p2ready ? " (Ready)" : ""}` : "Loading..."}
+          Language: {newlobby ? newlobby.language : "Loading..."}
         </p>
 
         {!hasJoined ? (
-          <>
+          <div className="Lobby-buttons">
             <button 
               onClick={handleJoinClick} 
               disabled={newlobby && newlobby.p2}
+              className="button-base neon-bg neon-border neon-text"
             >
               {newlobby && newlobby.p2 ? "Lobby Full" : "Join"}
             </button>
-          </>
-        ) : (
-          <div>
-            {isReady ? (
-              <p>Waiting for opponent to be ready...</p>
-            ) : (
-              <>
-                {newlobby && newlobby.p2 ? (
-                  <button onClick={handleReadyClick}>Ready</button>
-                ) : (
-                  <p>Waiting for another player to join...</p>
-                )}
-                <button onClick={handleLeaveClick}>Leave</button>
-              </>
-            )}
           </div>
+        ) : (
+          <div className="Lobby-buttons">
+            {newlobby && newlobby.isBot ? (
+              <button 
+                onClick={handleStartBotGame}
+                className="button-base neon-bg neon-border neon-text"
+              >
+                Start Game
+              </button>
+            ) : (
+              !isReady && hasTwoPlayers && (
+                <button 
+                  onClick={handleReadyClick}
+                  className="button-base neon-bg neon-border neon-text"
+                >
+                  Ready
+                </button>
+              )
+            )}
+            <button 
+              onClick={handleLeaveClick}
+              className="button-base neon-bg neon-border neon-text"
+            >
+              Quit
+            </button>
+          </div>
+        )}
+        
+        {hasJoined && !hasTwoPlayers && !newlobby?.isBot && (
+          <p className="Lobby-status">Waiting for another player to join...</p>
+        )}
+        {hasJoined && hasTwoPlayers && isReady && !newlobby?.isBot && (
+          <p className="Lobby-status">Waiting for opponent to be ready...</p>
         )}
       </div>
     </div>

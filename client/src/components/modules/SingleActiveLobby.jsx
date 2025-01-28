@@ -47,6 +47,37 @@ const SingleActiveLobby = (props) => {
     };
   }, [props.lobby, props.lobby.p1, props.lobby.p2, userInfo]);
 
+  // Check if the current user has joined this lobby
+  const hasJoined =
+    userInfo && (userInfo._id === props.lobby.p1 || userInfo._id === props.lobby.p2);
+
+  // Check if both players are present
+  const hasTwoPlayers = props.lobby.p1 && props.lobby.p2;
+
+  // Check if the current user is ready
+  const isReady =
+    userInfo &&
+    ((userInfo._id === props.lobby.p1 && props.lobby.p1ready) ||
+      (userInfo._id === props.lobby.p2 && props.lobby.p2ready));
+
+  const handleQuit = () => {
+    post("/api/leaveLobby", { lobbyid: props.lobby.lobbyid, player: userInfo._id }).then((res) => {
+      if (res.success) {
+        props.setDisplayedLobby("");
+        props.setInLobby(false);
+        props.setSelectedLobby(null);
+      }
+    });
+  };
+
+  const handleReady = () => {
+    post("/api/updateReadyStatus", {
+      lobbyid: props.lobby.lobbyid,
+      player: userInfo._id,
+      isReady: true,
+    });
+  };
+
   return (
     <div
       className={`SingleActiveLobby-container ${
@@ -62,6 +93,32 @@ const SingleActiveLobby = (props) => {
         <p>P1 (Host): {p1} </p>
         <p>P2: {p2} </p>
         <p>Language: {props.lobby.language}</p>
+
+        {hasJoined && (
+          <div className="SingleActiveLobby-buttons">
+            <button
+              className="button-base neon-bg neon-border neon-text"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleQuit();
+              }}
+            >
+              Quit
+            </button>
+
+            {hasTwoPlayers && !isReady && (
+              <button
+                className="button-base neon-bg neon-border neon-text"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleReady();
+                }}
+              >
+                Ready
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

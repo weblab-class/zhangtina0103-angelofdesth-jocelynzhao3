@@ -1,13 +1,42 @@
 .SingleActiveLobby-container {
-  border: 2px solid white;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(77, 255, 255, 0.2);
   border-radius: 8px;
-  padding: 16px;
-  margin: 12px 0;
-  color: white;
-  transition: border-width 0.2s ease;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+.SingleActiveLobby-container:hover {
+  background-color: rgba(77, 255, 255, 0.1);
+}
 
+.SingleActiveLobby-container-active {
+  background-color: rgba(77, 255, 255, 0.2);
+  border-color: #4dffff;
+}
+
+.SingleActiveLobby-info p {
+  margin: 0.5rem 0;
+}
+
+.SingleActiveLobby-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.SingleActiveLobby-buttons button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  min-width: 100px;
+  transition: all 0.3s ease;
+}
+
+.SingleActiveLobby-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(77, 255, 255, 0.4);
+}
 
 .SingleActiveLobby-container.joined {
   border-width: 4px;
@@ -16,10 +45,6 @@
 .SingleActiveLobby-container p {
   margin: 8px 0;
   color: white;
-}
-
-.SingleActiveLobby-container-active {
-  background-color: darkcyan
 }
 
 .SingleActiveLobby-joinButton,
