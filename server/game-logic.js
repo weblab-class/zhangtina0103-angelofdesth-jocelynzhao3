@@ -216,23 +216,26 @@ const checkWin = async (game) => {
   }
 };
 
-const getCurrentTime = () => {
-  const date = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
-  const estDate = new Date(date);
-  const hours = estDate.getHours();
-  const minutes = estDate.getMinutes();
-  const ampm = hours >= 12 ? "PM" : "AM";
-  const formattedHours = hours % 12 || 12;
-  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-  const month = estDate.toLocaleString("default", { month: "short" });
-  const day = estDate.getDate();
+// const getCurrentTime = () => {
+//   const date = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+//   const estDate = new Date(date);
+//   const hours = estDate.getHours();
+//   const minutes = estDate.getMinutes();
+//   const ampm = hours >= 12 ? "PM" : "AM";
+//   const formattedHours = hours % 12 || 12;
+//   const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+//   const month = estDate.toLocaleString("default", { month: "short" });
+//   const day = estDate.getDate();
 
-  return `${formattedHours}:${formattedMinutes} ${ampm} on ${month} ${day}`;
-};
+//   return `${formattedHours}:${formattedMinutes} ${ampm} on ${month} ${day}`;
+// };
 
 const handleGameEnd = async (game, winner) => {
   try {
     activeGames.delete(game.lobby);
+
+    const currentDate = new Date();
+    const isoString = currentDate.toISOString();
 
     // Only update database if players are not bots
     if (game.p1 !== "bot") {
@@ -241,7 +244,7 @@ const handleGameEnd = async (game, winner) => {
         Result: p1Result,
         Opponent: game.p2,
         Language: game.language,
-        Date: getCurrentTime(),
+        Date: isoString,
       };
 
       const user = await User.findOne({ _id: game.p1 });
@@ -263,7 +266,7 @@ const handleGameEnd = async (game, winner) => {
         Result: p2Result,
         Opponent: game.p1,
         Language: game.language,
-        Date: getCurrentTime(),
+        Date: isoString,
       };
 
       const user = await User.findOne({ _id: game.p2 });
@@ -409,6 +412,5 @@ module.exports = {
   activeGames,
   newGame,
   playerTakeCard,
-  getCurrentTime,
   handleGameEnd,
 };

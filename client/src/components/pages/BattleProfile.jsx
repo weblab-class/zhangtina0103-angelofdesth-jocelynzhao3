@@ -121,6 +121,19 @@ const BattleProfile = (props) => {
     }
   }, [userInfo, navigate]);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const month = date.toLocaleString("default", { month: "short" });
+    const day = date.getDate();
+
+    return `${formattedHours}:${formattedMinutes} ${ampm} on ${month} ${day}`;
+  };
+
   if (!userInfo) {
     return (
       <div className="BattleEnd-container">
@@ -252,7 +265,7 @@ const BattleProfile = (props) => {
                   </td>
                   <td>{entry.Opponent}</td>
                   <td>{entry.Language}</td>
-                  <td>{new Date(entry.Date).toLocaleString()}</td>
+                  <td>{formatDate(entry.Date)}</td>
                 </tr>
               ))}
             </tbody>
