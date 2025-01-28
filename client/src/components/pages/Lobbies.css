@@ -8,13 +8,97 @@ body {
 }
 
 .Lobbies-container {
-  color: white;
-  background-color: black;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+}
+
+.svg-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  margin: 0;
-  padding: 20px;
-  box-sizing: border-box;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.skyline-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.language-selector-container {
+  margin: 2rem 0;
+  z-index: 1;
+  position: relative;
+}
+
+.language-select {
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #4dffff;
+  border: 2px solid #4dffff;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.language-select:hover {
+  box-shadow: 0 0 15px rgba(77, 255, 255, 0.5);
+}
+
+.language-select option {
+  background-color: #000;
+  color: #4dffff;
+}
+
+.lobby-buttons {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  z-index: 1;
+  position: relative;
+}
+
+.lobby-buttons button {
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.u-flex {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+/* Neon effects */
+.neon-bg {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.neon-border {
+  border: 2px solid #4dffff;
+}
+
+.neon-text {
+  color: #4dffff;
+  text-shadow: 0 0 5px rgba(77, 255, 255, 0.5);
+}
+
+.button-base:hover {
+  box-shadow: 0 0 15px rgba(77, 255, 255, 0.5);
+  transform: translateY(-2px);
 }
 
 .Lobbies-title {

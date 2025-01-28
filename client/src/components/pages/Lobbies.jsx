@@ -5,6 +5,24 @@ import LobbyList from "../modules/LobbyList";
 import PVPLobbyCreation from "../modules/PVPLobbyCreation";
 import Lobby from "../modules/Lobby";
 
+// Import SVGs
+import zuluSvg from "../../images/zulu.svg";
+import spanishSvg from "../../images/spanish.svg";
+import chineseSvg from "../../images/chinese.svg";
+import arabicSvg from "../../images/arabic.svg";
+import frenchSvg from "../../images/french.svg";
+import germanSvg from "../../images/german.svg";
+import koreanSvg from "../../images/korean.svg";
+import hindiSvg from "../../images/hindi.svg";
+import portugueseSvg from "../../images/portuguese.svg";
+import afrikaansSvg from "../../images/afrikaans.svg";
+import vietnameseSvg from "../../images/vietnamese.svg";
+import japaneseSvg from "../../images/japanese.svg";
+import teluguSvg from "../../images/telugu.svg";
+import russianSvg from "../../images/russian.svg";
+import italianSvg from "../../images/italian.svg";
+import turkishSvg from "../../images/turkish.svg";
+
 import { useState, useEffect, useContext } from "react";
 import { UserInfoContext } from "../App.jsx";
 import { socket } from "../../client-socket.js";
@@ -15,8 +33,8 @@ const Lobbies = (props) => {
   // the possible states for the lobby will be {null, newPVP, newBot, #lobbyid}
   const [activeLobbies, setActiveLobbies] = useState([]);
   const [inLobby, setInLobby] = useState(false);
-  // TODO: update inLobby by having a useEffect that checks if a player is in any lobby in active games
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
+  const [language, setLanguage] = useState("");
   
   const formatPlayerDisplay = (playerSetFunc, id) => {
     if (id) {
@@ -72,25 +90,76 @@ const Lobbies = (props) => {
   }, []);
 
   const handleNewPVP = () => {
+    if (!language) {
+      alert("Please select a language first!");
+      return;
+    }
     setDisplayedLobby("newPVP");
     setInLobby(true);
   };
 
   const handleNewBot = () => {
+    if (!language) {
+      alert("Please select a language first!");
+      return;
+    }
     setDisplayedLobby("newBot");
     setInLobby(true);
   };
 
   return (
     <div className="Lobbies-container">
-      <p>
-        {" "}
-        this is the pvp page, where you can join a lobby or start a lobby.
-      </p>
-      {inLobby ? 
-         <p> You are already in a lobby </p> : <div>
-         <button onClick={handleNewPVP}>Create New PVP Lobby</button> 
-         <button onClick={handleNewBot}>Create New vs Bot Lobby</button>
+      <div className="svg-wrapper">
+        {language === "Zulu" && <img src={zuluSvg} className="skyline-svg" alt="zulu design" />}
+        {language === "Spanish" && <img src={spanishSvg} className="skyline-svg" alt="spanish design" />}
+        {language === "Chinese" && <img src={chineseSvg} className="skyline-svg" alt="chinese design" />}
+        {language === "Arabic" && <img src={arabicSvg} className="skyline-svg" alt="arabic design" />}
+        {language === "French" && <img src={frenchSvg} className="skyline-svg" alt="french design" />}
+        {language === "German" && <img src={germanSvg} className="skyline-svg" alt="german design" />}
+        {language === "Korean" && <img src={koreanSvg} className="skyline-svg" alt="korean design" />}
+        {language === "Hindi" && <img src={hindiSvg} className="skyline-svg" alt="hindi design" />}
+        {language === "Portuguese" && <img src={portugueseSvg} className="skyline-svg" alt="portuguese design" />}
+        {language === "Afrikaans" && <img src={afrikaansSvg} className="skyline-svg" alt="afrikaans design" />}
+        {language === "Vietnamese" && <img src={vietnameseSvg} className="skyline-svg" alt="vietnamese design" />}
+        {language === "Japanese" && <img src={japaneseSvg} className="skyline-svg" alt="japanese design" />}
+        {language === "Telugu" && <img src={teluguSvg} className="skyline-svg" alt="telugu design" />}
+        {language === "Russian" && <img src={russianSvg} className="skyline-svg" alt="russian design" />}
+        {language === "Italian" && <img src={italianSvg} className="skyline-svg" alt="italian design" />}
+        {language === "Turkish" && <img src={turkishSvg} className="skyline-svg" alt="turkish design" />}
+      </div>
+
+      <div className="language-selector-container">
+        <select
+          name="language"
+          id="language-select"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+          className="language-select"
+        >
+          <option value="">Choose your language...</option>
+          <option value="Spanish">Spanish</option>
+          <option value="Chinese">Chinese</option>
+          <option value="German">German</option>
+          <option value="French">French</option>
+          <option value="Arabic">Arabic</option>
+          <option value="Zulu">Zulu</option>
+          <option value="Korean">Korean</option>
+          <option value="Portuguese">Portuguese</option>
+          <option value="Afrikaans">Afrikaans</option>
+          <option value="Hindi">Hindi</option>
+          <option value="Vietnamese">Vietnamese</option>
+          <option value="Japanese">Japanese</option>
+          <option value="Telugu">Telugu</option>
+          <option value="Russian">Russian</option>
+          <option value="Italian">Italian</option>
+          <option value="Turkish">Turkish</option>
+        </select>
+      </div>
+
+      {inLobby ? (
+        <p> You are already in a lobby </p> : <div>
+         <button onClick={handleNewPVP} className="button-base neon-bg neon-border neon-text">Create New PVP Lobby</button> 
+         <button onClick={handleNewBot} className="button-base neon-bg neon-border neon-text">Create New vs Bot Lobby</button>
          </div>
         }
       <div className="u-flex">
