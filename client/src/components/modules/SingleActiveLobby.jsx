@@ -8,6 +8,7 @@ const SingleActiveLobby = (props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const [p1, setP1] = useState("Loading...");
   const [p2, setP2] = useState("Loading...");
+  const [isUserInLobby, setIsUserInLobby] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -42,6 +43,11 @@ const SingleActiveLobby = (props) => {
     updatePlayerDisplay(setP1, props.lobby.p1);
     updatePlayerDisplay(setP2, props.lobby.p2);
 
+    // Update isUserInLobby state
+    if (userInfo) {
+      setIsUserInLobby(props.lobby.p1 === userInfo._id || props.lobby.p2 === userInfo._id);
+    }
+
     return () => {
       isMounted = false;
     };
@@ -49,14 +55,14 @@ const SingleActiveLobby = (props) => {
 
   return (
     <div
-      className={`lobby-row ${props.active ? "lobby-row-active" : ""}`}
+      className={`lobby-row ${props.active ? "lobby-row-active" : ""} ${isUserInLobby ? "current-user" : ""}`}
       onClick={() => {
         props.setDisplayedLobby(props.lobby.lobbyid);
         props.setInLobby(true);
       }}
     >
-      <div className="lobby-cell">{p1}</div>
-      <div className="lobby-cell">{p2}</div>
+      <div className={`lobby-cell ${props.lobby.p1ready ? "player-ready" : ""}`}>{p1}</div>
+      <div className={`lobby-cell ${props.lobby.p2ready ? "player-ready" : ""}`}>{p2}</div>
       <div className="lobby-cell">
         <span className="lobby-language">{props.lobby.language}</span>
       </div>

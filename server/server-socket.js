@@ -71,7 +71,7 @@ const updateReadyStatus = (lobbyid, player, newReadyState) => {
 
 const newBotGame = (p1, language, difficulty) => {
   // starts the game with the player's id as the lobby name
-  gameLogic.newGame(p1, p1, "bot", language);
+  gameLogic.newGame(p1, p1, "bot", language, difficulty);
 };
 
 // GAME STUFF

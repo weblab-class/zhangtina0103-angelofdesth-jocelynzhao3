@@ -169,7 +169,7 @@ const newCard = (language) => {
     });
 };
 
-const newGame = async (lobby, p1, p2, language) => {
+const newGame = async (lobby, p1, p2, language, difficulty = 1) => {
   if (activeGames.get(lobby)) {
     console.log("This game already exists! Nothing added.");
   } else {
@@ -199,7 +199,7 @@ const newGame = async (lobby, p1, p2, language) => {
 
     // Start bot play when game starts
     if (p2 === "bot") {
-      startBotPlay(lobby);
+      startBotPlay(lobby, difficulty);
     }
   }
 };
@@ -385,7 +385,14 @@ const botTakeCard = (game) => {
   }
 };
 
-const startBotPlay = (lobby) => {
+const startBotPlay = (lobby, difficulty) => {
+  let waitTime = 15000;
+  if (difficulty === 2) {
+    waitTime = 9000;
+  } else if (difficulty === 3) {
+    waitTime = 3000;
+  }
+
   const interval = setInterval(() => {
     const game = activeGames.get(lobby);
     if (!game || game.winner) {
@@ -393,7 +400,7 @@ const startBotPlay = (lobby) => {
       return;
     }
     botTakeCard(game);
-  }, 15000); // 15 seconds
+  }, waitTime); // dependent on difficulty
 
   return interval;
 };

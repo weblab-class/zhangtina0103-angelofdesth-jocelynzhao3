@@ -22,7 +22,7 @@ const LobbyList = (props) => {
             <div className="lobby-row">
               <div className="lobby-cell">Player 1</div>
               <div className="lobby-cell">Player 2</div>
-              <div className="lobby-cell">Status</div>
+              <div className="lobby-cell">Language</div>
             </div>
           </div>
           <div className="lobby-table-body">

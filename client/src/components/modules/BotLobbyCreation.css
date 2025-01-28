@@ -1,6 +1,13 @@
+.difficulty-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
 .bot-create-button {
   padding: 4px 8px;
   font-size: 0.8rem;
+  font-family: 'Press Start 2P', monospace;
   margin-top: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -11,9 +18,15 @@
   transform: translateY(-1px);
 }
 
+.bot-create-button.selected {
+  background-color: rgba(77, 255, 255, 0.2);
+  box-shadow: 0 0 15px rgba(77, 255, 255, 0.5);
+}
+
 .bot-language-select {
   padding: 4px 8px;
   font-size: 0.8rem;
+  font-family: 'Press Start 2P', monospace;
   background-color: rgba(0, 0, 0, 0.8);
   color: #4dffff;
   border: 1px solid #4dffff;

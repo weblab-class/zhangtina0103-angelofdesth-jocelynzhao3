@@ -1,6 +1,7 @@
 .pvp-create-button {
   padding: 4px 8px;
   font-size: 0.8rem;
+  font-family: 'Press Start 2P', monospace;
   margin-top: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -14,6 +15,7 @@
 .pvp-language-select {
   padding: 4px 8px;
   font-size: 0.8rem;
+  font-family: 'Press Start 2P', monospace;
   background-color: rgba(0, 0, 0, 0.8);
   color: #4dffff;
   border: 1px solid #4dffff;

@@ -151,13 +151,13 @@ const Lobbies = (props) => {
             </button>
           </div>
         )}
-        
+
         <div className="lobbies-content">
           <div className="lobbies-list">
             <div className="lobbies-header">
-              <h2>Active Lobbies</h2>
+              <h2>Active PVP Lobbies</h2>
             </div>
-            
+
             {(() => {
               const userLobby = activeLobbies.find(
                 (lobby) =>

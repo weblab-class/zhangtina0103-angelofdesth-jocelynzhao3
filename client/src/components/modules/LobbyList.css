@@ -6,6 +6,8 @@
   width: 100%;
   border-spacing: 0;
   border-collapse: separate;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.8rem;
 }
 
 .lobby-table-header {
@@ -14,10 +16,26 @@
 
 .lobby-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   padding: 0.75rem;
-  border-bottom: 1px solid rgba(77, 255, 255, 0.2);
+  border: 1px solid rgba(77, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.lobby-row:hover {
+  border-color: rgba(77, 255, 255, 0.4);
+  box-shadow: 0 0 10px rgba(77, 255, 255, 0.3);
+}
+
+.lobby-row.current-user {
+  font-weight: bold;
+  border: 2px solid #4dffff;
+  box-shadow: 0 0 15px rgba(77, 255, 255, 0.5);
+  background-color: rgba(77, 255, 255, 0.1);
 }
 
 .lobby-table-header .lobby-row {
