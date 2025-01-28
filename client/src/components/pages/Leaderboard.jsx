@@ -3,6 +3,9 @@ import { get } from "../../utilities";
 import "./Leaderboard.css";
 import { UserInfoContext } from "../App.jsx";
 import { Link } from "react-router-dom";
+import doorIcon from "../../assets/door.png";
+import questionIcon from "../../assets/question.png";
+import trophyIcon from "../../assets/trophy.png";
 
 const processUserStats = (user) => {
   const log = user.log || [];
@@ -31,12 +34,13 @@ const processUserStats = (user) => {
 
 const Leaderboard = () => {
   const [users, setUsers] = useState([]);
-  const { userInfo } = useContext(UserInfoContext);
+  const { userInfo, setUserInfo } = useContext(UserInfoContext);
 
   useEffect(() => {
     get("/api/leaderboard").then((userList) => {
       // Process stats and sort by ELO
       const processedUsers = userList.map(processUserStats).sort((a, b) => b.elo - a.elo);
+      console.log("Processed users:", processedUsers); // Debug log
       setUsers(processedUsers);
     });
   }, []);
@@ -46,39 +50,61 @@ const Leaderboard = () => {
 
   return (
     <div className="Start-container">
+      <Link to="/" className="back-to-start-link">
+        Back
+      </Link>
+      <div className="icon-container">
+        <Link to="/instructions" className="instructions-button">
+          <img src={questionIcon} alt="instructions" className="question-icon" />
+        </Link>
+        <Link to="/leaderboard" className="leaderboard-button">
+          <img src={trophyIcon} alt="leaderboard" className="trophy-icon" />
+        </Link>
+        <Link to="/battleProfile" className="profile-button">
+          <img
+            src={
+              userInfo?.picture ||
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            }
+            alt="profile"
+            className="profile-icon"
+          />
+        </Link>
+        <button onClick={() => setUserInfo(null)} className="logout-button">
+          <img src={doorIcon} alt="sign out" className="door-icon" />
+        </button>
+      </div>
       <div className="Leaderboard-container">
         <h1>Leaderboard</h1>
         {userRank > 0 && <div className="Leaderboard-userRank">Your Rank: #{userRank}</div>}
-        <div className="Leaderboard-table">
-          <div className="Leaderboard-header">
-            <div className="Leaderboard-rank">Rank</div>
-            <div className="Leaderboard-name">Name</div>
-            <div className="Leaderboard-elo">ELO</div>
-            <div className="Leaderboard-games">Games</div>
-            <div className="Leaderboard-winrate">Win Rate</div>
-            <div className="Leaderboard-language">Top Language</div>
-          </div>
-          {users.map((user, index) => (
-            <div
-              key={user._id}
-              className={`Leaderboard-row ${
-                user._id === userInfo?._id ? "Leaderboard-row-highlight" : ""
-              }`}
-            >
-              <div className="Leaderboard-rank">{index + 1}</div>
-              <div className="Leaderboard-name">{user.name}</div>
-              <div className="Leaderboard-elo">{user.elo}</div>
-              <div className="Leaderboard-games">{user.log.length}</div>
-              <div className="Leaderboard-winrate">{user.winRate}</div>
-              <div className="Leaderboard-language">{user.mostPlayedLanguage}</div>
-            </div>
-          ))}
-        </div>
-        <div className="back-to-start-container">
-          <Link to="/" className="BattleEnd-button">
-            Back to start page!
-          </Link>
-        </div>
+        <table className="Leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Player</th>
+              <th>ELO</th>
+              <th>Win Rate</th>
+              <th>Most Played</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user, index) => (
+              <tr key={user._id} className={user._id === userInfo?._id ? "highlight" : ""}>
+                <td className="Leaderboard-rank">#{index + 1}</td>
+                <td className="Leaderboard-name">{user.name}</td>
+                <td className="Leaderboard-elo" data-value={user.elo}>
+                  {user.elo}
+                </td>
+                <td className="Leaderboard-winrate" data-value={parseFloat(user.winRate) || 0}>
+                  {user.winRate}
+                </td>
+                <td className="Leaderboard-language" data-value={user.mostPlayedLanguage}>
+                  {user.mostPlayedLanguage}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
