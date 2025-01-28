@@ -74,7 +74,7 @@ const Lobbies = (props) => {
             setUserInfo(user);
           }
         }
-        
+
         // Get active lobbies
         const data = await get("/api/activeLobbies");
         setActiveLobbies(data.lobbies);
@@ -188,11 +188,17 @@ const Lobbies = (props) => {
           <div className="lobbies-main-content">
             {!inLobby && (
               <div className="lobby-buttons">
-                <button onClick={handleNewPVP} className="button-base neon-bg neon-border neon-text">
-                  Create New PVP Lobby
+                <button
+                  onClick={handleNewPVP}
+                  className="button-base neon-bg neon-border neon-text"
+                >
+                  Challenge a Player
                 </button>
-                <button onClick={handleNewBot} className="button-base neon-bg neon-border neon-text">
-                  Create New vs Bot Lobby
+                <button
+                  onClick={handleNewBot}
+                  className="button-base neon-bg neon-border neon-text"
+                >
+                  Practice with Bot
                 </button>
               </div>
             )}
@@ -200,7 +206,7 @@ const Lobbies = (props) => {
             <div className="lobbies-content">
               <div className="lobbies-list">
                 <div className="lobbies-header">
-                  <h2>Active PVP Lobbies</h2>
+                  <h2>Active Battle Lobbies</h2>
                 </div>
 
                 {(() => {

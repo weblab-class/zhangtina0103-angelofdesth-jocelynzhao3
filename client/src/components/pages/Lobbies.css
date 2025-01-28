@@ -1,3 +1,139 @@
+@import url("../../fonts/fonts.css");
+
+/* Ensure dark background for the entire page */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+}
+
+.Lobbies-container {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: transparent;
+  color: #fff;
+  font-family: "Orbitron", monospace;
+  position: relative;
+  z-index: 1;
+}
+
+.svg-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.svg-wrapper img {
+  transform-origin: center;
+  transform: scaleX(-1);
+  filter: drop-shadow(0 0 2px #0ff) drop-shadow(0 0 4px #0ff) drop-shadow(0 0 6px #0ff);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.skyline-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  stroke-width: 1px;
+  fill: none;
+}
+
+/* Language-specific colors */
+.skyline-svg[alt="spanish design"] {
+  stroke: #ff00ff !important;
+  filter: drop-shadow(0 0 2px #ff00ff) drop-shadow(0 0 4px #ff00ff) drop-shadow(0 0 6px #ff00ff);
+}
+
+.skyline-svg[alt="chinese design"] {
+  stroke: #ff3333 !important;
+  filter: drop-shadow(0 0 2px #ff3333) drop-shadow(0 0 4px #ff3333) drop-shadow(0 0 6px #ff3333);
+}
+
+.skyline-svg[alt="arabic design"] {
+  stroke: #ffd700 !important;
+  filter: drop-shadow(0 0 2px #ffd700) drop-shadow(0 0 4px #ffd700) drop-shadow(0 0 6px #ffd700);
+}
+
+.skyline-svg[alt="french design"] {
+  stroke: #9933ff !important;
+  filter: drop-shadow(0 0 2px #9933ff) drop-shadow(0 0 4px #9933ff) drop-shadow(0 0 6px #9933ff);
+}
+
+.skyline-svg[alt="german design"] {
+  stroke: #ff8c00 !important;
+  filter: drop-shadow(0 0 2px #ff8c00) drop-shadow(0 0 4px #ff8c00) drop-shadow(0 0 6px #ff8c00);
+}
+
+.skyline-svg[alt="korean design"] {
+  stroke: #00ff66 !important;
+  filter: drop-shadow(0 0 2px #00ff66) drop-shadow(0 0 4px #00ff66) drop-shadow(0 0 6px #00ff66);
+}
+
+.skyline-svg[alt="hindi design"] {
+  stroke: #ff9933 !important;
+  filter: drop-shadow(0 0 2px #ff9933) drop-shadow(0 0 4px #ff9933) drop-shadow(0 0 6px #ff9933);
+}
+
+.skyline-svg[alt="portuguese design"] {
+  stroke: #ff69b4 !important;
+  filter: drop-shadow(0 0 2px #ff69b4) drop-shadow(0 0 4px #ff69b4) drop-shadow(0 0 6px #ff69b4);
+}
+
+.skyline-svg[alt="afrikaans design"] {
+  stroke: #66ff00 !important;
+  filter: drop-shadow(0 0 2px #66ff00) drop-shadow(0 0 4px #66ff00) drop-shadow(0 0 6px #66ff00);
+}
+
+.skyline-svg[alt="vietnamese design"] {
+  stroke: #50c878 !important;
+  filter: drop-shadow(0 0 2px #50c878) drop-shadow(0 0 4px #50c878) drop-shadow(0 0 6px #50c878);
+}
+
+.skyline-svg[alt="japanese design"] {
+  stroke: #ff1493 !important;
+  filter: drop-shadow(0 0 2px #ff1493) drop-shadow(0 0 4px #ff1493) drop-shadow(0 0 6px #ff1493);
+}
+
+.skyline-svg[alt="telugu design"] {
+  stroke: #00ffcc !important;
+  filter: drop-shadow(0 0 2px #00ffcc) drop-shadow(0 0 4px #00ffcc) drop-shadow(0 0 6px #00ffcc);
+}
+
+.skyline-svg[alt="russian design"] {
+  stroke: #4169e1 !important;
+  filter: drop-shadow(0 0 2px #4169e1) drop-shadow(0 0 4px #4169e1) drop-shadow(0 0 6px #4169e1);
+}
+
+.skyline-svg[alt="italian design"] {
+  stroke: #32cd32 !important;
+  filter: drop-shadow(0 0 2px #32cd32) drop-shadow(0 0 4px #32cd32) drop-shadow(0 0 6px #32cd32);
+}
+
+.skyline-svg[alt="turkish design"] {
+  stroke: #ff4500 !important;
+  filter: drop-shadow(0 0 2px #ff4500) drop-shadow(0 0 4px #ff4500) drop-shadow(0 0 6px #ff4500);
+}
+
+.skyline-svg[alt="zulu design"] {
+  stroke: #ee82ee !important;
+  filter: drop-shadow(0 0 2px #ee82ee) drop-shadow(0 0 4px #ee82ee) drop-shadow(0 0 6px #ee82ee);
+}
+
 /* Ensure dark background for the entire page */
 html,
 body {
@@ -14,13 +150,13 @@ body {
   min-height: 100vh;
   background-color: #000;
   color: #fff;
-  font-family: 'Press Start 2P', monospace;
+  font-family: "Press Start 2P", monospace;
 }
 
 .lobbies-main-content {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
   width: 100%;
   height: calc(100vh - 4rem);
 }
@@ -38,6 +174,7 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
+  font-family: "Orbitron", sans-serif;
 }
 
 .lobbies-content {
@@ -55,10 +192,13 @@ body {
   border-radius: 8px;
   padding: 1.5rem;
   overflow-y: auto;
+  text-align: center;
 }
 
 .lobbies-header {
+  text-align: center;
   margin-bottom: 1.5rem;
+  font-family: "Orbitron", sans-serif;
 }
 
 .lobbies-header h2 {
@@ -215,14 +355,14 @@ body {
 
 .Lobbies-title {
   color: white;
-  font-family: 'Press Start 2P', monospace;
+  font-family: "Press Start 2P", monospace;
   font-size: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
 .Lobbies-content {
   color: white;
-  font-family: 'Press Start 2P', monospace;
+  font-family: "Press Start 2P", monospace;
 }
 
 /* Ensure all text within the lobbies page is white */
