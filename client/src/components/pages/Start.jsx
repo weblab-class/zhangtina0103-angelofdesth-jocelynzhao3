@@ -31,9 +31,9 @@ import LoadingOverlay from "../modules/LoadingOverlay";
 
 const Start = (props) => {
   const userContext = useContext(UserContext);
+  const { userInfo } = useContext(UserInfoContext);
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
-  const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const { language, setLanguage } = useContext(LanguageContext);
   const [showEffects, setShowEffects] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
@@ -86,7 +86,7 @@ const Start = (props) => {
             </Link>
             <Link to="/battleProfile" className="profile-button">
               <img 
-                src={userContext.picture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                src={userInfo?.picture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                 alt="profile" 
                 className="profile-icon" 
               />
@@ -134,10 +134,7 @@ const Start = (props) => {
         )}
         <div>
           {userContext.userId && (
-            <button
-              onClick={handleStartClick}
-              className="battle-button"
-            >
+            <button onClick={handleStartClick} className="battle-button">
               Start A Game
             </button>
           )}
