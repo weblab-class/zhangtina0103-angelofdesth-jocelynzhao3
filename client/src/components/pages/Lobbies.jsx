@@ -156,12 +156,14 @@ const Lobbies = (props) => {
         </select>
       </div>
 
-      {inLobby ? (
-        <p> You are already in a lobby </p> : <div>
-         <button onClick={handleNewPVP} className="button-base neon-bg neon-border neon-text">Create New PVP Lobby</button> 
-         <button onClick={handleNewBot} className="button-base neon-bg neon-border neon-text">Create New vs Bot Lobby</button>
-         </div>
-        }
+      {(inLobby) ? (
+        <p>You are already in a lobby</p>
+      ) : (
+        <div className="lobby-buttons">
+          <button onClick={handleNewPVP} className="button-base neon-bg neon-border neon-text">Create New PVP Lobby</button> 
+          <button onClick={handleNewBot} className="button-base neon-bg neon-border neon-text">Create New vs Bot Lobby</button>
+        </div>
+      )}
       <div className="u-flex">
         <div>
           <LobbyList lobbies={activeLobbies} 
