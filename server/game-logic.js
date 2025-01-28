@@ -232,54 +232,55 @@ const checkWin = async (game) => {
 
 const handleGameEnd = async (game, winner) => {
   try {
+    // Get user info once at the start
+    let user1 = null;
+    let user2 = null;
+
     if (game.p1 !== "bot") {
-      const p1Info = await get("otheruserinfo", { _id: game.p1 });
+      user1 = await User.findOne({ _id: game.p1 });
     }
     if (game.p2 !== "bot") {
-      const p2Info = await get("otheruserinfo", { _id: game.p2 });
+      user2 = await User.findOne({ _id: game.p2 });
     }
+
     activeGames.delete(game.lobby);
 
     const currentDate = new Date();
     const isoString = currentDate.toISOString();
 
-    // Only update database if players are not bots
+    // Handle p1's game log
     if (game.p1 !== "bot") {
       const p1Result = winner === game.p1 ? "Win" : "Loss";
       const p1Log = {
+        Opponent: game.p2,
         Result: p1Result,
-        Opponent: p2Info.name,
         Language: game.language,
         Date: isoString,
       };
 
-      const user = await User.findOne({ _id: game.p1 });
-      if (user) {
-        // Prepending log
-        user.log = [p1Log, ...user.log];
-        // Updating Elo (ensuring it doesn't drop below 1)
-        user.elo = Math.max(1, user.elo + (p1Result === "Win" ? 1 : -1));
-        // Save the updated user
-        await user.save();
+      if (user1) {
+        user1.log = [p1Log, ...user1.log];
+        user1.elo = Math.max(1, user1.elo + (p1Result === "Win" ? 1 : -1));
+        await user1.save();
       } else {
         console.error("User 1 not found");
       }
     }
 
+    // Handle p2's game log
     if (game.p2 !== "bot") {
       const p2Result = winner === game.p2 ? "Win" : "Loss";
       const p2Log = {
+        Opponent: game.p1,
         Result: p2Result,
-        Opponent: p1Info.name,
         Language: game.language,
         Date: isoString,
       };
 
-      const user = await User.findOne({ _id: game.p2 });
-      if (user) {
-        user.log = [p2Log, ...user.log];
-        user.elo = Math.max(1, user.elo + (p2Result === "Win" ? 1 : -1));
-        await user.save();
+      if (user2) {
+        user2.log = [p2Log, ...user2.log];
+        user2.elo = Math.max(1, user2.elo + (p2Result === "Win" ? 1 : -1));
+        await user2.save();
       } else {
         console.error("User 2 not found");
       }

@@ -140,7 +140,7 @@ const startRunningGames = (activeGames) => {
 
   setInterval(async () => {
     await runAllGames();
-  }, 1000 / 60); // 60 frames per second
+  }, 1000 / 30); // 60 frames per second
 };
 
 startRunningGames(gameLogic.activeGames);
