@@ -232,6 +232,10 @@ const checkWin = async (game) => {
 
 const handleGameEnd = async (game, winner) => {
   try {
+    const p1Info = await get("otheruserinfo", { _id: game.p1 });
+    if (game.p2 !== "bot") {
+      const p2Info = await get("otheruserinfo", { _id: game.p2 });
+    }
     activeGames.delete(game.lobby);
 
     const currentDate = new Date();
@@ -242,7 +246,7 @@ const handleGameEnd = async (game, winner) => {
       const p1Result = winner === game.p1 ? "Win" : "Loss";
       const p1Log = {
         Result: p1Result,
-        Opponent: game.p2,
+        Opponent: p2Info.name,
         Language: game.language,
         Date: isoString,
       };
@@ -264,7 +268,7 @@ const handleGameEnd = async (game, winner) => {
       const p2Result = winner === game.p2 ? "Win" : "Loss";
       const p2Log = {
         Result: p2Result,
-        Opponent: game.p1,
+        Opponent: p1Info.name,
         Language: game.language,
         Date: isoString,
       };
