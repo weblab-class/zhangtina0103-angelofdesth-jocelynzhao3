@@ -8,11 +8,7 @@
   max-width: 600px;
   margin: 0 auto;
   box-sizing: border-box;
-}
-
-.type-bar {
   position: relative;
-  width: 100%;
 }
 
 .target-text {
@@ -20,7 +16,7 @@
   word-wrap: break-word;
   color: #4dffff;
   font-family: "Orbitron", sans-serif;
-  font-size: 1.2rem;
+  font-size: 0.8rem;
   text-align: center;
   text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
   letter-spacing: 1px;
@@ -35,21 +31,25 @@
 
 .typed-text {
   width: 100%;
-  padding: 12px 15px;
+  padding: 6px 12px;
   margin-bottom: 10px;
-  font-size: 1.2rem;
-  font-family: "Orbitron", sans-serif;
-  color: #4dffff;
+  font-size: 1.1rem !important;
+  font-family: "Orbitron", sans-serif !important;
+  color: #4dffff !important;
   background: rgba(0, 255, 255, 0.15);
   border: 2px solid rgba(0, 255, 255, 0.4);
   border-radius: 6px;
   transition: all 0.3s ease;
   letter-spacing: 1px;
+  height: 35px;
+  line-height: 15px;
 }
 
 .typed-text::placeholder {
-  color: rgba(0, 255, 255, 0.6);
+  color: rgba(0, 255, 255, 0.6) !important;
   transition: all 0.6s ease;
+  font-size: 1.1rem !important;
+  line-height: 15px;
 }
 
 .typed-text:hover {
@@ -80,40 +80,32 @@
 /* Snow and icicle images */
 .snow-right {
   position: absolute;
-  top: 12px;
-  right: -245px;
+  top: 13px;
+  right: -240px;
   z-index: 1;
   height: 65px;
 }
 
-.snow-right-1 {
-  position: absolute;
-  top: -18px;
-  right: -197px;
-  z-index: 1;
-  height: 55px;
-}
-
 .icicle-1 {
   position: absolute;
-  top: -10.7px;
-  left: 270px;
+  top: -9px;
+  left: 350px;
   z-index: 1;
   height: 60px;
 }
 
 .icicle-2 {
   position: absolute;
-  top: -10.7px;
-  right: 180px;
+  top: -10px;
+  right: 164px;
   z-index: 1;
   height: 70px;
 }
 
 .icicle-3 {
   position: absolute;
-  top: -10.7px;
-  left: 370px;
+  top: -9px;
+  left: 199px;
   z-index: 1;
   height: 60px;
 }
@@ -121,15 +113,15 @@
 .icicle-4 {
   position: absolute;
   top: -6px;
-  right: 80px;
+  right: 119px;
   z-index: 1;
   height: 40px;
 }
 
 .icicle-5 {
   position: absolute;
-  top: -10.7px;
-  right: 130px;
+  top: -9px;
+  right: 290px;
   z-index: 1;
   height: 60px;
 }
