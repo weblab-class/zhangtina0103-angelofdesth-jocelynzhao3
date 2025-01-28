@@ -124,6 +124,7 @@ const leaveLobby = (lobbyid, player) => {
     usersInLobby.delete(lobby.p2);
     lobby.p2 = null;
     lobby.p2ready = false; // just in case
+    lobby.p1ready = false;
     console.log("our lobby is now", lobby);
     return true;
   }
