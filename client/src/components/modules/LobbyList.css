@@ -1,17 +1,20 @@
 .lobby-list-container {
   width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .lobby-table {
   width: 100%;
+  height: 100%;
   border-spacing: 0;
   border-collapse: separate;
-  font-family: 'Press Start 2P', monospace;
+  font-family: "Press Start 2P", monospace;
   font-size: 0.8rem;
 }
 
 .lobby-table-header {
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
 .lobby-row {
@@ -20,10 +23,27 @@
   gap: 1rem;
   padding: 0.75rem;
   border: 1px solid rgba(77, 255, 255, 0.2);
-  border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
   background-color: rgba(0, 0, 0, 0.4);
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.lobby-table-header .lobby-row {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background-color: rgba(77, 255, 255, 0.1);
+  border-bottom: none;
+}
+
+.lobby-table-body .lobby-row:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.lobby-row:not(:last-child) {
+  border-bottom: none;
 }
 
 .lobby-row:hover {
@@ -60,4 +80,19 @@
   text-align: center;
   padding: 2rem;
   font-style: italic;
+}
+
+.active-lobbies-title {
+  position: absolute;
+  top: -2rem;
+  left: 1rem;
+  font-family: "Press Start 2P", monospace;
+  font-size: 1.5rem;
+  color: #4dffff;
+  margin: 0;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(77, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 0 0.5rem;
+  z-index: 1;
 }

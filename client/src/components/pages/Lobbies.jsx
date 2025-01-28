@@ -141,44 +141,39 @@ const Lobbies = (props) => {
       </div>
 
       <div className="lobbies-main-content">
-        {!inLobby && (
-          <div className="lobby-buttons">
-            <button onClick={handleNewPVP} className="button-base neon-bg neon-border neon-text">
-              Create New PVP Lobby
-            </button>
-            <button onClick={handleNewBot} className="button-base neon-bg neon-border neon-text">
-              Create New vs Bot Lobby
-            </button>
-          </div>
-        )}
-
         <div className="lobbies-content">
-          <div className="lobbies-list">
-            <div className="lobbies-header">
-              <h2>Active PVP Lobbies</h2>
+          <div className="left-column">
+            <div className="lobby-buttons">
+              <button onClick={handleNewPVP} className="button-base neon-bg neon-border neon-text">
+                Challenge a Player
+              </button>
+              <button onClick={handleNewBot} className="button-base neon-bg neon-border neon-text">
+                Practice with Bot
+              </button>
             </div>
+            <div className="lobbies-list">
+              {(() => {
+                const userLobby = activeLobbies.find(
+                  (lobby) =>
+                    (lobby.p1 === userInfo._id && lobby.p1ready) ||
+                    (lobby.p2 === userInfo._id && lobby.p2ready)
+                );
 
-            {(() => {
-              const userLobby = activeLobbies.find(
-                (lobby) =>
-                  (lobby.p1 === userInfo._id && lobby.p1ready) ||
-                  (lobby.p2 === userInfo._id && lobby.p2ready)
-              );
+                if (userLobby) {
+                  return <p className="waiting-message">Waiting for opponent to be ready...</p>;
+                }
 
-              if (userLobby) {
-                return <p className="waiting-message">Waiting for opponent to be ready...</p>;
-              }
-
-              return (
-                <LobbyList
-                  lobbies={activeLobbies}
-                  setDisplayedLobby={setDisplayedLobby}
-                  displayedLobby={displayedLobby}
-                  setInLobby={setInLobby}
-                  formatPlayerDisplay={formatPlayerDisplay}
-                />
-              );
-            })()}
+                return (
+                  <LobbyList
+                    lobbies={activeLobbies}
+                    setDisplayedLobby={setDisplayedLobby}
+                    displayedLobby={displayedLobby}
+                    setInLobby={setInLobby}
+                    formatPlayerDisplay={formatPlayerDisplay}
+                  />
+                );
+              })()}
+            </div>
           </div>
 
           <div className="lobby-details">

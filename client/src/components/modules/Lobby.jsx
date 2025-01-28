@@ -86,7 +86,7 @@ const Lobby = (props) => {
 
   // Get current lobby data
   const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid);
-  
+
   // If lobby doesn't exist and it's not a creation screen, don't render anything
   if (!newlobby && props.lobbyid !== "newPVP" && props.lobbyid !== "newBot") {
     return null;
@@ -94,31 +94,30 @@ const Lobby = (props) => {
 
   // Check if the current user has joined this lobby
   const hasJoined = newlobby && (userInfo._id === newlobby.p1 || userInfo._id === newlobby.p2);
-  
+
   // Check if the current user is ready
-  const isReady = newlobby && ((userInfo._id === newlobby.p1 && newlobby.p1ready) || 
-                  (userInfo._id === newlobby.p2 && newlobby.p2ready));
+  const isReady =
+    newlobby &&
+    ((userInfo._id === newlobby.p1 && newlobby.p1ready) ||
+      (userInfo._id === newlobby.p2 && newlobby.p2ready));
 
   return (
     <div>
       <h3>Lobby {props.lobbyid}</h3>
       <div>
         <p>
-          You are {userInfo.name} (Elo: {userInfo.elo})
+          You are {userInfo.name} (ELO: {userInfo.elo})
         </p>
         <p>
-          P1: {p1 ? `${p1}${newlobby && newlobby.p1ready ? " (Ready)" : ""}` : "Loading..."}
+          Player 1: {p1 ? `${p1}${newlobby && newlobby.p1ready ? " (Ready)" : ""}` : "Loading..."}
         </p>
         <p>
-          P2: {p2 ? `${p2}${newlobby && newlobby.p2ready ? " (Ready)" : ""}` : "Loading..."}
+          Player 2: {p2 ? `${p2}${newlobby && newlobby.p2ready ? " (Ready)" : ""}` : "Loading..."}
         </p>
 
         {!hasJoined ? (
           <>
-            <button 
-              onClick={handleJoinClick} 
-              disabled={newlobby && newlobby.p2}
-            >
+            <button onClick={handleJoinClick} disabled={newlobby && newlobby.p2}>
               {newlobby && newlobby.p2 ? "Lobby Full" : "Join"}
             </button>
           </>

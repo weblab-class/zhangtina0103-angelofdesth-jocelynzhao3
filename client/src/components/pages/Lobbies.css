@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap");
+
 /* Ensure dark background for the entire page */
 html,
 body {
@@ -5,6 +7,8 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .Lobbies-container {
@@ -12,9 +16,15 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100vw;
+  margin: 0;
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 0;
   background-color: #000;
   color: #fff;
-  font-family: 'Press Start 2P', monospace;
+  font-family: "Press Start 2P", monospace;
 }
 
 .lobbies-main-content {
@@ -23,38 +33,104 @@ body {
   gap: 2rem;
   width: 100%;
   height: calc(100vh - 4rem);
-}
-
-.lobby-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  padding: 1rem 0;
-}
-
-.lobby-buttons button {
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
+  max-width: 100vw;
+  margin: 0 auto;
+  padding: 0 2rem;
+  box-sizing: border-box;
 }
 
 .lobbies-content {
   display: flex;
   gap: 2rem;
   flex: 1;
-  min-height: 0; /* This is important for the flex container to respect child's overflow */
+  min-height: 0;
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 50%;
+}
+
+.lobby-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  width: 100%;
+}
+
+.lobby-buttons button {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(77, 255, 255, 0.1));
+  border: 2px solid #4dffff;
+  border-radius: 8px;
+  color: #4dffff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(77, 255, 255, 0.3);
+  font-family: "Orbitron", sans-serif;
+  font-weight: 500;
+}
+
+.lobby-buttons button:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(77, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.lobby-buttons button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(77, 255, 255, 0.5);
+  text-shadow: 0 0 8px rgba(77, 255, 255, 0.8);
+}
+
+.lobby-buttons button:hover:before {
+  left: 100%;
+}
+
+.lobby-buttons button:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 15px rgba(77, 255, 255, 0.3);
 }
 
 .lobbies-list {
+  position: relative;
   flex: 1;
-  max-width: 50%;
   background: rgba(0, 0, 0, 0.8);
   border: 2px solid #4dffff;
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 0;
   overflow-y: auto;
+  max-height: 400px;
+  margin-top: 2rem; /* Space for the title */
+}
+
+.lobbies-list h2 {
+  position: absolute;
+  top: -2rem;
+  left: 1rem;
+  font-family: "Press Start 2P", monospace;
+  font-size: 1.5rem;
+  color: #4dffff;
+  margin: 0;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(77, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 0 0.5rem;
+  z-index: 1;
 }
 
 .lobbies-header {
@@ -63,7 +139,8 @@ body {
 
 .lobbies-header h2 {
   color: #4dffff;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
 }
 
 .lobby-details {
@@ -74,6 +151,8 @@ body {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  max-height: 400px;
+  margin-top: calc(56px + 2rem);
 }
 
 .select-lobby-message {
@@ -82,7 +161,7 @@ body {
   justify-content: center;
   height: 100%;
   color: #4dffff;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 .waiting-message {
@@ -213,16 +292,16 @@ body {
   transform: translateY(-2px);
 }
 
-.Lobbies-title {
-  color: white;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
+.lobbies-title {
+  text-align: center;
+  margin: -5px 0 -37px 0;
+  font-size: 2rem;
+  font-family: "Aerglo", sans-serif;
 }
 
 .Lobbies-content {
   color: white;
-  font-family: 'Press Start 2P', monospace;
+  font-family: "Press Start 2P", monospace;
 }
 
 /* Ensure all text within the lobbies page is white */
@@ -232,4 +311,27 @@ body {
 .Lobbies-container h3,
 .Lobbies-container div {
   color: white;
+}
+
+.lobby-list-container {
+  height: 100%;
+  width: 100%;
+}
+
+.lobby-table {
+  width: 100%;
+  height: 100%;
+  border-spacing: 0;
+  border-collapse: separate;
+}
+
+.lobby-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(77, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.4);
 }

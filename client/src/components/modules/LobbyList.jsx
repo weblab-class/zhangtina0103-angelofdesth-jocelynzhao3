@@ -28,12 +28,12 @@ const LobbyList = (props) => {
           <div className="lobby-table-body">
             {props.lobbies
               .filter((lobby) => lobby.active)
-              .map((lobby) => (
+              .map((lobby, i) => (
                 <SingleActiveLobby
-                  key={lobby.lobbyid}
+                  key={i}
                   lobby={lobby}
                   setDisplayedLobby={props.setDisplayedLobby}
-                  active={props.displayedLobby ? props.displayedLobby === lobby.lobbyid : false}
+                  displayedLobby={props.displayedLobby}
                   setInLobby={props.setInLobby}
                   formatPlayerDisplay={props.formatPlayerDisplay}
                 />
@@ -41,7 +41,7 @@ const LobbyList = (props) => {
           </div>
         </div>
       ) : (
-        <p className="no-lobbies-message">There are no active lobbies. You can change that!</p>
+        <div className="no-lobbies-message">No active lobbies</div>
       )}
     </div>
   );

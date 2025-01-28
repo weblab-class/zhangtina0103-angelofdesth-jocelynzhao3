@@ -2,7 +2,6 @@ import "../../utilities.css";
 import "./Lobby.css";
 import "./PVPLobbyCreation.css";
 
-import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { LanguageContext } from "../App";
 import { UserContext } from "../App";
@@ -20,15 +19,12 @@ const PVPLobbyCreation = (props) => {
   const userContext = useContext(UserContext);
   const { language, setLanguage } = useContext(LanguageContext);
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
-  const navigate = useNavigate();
 
   const handleCreateClick = () => {
-    // TODO: put player name in here too?
-    console.log(userContext);
-    // TODO: implement difficulty. Difficulty hardcoded to 1 for now
     post("/api/createLobby", { p1: userInfo._id, language: language }).then((lobby) => {
       if (lobby) {
         console.log("the new lobby id is", lobby.lobby);
+        // Update the displayed lobby to show the details of the newly created lobby
         props.setDisplayedLobby(lobby.lobby.lobbyid);
       } else {
         console.log("you are already in a lobby");
@@ -50,24 +46,27 @@ const PVPLobbyCreation = (props) => {
           onChange={(e) => setLanguage(e.target.value)}
           className="pvp-language-select"
         >
-          {/* language value becomes empty string when selected, add more lan */}
-          <option value="">Select a language...</option>
-          <option value="Spanish">Spanish</option>
-          <option value="Chinese">Chinese</option>
-          <option value="German">German</option>
-          <option value="French">French</option>
-          <option value="Arabic">Arabic</option>
+          <option value="spanish">Spanish</option>
+          <option value="chinese">Chinese</option>
+          <option value="arabic">Arabic</option>
+          <option value="french">French</option>
+          <option value="german">German</option>
+          <option value="korean">Korean</option>
+          <option value="hindi">Hindi</option>
+          <option value="portuguese">Portuguese</option>
+          <option value="afrikaans">Afrikaans</option>
+          <option value="vietnamese">Vietnamese</option>
+          <option value="japanese">Japanese</option>
+          <option value="telugu">Telugu</option>
+          <option value="russian">Russian</option>
+          <option value="italian">Italian</option>
+          <option value="turkish">Turkish</option>
+          <option value="zulu">Zulu</option>
         </select>
-
-        {language && (
-          <button
-            onClick={handleCreateClick}
-            className="pvp-create-button button-base neon-bg neon-border neon-text"
-          >
-            Create a Lobby
-          </button>
-        )}
       </div>
+      <button onClick={handleCreateClick} className="pvp-create-button">
+        Create Lobby
+      </button>
     </div>
   );
 };
