@@ -8,39 +8,35 @@ import SingleActiveLobby from "./SingleActiveLobby";
  *
  * Proptypes
  * @param {[lobby]} lobbies - array of all active lobbies
- * @param {} displayedLobby 
- * @param {} setDisplayedLobby - 
+ * @param {} displayedLobby
+ * @param {} setDisplayedLobby -
  */
 
 const LobbyList = (props) => {
-    // TODO: once you are in a lobby that you created yourself,
-    // then you're not allowed to click on any other lobby.
-    console.log("trying to render", props.lobbies);
-    return (
+  console.log("trying to render", props.lobbies);
+  return (
+    <div>
+      {props.lobbies.length > 0 ? (
         <div>
-            {props.lobbies.length > 0 ? (
-            <div>
-            <p> Here are the active lobbies: </p>
-            {props.lobbies.filter((lobby) => lobby.active)
+          <p> Here are the active lobbies: </p>
+          {props.lobbies
+            .filter((lobby) => lobby.active)
             .map((lobby) => (
-                <SingleActiveLobby 
-                    key={lobby.lobbyid}
-                    lobby={lobby}
-                    setDisplayedLobby={props.setDisplayedLobby}
-                    active={ props.displayedLobby ? 
-                        props.displayedLobby === lobby.lobbyid : false}
-                    setInLobby={props.setInLobby}
-                    formatPlayerDisplay={props.formatPlayerDisplay}
-                />
+              <SingleActiveLobby
+                key={lobby.lobbyid}
+                lobby={lobby}
+                setDisplayedLobby={props.setDisplayedLobby}
+                active={props.displayedLobby ? props.displayedLobby === lobby.lobbyid : false}
+                setInLobby={props.setInLobby}
+                formatPlayerDisplay={props.formatPlayerDisplay}
+              />
             ))}
-            </div>
-            ) : (
-            <p> There are no active lobbies. You can change that! </p>
-            )
-            }
         </div>
-        
-    )
+      ) : (
+        <p> There are no active lobbies. You can change that! </p>
+      )}
+    </div>
+  );
 };
 
-export default LobbyList
+export default LobbyList;

@@ -13,116 +13,98 @@ import { socket } from "../../client-socket.js";
  * The screen for creating lobbies
  *
  * Proptypes
- * @param {lobbyState} lobbyid - the displayed lobby that we're seeing
+ * @param {string} lobbyid - the displayed lobby that we're seeing
+ * @param {Array} activeLobbies - array of all active lobbies
+ * @param {function} setInLobby - function to set whether user is in a lobby
+ * @param {function} setDisplayedLobby - function to set which lobby is being displayed
+ * @param {function} formatPlayerDisplay - function to format player display
  */
 
 const Lobby = (props) => {
   const userContext = useContext(UserContext);
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
-  const [hasJoined, setHasJoined] = useState(false);
-  const [isReady, setIsReady] = useState(false);
-  const [lobby, setLobby] = useState({  });
   const [p1, setP1] = useState("");
   const [p2, setP2] = useState("");
-
-
-  const checkAlreadyInLobby = () => {
-    const yourId = userContext.userId
-    setHasJoined((yourId === lobby.p1) || (yourId === lobby.p2))
-  }
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(props.activeLobbies)
-    console.log("checking against", props.lobbyid);
-    const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid)
+    const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid);
     if (newlobby) {
-      setLobby(newlobby);
-    } else {
-      setLobby("");
+      props.formatPlayerDisplay(setP1, newlobby.p1);
+      props.formatPlayerDisplay(setP2, newlobby.p2);
     }
-    
   }, [props.activeLobbies, props.lobbyid]);
 
-  const navigate = useNavigate();
-  
   useEffect(() => {
-    console.log("Lobby state updated:", lobby);
-    props.formatPlayerDisplay(setP1, lobby.p1)
-    props.formatPlayerDisplay(setP2, lobby.p2)
-    checkAlreadyInLobby();
-
-    if (lobby.p1ready && lobby.p2ready) {
-      navigate("/battle/" + lobby.lobbyid)
+    const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid);
+    if (newlobby && newlobby.p1ready && newlobby.p2ready) {
+      navigate("/battle/" + newlobby.lobbyid);
     }
-  }, [lobby]);
-
+  }, [props.activeLobbies, props.lobbyid]);
 
   const handleJoinClick = () => {
-    post("/api/joinlobby", { lobbyid: lobby.lobbyid, player: userInfo._id }).then((result) => {
+    const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid);
+    post("/api/joinlobby", { lobbyid: newlobby.lobbyid, player: userInfo._id }).then((result) => {
       console.log("joined result: ", result);
-      setHasJoined(result);
     });
   };
 
   const handleReadyClick = () => {
+    const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid);
     post("/api/updateReadyStatus", {
-      lobbyid: lobby.lobbyid,
+      lobbyid: newlobby.lobbyid,
       player: userInfo._id,
       isReady: true,
     }).then((result) => {
       console.log("ready result: ", result);
-      setIsReady(result);
     });
   };
 
   const handleLeaveClick = () => {
-    post("/api/leaveLobby", { lobbyid: lobby.lobbyid, player: userInfo._id }).then((result) => {
+    const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid);
+    post("/api/leaveLobby", { lobbyid: newlobby.lobbyid, player: userInfo._id }).then((result) => {
       console.log("leave result: ", result);
       props.setInLobby(false);
       props.setDisplayedLobby("");
     });
   };
 
+  // Check if the current user has joined this lobby
+  const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid);
+  const hasJoined = newlobby && (userInfo._id === newlobby.p1 || userInfo._id === newlobby.p2);
   
-  
+  // Check if the current user is ready
+  const isReady = newlobby && ((userInfo._id === newlobby.p1 && newlobby.p1ready) || 
+                  (userInfo._id === newlobby.p2 && newlobby.p2ready));
 
   return (
     <div>
-      <h3>Lobby {lobby.lobbyid}</h3>
+      <h3>Lobby {props.lobbyid}</h3>
       <div>
-        <p> You are {userInfo.id} with name {userInfo.name} and elo {userInfo.elo} </p>
         <p>
-          P1: {p1 ? p1 : "Loading..."}
+          You are {userInfo.name} (Elo: {userInfo.elo})
         </p>
         <p>
-          P2: {p2 ? p2: "Loading..."}
+          P1: {p1 ? `${p1}${newlobby && newlobby.p1ready ? " (Ready)" : ""}` : "Loading..."}
+        </p>
+        <p>
+          P2: {p2 ? `${p2}${newlobby && newlobby.p2ready ? " (Ready)" : ""}` : "Loading..."}
         </p>
 
         {!hasJoined ? (
-        <button className="SingleActiveLobby-joinButton" onClick={handleJoinClick}>
-          Join Lobby
-        </button>
-      ) : (
-        <div>
-          <p>You are in this lobby.</p>
-          <div className="SingleActiveLobby-buttonContainer">
+          <button onClick={handleJoinClick}>Join</button>
+        ) : (
+          <div>
             {isReady ? (
-              <p className="SingleActiveLobby-waitingMessage">
-                Waiting for opponent to be ready...
-              </p>
+              <p>Waiting for opponent to be ready...</p>
             ) : (
               <>
-                {(lobby.p1 && lobby.p2) ? (<button className="SingleActiveLobby-readyButton" onClick={handleReadyClick}>
-                  Ready to Battle!
-                </button>) : ( <p> Waiting for more players...</p>)}
-                <button className="SingleActiveLobby-leaveButton" onClick={handleLeaveClick}>
-                  Leave Lobby
-                </button>
+                <button onClick={handleReadyClick}>Ready</button>
+                <button onClick={handleLeaveClick}>Leave</button>
               </>
             )}
           </div>
-        </div>
-      )}
+        )}
       </div>
     </div>
   );

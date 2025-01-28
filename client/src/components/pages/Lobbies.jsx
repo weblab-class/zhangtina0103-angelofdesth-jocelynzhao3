@@ -193,11 +193,27 @@ const Lobbies = (props) => {
       )}
       <div className="u-flex">
         <div>
-          <LobbyList lobbies={activeLobbies} 
-                      setDisplayedLobby={setDisplayedLobby} 
-                      displayedLobby={displayedLobby}
-                      setInLobby={setInLobby}
-                      formatPlayerDisplay={formatPlayerDisplay}/>
+          {(() => {
+            // Check if user is ready in any lobby
+            const userLobby = activeLobbies.find(
+              (lobby) => (lobby.p1 === userInfo._id && lobby.p1ready) || 
+                        (lobby.p2 === userInfo._id && lobby.p2ready)
+            );
+            
+            if (userLobby) {
+              return <p>Waiting for opponent to be ready...</p>;
+            }
+            
+            return (
+              <LobbyList
+                lobbies={activeLobbies}
+                setDisplayedLobby={setDisplayedLobby}
+                displayedLobby={displayedLobby}
+                setInLobby={setInLobby}
+                formatPlayerDisplay={formatPlayerDisplay}
+              />
+            );
+          })()}
         </div>
         <div>
           {displayedLobby ? (
