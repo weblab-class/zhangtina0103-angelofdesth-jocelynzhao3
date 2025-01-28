@@ -1,5 +1,5 @@
 let activeLobbies = new Map();
-let usersInLobby = new Set();
+let usersInLobby = new Map(); // map {userId: lobbyid}
 
 // One single instance of an open lobby is as follows
 // openLobby = {
@@ -34,7 +34,6 @@ const createLobby = (p1, language) => {
   if (usersInLobby.has(p1)) {
     return false;
   }
-  usersInLobby.add(p1);
   const lobbyid = IdGenerator();
   let lobby = {
     lobbyid: lobbyid,
@@ -46,6 +45,7 @@ const createLobby = (p1, language) => {
     active: true,
   };
   activeLobbies.set(lobbyid, lobby);
+  usersInLobby.set(p1, lobbyid);
   console.log(activeLobbies);
   return lobby;
 };
@@ -60,8 +60,13 @@ const joinLobby = (lobbyid, player) => {
   //   return true;
   // }
   if (!lobby.p2) {
+    // if there is no p2, we can add the player
+    if (usersInLobby.has(player)) {
+      // remove them from current lobby
+      leaveLobby(usersInLobby.get(player), player);
+    }
+    usersInLobby.set(player, lobbyid);
     lobby.p2 = player;
-    usersInLobby.add(player);
     return true;
   }
   return false;
@@ -119,6 +124,7 @@ const leaveLobby = (lobbyid, player) => {
     usersInLobby.delete(lobby.p2);
     lobby.p2 = null;
     lobby.p2ready = false; // just in case
+    lobby.p1ready = false;
     console.log("our lobby is now", lobby);
     return true;
   }

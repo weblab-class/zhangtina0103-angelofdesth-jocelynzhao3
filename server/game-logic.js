@@ -12,18 +12,18 @@ const getRandomInt = (min, max) => {
 };
 
 // different effects
-// const possibleEffects = [
-//   "attack",
-//   "attack",
-//   "attack",
-//   "heal",
-//   "heal",
-//   "lifesteal",
-//   "freeze",
-//   "3x",
-//   "block",
-// ];
-const possibleEffects = ["freeze"];
+const possibleEffects = [
+  "attack",
+  "attack",
+  "attack",
+  "heal",
+  "heal",
+  "lifesteal",
+  "freeze",
+  "3x",
+  "block",
+];
+// const possibleEffects = ["freeze"];
 
 const basefreezeDuration = 3000;
 
@@ -52,19 +52,21 @@ const doEffect = (effectType, game, card, playerNumber) => {
         game.p1Effects.block.shift();
       }
 
-      // check for block
-      const now = Date.now();
-      while (game.p1Effects.block.length > 0) {
-        const blockTime = game.p1Effects.block[0];
-        if (blockTime > now) {
-          // Block is still active
-          console.log("Attack blocked by P1!");
-          // Remove just one block
+      if (effectType === "lifesteal") {
+        // check for block
+        const timeNow = Date.now();
+        while (game.p1Effects.block.length > 0) {
+          const blockTime = game.p1Effects.block[0];
+          if (blockTime > timeNow) {
+            // Block is still active
+            console.log("Lifesteal blocked by P1 and P2 does not heal");
+            // Remove just one block
+            game.p1Effects.block.shift();
+            return game;
+          }
+          // Remove expired block
           game.p1Effects.block.shift();
-          return game;
         }
-        // Remove expired block
-        game.p1Effects.block.shift();
       }
 
       game.p1HP = Math.max(0, game.p1HP - amount); // Don't let HP go below 0
@@ -93,19 +95,21 @@ const doEffect = (effectType, game, card, playerNumber) => {
         game.p2Effects.block.shift();
       }
 
-      // check for block
-      const now = Date.now();
-      while (game.p2Effects.block.length > 0) {
-        const blockTime = game.p2Effects.block[0];
-        if (blockTime > now) {
-          // Block is still active
-          console.log("Attack blocked by P2!");
-          // Remove just one block
-          game.p2Effects.block.shift();
-          return game;
+      if (effectType === "lifesteal") {
+        // check for block
+        const timeNow = Date.now();
+        while (game.p2Effects.block.length > 0) {
+          const blockTime = game.p2Effects.block[0];
+          if (blockTime > timeNow) {
+            // Block is still active
+            console.log("Lifesteal blocked by P2 and P1 does not heal");
+            // Remove just one block
+            game.p2Effects.block.shift();
+            return game;
+          }
+          // Remove expired block
+          game.p1Effects.block.shift();
         }
-        // Remove expired block
-        game.p2Effects.block.shift();
       }
 
       game.p2HP = Math.max(0, game.p2HP - amount); // Don't let HP go below 0
@@ -309,8 +313,7 @@ const playerTakeCard = async (lobby, player, cardData, playerType = "player") =>
     game = doEffect(takenCard.effect.type, game, takenCard, playerNumber);
   } else if (takenCard.effect.type === "lifesteal") {
     // do attack and heal
-    game = doEffect("attack", game, takenCard, playerNumber);
-    game = doEffect("heal", game, takenCard, playerNumber);
+    game = doEffect("lifesteal", game, takenCard, playerNumber);
   } else if (takenCard.effect.type === "freeze") {
     // Calculate freeze duration before resetting multiplier
     const freezeDuration = basefreezeDuration * game.multiplier;
