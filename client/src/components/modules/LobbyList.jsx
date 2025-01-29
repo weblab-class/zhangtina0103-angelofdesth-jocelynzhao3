@@ -20,6 +20,7 @@ const LobbyList = (props) => {
         <div className="lobby-table">
           <div className="lobby-table-header">
             <div className="lobby-row">
+              <div className="lobby-cell">Battle ID</div>
               <div className="lobby-cell">Player 1</div>
               <div className="lobby-cell">Player 2</div>
               <div className="lobby-cell">Language</div>

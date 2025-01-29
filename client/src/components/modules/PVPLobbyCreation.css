@@ -1,10 +1,37 @@
+.pvp-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.pvp-header {
+  text-align: center;
+  margin-bottom: -1rem;
+  font-family: "Orbitron", sans-serif;
+}
+
+.pvp-header h3 {
+  color: #4dffff;
+  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+  text-shadow: 0 0 10px rgba(77, 255, 255, 0.5), 0 0 20px rgba(77, 255, 255, 0.3),
+    0 0 30px rgba(77, 255, 255, 0.2);
+  font-weight: bold;
+}
+
 .pvp-create-button {
-  padding: 4px 8px;
-  font-size: 0.8rem;
-  font-family: 'Press Start 2P', monospace;
-  margin-top: 0.5rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.1rem;
+  font-family: "Orbitron", sans-serif;
+  margin-top: 1.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  min-width: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .pvp-create-button:hover {
@@ -12,19 +39,58 @@
   transform: translateY(-1px);
 }
 
+p {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
 .pvp-language-select {
-  padding: 4px 8px;
-  font-size: 0.8rem;
-  font-family: 'Press Start 2P', monospace;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.1rem;
+  font-family: "Orbitron", sans-serif;
   background-color: rgba(0, 0, 0, 0.8);
   color: #4dffff;
   border: 1px solid #4dffff;
   border-radius: 4px;
   margin-top: 0.5rem;
   cursor: pointer;
+  min-width: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 2.5rem;
 }
 
 .pvp-language-select:hover {
   border-color: #4dffff;
   box-shadow: 0 0 10px rgba(77, 255, 255, 0.3);
+}
+
+.player-info {
+  font-family: "Orbitron", sans-serif;
+  color: #4dffff;
+  font-size: 1.1rem;
+  text-shadow: 0 0 8px rgba(77, 255, 255, 0.4);
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, transparent, rgba(77, 255, 255, 0.1), transparent);
+  padding: 0.5rem 1rem;
+  border-left: 2px solid #4dffff;
+  border-right: 2px solid #4dffff;
+  position: relative;
+}
+
+.pvp-container .player-info span:nth-child(1) {
+  color: #00ff9d !important;
+  text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+}
+
+.pvp-container .player-info span:nth-child(2) {
+  color: #4dffff !important;
+  text-shadow: 0 0 10px rgba(77, 255, 255, 0.5);
+}
+
+.pvp-container .player-info + .player-info span:nth-child(1) {
+  color: #ff3c88 !important;
+  text-shadow: 0 0 10px rgba(255, 60, 136, 0.5);
 }

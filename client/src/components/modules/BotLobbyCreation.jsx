@@ -7,13 +7,14 @@ import { useContext, useState } from "react";
 import { LanguageContext } from "../App";
 import { UserContext } from "../App";
 import { UserInfoContext } from "../App";
-import { get, post } from "../../utilities";
+import { post } from "../../utilities";
 
-const BotLobbyCreation = (props) => {
+const BotLobbyCreation = () => {
   const userContext = useContext(UserContext);
   const { language, setLanguage } = useContext(LanguageContext);
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const navigate = useNavigate();
+
   const [selectedDifficulty, setSelectedDifficulty] = useState(null);
 
   const handleStartClick = (difficulty) => {
@@ -26,8 +27,8 @@ const BotLobbyCreation = (props) => {
   };
 
   return (
-    <div>
-      <h3>New vs Bot Game</h3>
+    <div className="bot-container">
+      <h3>New Game vs. Bot</h3>
       <div>
         <select
           name="language"
@@ -46,41 +47,44 @@ const BotLobbyCreation = (props) => {
         </select>
 
         {language && (
-          <div className="difficulty-buttons">
-            <button
-              onClick={() => {
-                handleStartClick(1);
-                setSelectedDifficulty(1);
-              }}
-              className={`bot-create-button button-base neon-bg neon-border neon-text ${
-                selectedDifficulty === 1 ? "selected" : ""
-              }`}
-            >
-              Play Easy
-            </button>
-            <button
-              onClick={() => {
-                handleStartClick(2);
-                setSelectedDifficulty(2);
-              }}
-              className={`bot-create-button button-base neon-bg neon-border neon-text ${
-                selectedDifficulty === 2 ? "selected" : ""
-              }`}
-            >
-              Play Medium
-            </button>
-            <button
-              onClick={() => {
-                handleStartClick(3);
-                setSelectedDifficulty(3);
-              }}
-              className={`bot-create-button button-base neon-bg neon-border neon-text ${
-                selectedDifficulty === 3 ? "selected" : ""
-              }`}
-            >
-              Play Hard
-            </button>
-          </div>
+          <>
+            <p className="difficulty-text">Choose your difficulty level:</p>
+            <div className="difficulty-buttons">
+              <button
+                onClick={() => {
+                  handleStartClick(1);
+                  setSelectedDifficulty(1);
+                }}
+                className={`bot-create-button ${
+                  selectedDifficulty === 1 ? "selected" : ""
+                }`}
+              >
+                Easy
+              </button>
+              <button
+                onClick={() => {
+                  handleStartClick(2);
+                  setSelectedDifficulty(2);
+                }}
+                className={`bot-create-button ${
+                  selectedDifficulty === 2 ? "selected" : ""
+                }`}
+              >
+                Medium
+              </button>
+              <button
+                onClick={() => {
+                  handleStartClick(3);
+                  setSelectedDifficulty(3);
+                }}
+                className={`bot-create-button ${
+                  selectedDifficulty === 3 ? "selected" : ""
+                }`}
+              >
+                Hard
+              </button>
+            </div>
+          </>
         )}
       </div>
     </div>

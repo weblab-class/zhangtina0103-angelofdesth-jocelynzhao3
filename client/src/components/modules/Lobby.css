@@ -1,2 +1,78 @@
 /* I assumed that we wanted the different lobby options to look the same
 so I linked all of them to this file. Feel free to edit as you see fit */
+
+.lobby-player-info {
+  font-family: "Orbitron", sans-serif;
+  color: #4dffff;
+  font-size: 1.3rem;
+  text-shadow: 0 0 10px rgba(77, 255, 255, 0.5), 0 0 20px rgba(77, 255, 255, 0.3);
+  letter-spacing: 2px;
+  margin: 1rem 0;
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 2px solid rgba(77, 255, 255, 0.3);
+  background: linear-gradient(90deg, transparent, rgba(77, 255, 255, 0.1), transparent);
+}
+
+.lobby-player-info span {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 20px rgba(77, 255, 255, 0.4);
+  font-weight: bold;
+}
+
+.lobby-player-name {
+  margin: 0.5rem 0;
+  font-family: "Orbitron", sans-serif;
+  color: #4dffff;
+  font-size: 1.1rem;
+  text-shadow: 0 0 8px rgba(77, 255, 255, 0.4);
+  letter-spacing: 1px;
+}
+
+.lobby-player-name span {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.lobby-waiting-message {
+  color: #4dffff;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1rem;
+  text-shadow: 0 0 8px rgba(77, 255, 255, 0.4);
+  letter-spacing: 1px;
+  font-style: italic;
+  margin: 1rem 0;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.lobby-you-text {
+  color: #4dffff;
+  font-style: italic;
+  text-shadow: 0 0 8px rgba(77, 255, 255, 0.6);
+}
+
+.lobby-details {
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #4dffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  color: #4dffff;
+  text-align: center;
+  min-height: 500px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

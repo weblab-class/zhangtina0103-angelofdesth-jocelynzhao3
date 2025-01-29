@@ -55,12 +55,15 @@ const SingleActiveLobby = (props) => {
 
   return (
     <div
-      className={`lobby-row ${props.active ? "lobby-row-active" : ""} ${isUserInLobby ? "current-user" : ""}`}
+      className={`lobby-row ${props.active ? "lobby-row-active" : ""} ${
+        isUserInLobby ? "current-user" : ""
+      }`}
       onClick={() => {
         props.setDisplayedLobby(props.lobby.lobbyid);
         props.setInLobby(true);
       }}
     >
+      <div className="lobby-cell">{props.lobby.lobbyid}</div>
       <div className={`lobby-cell ${props.lobby.p1ready ? "player-ready" : ""}`}>{p1}</div>
       <div className={`lobby-cell ${props.lobby.p2ready ? "player-ready" : ""}`}>{p2}</div>
       <div className="lobby-cell">
