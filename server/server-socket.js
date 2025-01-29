@@ -28,6 +28,13 @@ const addUser = (user, socket) => {
   socketToUserMap[socket.id] = user;
   io.emit("user_reconnected", { userId: user._id }); // Emit reconnect event
 
+  for (const [lobbyId, game] of gameLogic.activeGames) {
+    if (game.p1 === user._id || game.p2 === user._id) {
+      io.emit(lobbyId, {
+        ...game,
+      });
+    }
+  }
   // If there was a pending timeout for this user, clear it
   if (userToTimeout.has(user._id)) {
     clearTimeout(userToTimeout.get(user._id));
