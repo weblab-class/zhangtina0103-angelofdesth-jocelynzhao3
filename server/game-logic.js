@@ -248,31 +248,28 @@ const updateDB = async (game, winner) => {
 
     const currentDate = new Date();
     const isoString = currentDate.toISOString();
-
     // Handle p1's game log
-    if (game.p1 !== "bot") {
-      const p1Result = winner === game.p1 ? "Win" : "Loss";
-      const p1Log = {
-        Opponent: game.p2,
-        Result: p1Result,
-        Language: game.language,
-        Date: isoString,
-      };
+    const p1Result = winner === game.p1 ? "Win" : "Loss";
+    const p1Log = {
+      Opponent: game.p2 === "bot" ? "bot" : user2.name,
+      Result: p1Result,
+      Language: game.language,
+      Date: isoString,
+    };
 
-      if (user1) {
-        user1.log = [p1Log, ...user1.log];
-        user1.elo = Math.max(1, user1.elo + (p1Result === "Win" ? 1 : -1));
-        await user1.save();
-      } else {
-        console.error("User 1 not found");
-      }
+    if (user1) {
+      user1.log = [p1Log, ...user1.log];
+      user1.elo = Math.max(1, user1.elo + (p1Result === "Win" ? 1 : -1));
+      await user1.save();
+    } else {
+      console.error("User 1 not found");
     }
 
     // Handle p2's game log
     if (game.p2 !== "bot") {
       const p2Result = winner === game.p2 ? "Win" : "Loss";
       const p2Log = {
-        Opponent: game.p1,
+        Opponent: user1.name || "bot",
         Result: p2Result,
         Language: game.language,
         Date: isoString,
