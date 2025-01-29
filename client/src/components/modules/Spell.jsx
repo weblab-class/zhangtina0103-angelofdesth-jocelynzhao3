@@ -83,7 +83,7 @@ const Spell = ({ card, isAnimating }) => {
               {card.word}
             </span>
           </div>
-          <div className="Battle-card-english">{card.english}</div>
+          {/* <div className="Battle-card-english">{card.english}</div> */}
           <div className="Battle-card-amount">
             {card.effect.type === "heal" ? (
               <span>+{card.effect.amount} HP</span>

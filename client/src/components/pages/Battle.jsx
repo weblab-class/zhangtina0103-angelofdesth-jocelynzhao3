@@ -425,7 +425,7 @@ const Battle = (props) => {
                           {card.word}
                         </div>
                       </div>
-                      <div className="Battle-card-english">{card.english}</div>
+                      {/* <div className="Battle-card-english">{card.english}</div> */}
                       <div className="Battle-card-amount">
                         {card.effect.type === "heal" ? (
                           <span>+{card.effect.amount} HP</span>
@@ -464,8 +464,13 @@ const Battle = (props) => {
               );
             })}
           </div>
-
-          <TypeBar onType={handleTyping} typedText={typedText} isFrozen={isKeyboardFrozen()} />
+          { ((userInfo._id === gameState.p1) || (userInfo._id === gameState.p2)) && (
+            <>
+            {console.log("test")}
+            <TypeBar onType={handleTyping} typedText={typedText} isFrozen={isKeyboardFrozen()} />
+            </>
+          )
+          }
 
           {/* <div className="language-display">
             Debug area: language= <span className="language-text">{language}</span>
