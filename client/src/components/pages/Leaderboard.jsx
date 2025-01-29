@@ -42,7 +42,7 @@ const Leaderboard = () => {
     get("/api/leaderboard").then((userList) => {
       // Process stats and sort by ELO
       const processedUsers = userList.map(processUserStats).sort((a, b) => b.elo - a.elo);
-      console.log("Processed users:", processedUsers); // Debug log
+      // console.log("Processed users:", processedUsers); // Debug log
       setUsers(processedUsers);
     });
   }, []);

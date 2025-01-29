@@ -81,7 +81,7 @@ const Lobby = (props) => {
     if (!newlobby) return; // Don't try to join if lobby doesn't exist
 
     post("/api/joinlobby", { lobbyid: newlobby.lobbyid, player: userInfo._id }).then((result) => {
-      console.log("joined result: ", result);
+      // console.log("joined result: ", result);
     });
   };
 
@@ -95,7 +95,7 @@ const Lobby = (props) => {
       player: userInfo._id,
       isReady: true,
     }).then((result) => {
-      console.log("ready result: ", result);
+      // console.log("ready result: ", result);
     });
   };
 
@@ -123,7 +123,7 @@ const Lobby = (props) => {
     }
 
     post("/api/leaveLobby", { lobbyid: newlobby.lobbyid, player: userInfo._id }).then((result) => {
-      console.log("leave result: ", result);
+      // console.log("leave result: ", result);
       props.setInLobby(false);
       props.setDisplayedLobby("");
     });

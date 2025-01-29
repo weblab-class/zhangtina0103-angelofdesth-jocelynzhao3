@@ -79,7 +79,7 @@ const Lobbies = (props) => {
         // Get active lobbies
         const data = await get("/api/activeLobbies");
         setActiveLobbies(data.lobbies);
-        console.log("initial pull: I have set the lobbies to", data.lobbies);
+        // console.log("initial pull: I have set the lobbies to", data.lobbies);
 
         // Check if user is already in a lobby
         if (userInfo && data.lobbies) {
@@ -87,13 +87,13 @@ const Lobbies = (props) => {
             (lobby) => lobby.p1 === userInfo._id || lobby.p2 === userInfo._id
           );
           if (userLobby) {
-            console.log("User found in lobby:", userLobby.lobbyid);
+            // console.log("User found in lobby:", userLobby.lobbyid);
             setDisplayedLobby(userLobby.lobbyid);
             setInLobby(true);
           }
         }
       } catch (err) {
-        console.log("Error loading lobbies:", err);
+        // console.log("Error loading lobbies:", err);
       } finally {
         setIsLoading(false);
       }
@@ -105,9 +105,9 @@ const Lobbies = (props) => {
   useEffect(() => {
     // this will continuously update all the active lobbies
     const processLobbiesUpdate = (data) => {
-      console.log("I received", data);
+      // console.log("I received", data);
       setActiveLobbies(data);
-      console.log("now we have as active lobbies", activeLobbies);
+      // console.log("now we have as active lobbies", activeLobbies);
     };
 
     socket.on("activeLobbies", processLobbiesUpdate);
@@ -196,7 +196,7 @@ const Lobbies = (props) => {
         </div>
       ) : (
         <div className="lobbies-main-content">
-            <div className="lobbies-content">
+          <div className="lobbies-content">
             <div className="lobbies-left-section">
               <div className="lobbies-list">
                 <div className="lobbies-header">
@@ -227,47 +227,45 @@ const Lobbies = (props) => {
             </div>
 
             <div>
-            <div className="lobbies-top"> 
-          {!inLobby ? (
-                <div className="lobby-buttons">
-                  <button  onClick={handleNewPVP}>
-                    New PVP Lobby
-                  </button>
-                  <button onClick={handleNewBot}>
-                    Practice with Bot
-                  </button>
-                </div>
-              ) : (
-                <div className="lobby-controls" >
-                  <p> Cannot create lobbies while in a lobby </p>
-                </div>
-              )}
-              </div>     
-            <div className="lobby-details">
-              {displayedLobby ? (
-                <>
-                  {displayedLobby === "newPVP" ? (
-                    <PVPLobbyCreation setDisplayedLobby={setDisplayedLobby} 
-                    handleLeaveLobby={handleLeaveLobby}/>
-                  ) : displayedLobby === "newBot" ? (
-                    <BotLobbyCreation handleLeaveLobby={handleLeaveLobby} />
-                  ) : (
-                    <Lobby
-                      lobbyid={displayedLobby}
-                      activeLobbies={activeLobbies}
-                      setInLobby={setInLobby}
-                      setDisplayedLobby={setDisplayedLobby}
-                      formatPlayerDisplay={formatPlayerDisplay}
-                    />
-                  )}
-                </>
-              ) : (
-                <div className="select-lobby-message">
-                  <p>Please choose a lobby or create your own!</p>
-                </div>
-              )}
+              <div className="lobbies-top">
+                {!inLobby ? (
+                  <div className="lobby-buttons">
+                    <button onClick={handleNewPVP}>New PVP Lobby</button>
+                    <button onClick={handleNewBot}>Practice with Bot</button>
+                  </div>
+                ) : (
+                  <div className="lobby-controls">
+                    <p> Cannot create lobbies while in a lobby </p>
+                  </div>
+                )}
+              </div>
+              <div className="lobby-details">
+                {displayedLobby ? (
+                  <>
+                    {displayedLobby === "newPVP" ? (
+                      <PVPLobbyCreation
+                        setDisplayedLobby={setDisplayedLobby}
+                        handleLeaveLobby={handleLeaveLobby}
+                      />
+                    ) : displayedLobby === "newBot" ? (
+                      <BotLobbyCreation handleLeaveLobby={handleLeaveLobby} />
+                    ) : (
+                      <Lobby
+                        lobbyid={displayedLobby}
+                        activeLobbies={activeLobbies}
+                        setInLobby={setInLobby}
+                        setDisplayedLobby={setDisplayedLobby}
+                        formatPlayerDisplay={formatPlayerDisplay}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <div className="select-lobby-message">
+                    <p>Please choose a lobby or create your own!</p>
+                  </div>
+                )}
+              </div>
             </div>
-            </div> 
           </div>
         </div>
       )}

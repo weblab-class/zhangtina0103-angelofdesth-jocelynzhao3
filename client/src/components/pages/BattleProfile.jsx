@@ -52,7 +52,7 @@ const BattleProfile = (props) => {
   useEffect(() => {
     get("/api/userinfo").then((userData) => {
       if (userData._id) {
-        console.log("Fetching latest user data");
+        // console.log("Fetching latest user data");
         setUserInfo(userData);
 
         // Calculate win rate and total games from battle log

@@ -76,10 +76,10 @@ const Battle = (props) => {
   const processUpdate = (update) => {
     if (update) {
       if (update !== "over") {
-        console.log("I have received the update", update);
+        // console.log("I have received the update", update);
         setGameState(update);
       } else {
-        console.log("Game over");
+        // console.log("Game over");
         // Make API call to get updated user info (including new ELO)
         get("/api/userinfo", { _id: userContext.userId })
           .then((userData) => {
@@ -167,7 +167,7 @@ const Battle = (props) => {
 
     if (matchIndex !== -1) {
       const matchedWord = gameState.displayCards[matchIndex];
-      console.log("Match found!", matchedWord);
+      // console.log("Match found!", matchedWord);
       setTypedText("");
       takeCard(matchedWord, userContext.userId, gameState.lobby);
     }
@@ -294,7 +294,7 @@ const Battle = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log("Battle: Current gameState:", gameState);
+    // console.log("Battle: Current gameState:", gameState);
   }, [gameState]);
 
   useEffect(() => {

@@ -13,7 +13,7 @@ import SingleActiveLobby from "./SingleActiveLobby";
  */
 
 const LobbyList = (props) => {
-  console.log("trying to render", props.lobbies);
+  // console.log("trying to render", props.lobbies);
   return (
     <div className="lobby-list-container">
       {props.lobbies.length > 0 ? (
