@@ -141,6 +141,7 @@ const getEffectAmount = (type, difficulty) => {
   if (type === "freeze") return "freeze";
   if (type === "3x") return "3x next spell";
   if (type === "block") return "block next attack";
+  if (type === "lifesteal") return Math.floor(5 * difficulty);
   return Math.floor(10 * difficulty);
 };
 
