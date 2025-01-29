@@ -118,7 +118,8 @@ const startRunningGames = (activeGames) => {
   const runGame = async (game) => {
     if (game.winner) {
       try {
-        await gameLogic.handleGameEnd(game, game.winner);
+        activeGames.delete(game.lobby);
+
         console.log("Game ended");
         io.emit(game.lobby, "over");
       } catch (error) {
@@ -131,16 +132,15 @@ const startRunningGames = (activeGames) => {
     }
   };
 
-  const runAllGames = async () => {
+  const runAllGames = () => {
     if (activeGames) {
-      const gamePromises = Array.from(activeGames).map(([lobbyname, game]) => runGame(game));
-      await Promise.all(gamePromises);
+      activeGames.forEach((game, lobbyname) => {
+        runGame(game);
+      });
     }
   };
 
-  setInterval(async () => {
-    await runAllGames();
-  }, 1000 / 30); // 60 frames per second
+  setInterval(runAllGames, 1000 / 60); // 60 frames per second
 };
 
 startRunningGames(gameLogic.activeGames);

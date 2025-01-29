@@ -213,6 +213,7 @@ const checkWin = async (game) => {
       game.winner = game.p1;
       console.log("p1 wins");
     }
+    updateDB(game, game.winner);
   }
 };
 
@@ -230,7 +231,7 @@ const checkWin = async (game) => {
 //   return `${formattedHours}:${formattedMinutes} ${ampm} on ${month} ${day}`;
 // };
 
-const handleGameEnd = async (game, winner) => {
+const updateDB = async (game, winner) => {
   try {
     // Get user info once at the start
     let user1 = null;
@@ -289,6 +290,11 @@ const handleGameEnd = async (game, winner) => {
     console.error("Error in handleGameEnd:", error);
   }
 };
+
+// const handleGameEnd = (game) => {
+//   activeGames.delete(game.lobby);
+//   // updateDB(game, winner);
+// };
 
 const playerTakeCard = async (lobby, player, cardData, playerType = "player") => {
   let game = activeGames.get(lobby);
@@ -421,5 +427,5 @@ module.exports = {
   activeGames,
   newGame,
   playerTakeCard,
-  handleGameEnd,
+  // handleGameEnd,
 };
