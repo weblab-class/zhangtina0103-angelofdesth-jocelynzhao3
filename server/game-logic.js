@@ -12,18 +12,17 @@ const getRandomInt = (min, max) => {
 };
 
 // different effects
-const possibleEffects = ["block"];
-// const possibleEffects = [
-//   "attack",
-//   "attack",
-//   "attack",
-//   "heal",
-//   "heal",
-//   "lifesteal",
-//   "freeze",
-//   "3x",
-//   "block",
-// ];
+const possibleEffects = [
+  "attack",
+  "attack",
+  "attack",
+  "heal",
+  "heal",
+  "lifesteal",
+  "freeze",
+  "3x",
+  "block",
+];
 // const possibleEffects = ["freeze"];
 
 const basefreezeDuration = 3000;
@@ -428,8 +427,7 @@ const botTakeCard = (game) => {
   if (!game || game.winner) return; // Don't take cards if game is over
 
   // Randomly select a card index (0, 1, or 2)
-  // const randomCardIndex = getRandomInt(0, 3);
-  const randomCardIndex = 0;
+  const randomCardIndex = getRandomInt(0, 3);
   console.log("Bot is taking card at index:", randomCardIndex);
   if (game.p2Effects.freezeUntil <= Date.now()) {
     playerTakeCard(game.lobby, "bot", game.displayCards[randomCardIndex], "bot");
