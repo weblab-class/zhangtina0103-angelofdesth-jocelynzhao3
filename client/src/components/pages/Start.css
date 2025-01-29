@@ -1216,3 +1216,25 @@ select:not([value=""]) {
     font-size: 1rem;
   }
 }
+
+.back-to-start-link {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+}
+
+.house-icon {
+  width: 45px;
+  height: 45px;
+  transition: all 0.3s ease;
+  filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(0, 255, 255, 0.6)) 
+         drop-shadow(0 0 8px rgba(0, 255, 255, 0.4));
+}
+
+.house-icon:hover {
+  transform: scale(1.1);
+  filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(0, 255, 255, 0.8)) 
+         drop-shadow(0 0 12px rgba(0, 255, 255, 0.6))
+         drop-shadow(0 0 16px rgba(0, 255, 255, 0.4));
+}

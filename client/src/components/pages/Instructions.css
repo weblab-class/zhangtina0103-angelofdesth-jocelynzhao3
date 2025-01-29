@@ -13,29 +13,93 @@
   right: 0;
   bottom: 0;
   overflow-y: auto;
-  font-family: "Codec", sans-serif;
+  font-family: "Aerglo", sans-serif;
   color: #fff;
+}
+
+.Instructions-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+  color: #fff;
+  position: relative;
+}
+
+.back-to-start-link {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+}
+
+.icon-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 1rem;
+  z-index: 100;
+}
+
+.icon-container img {
+  width: 32px;
+  height: 32px;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 0 5px rgba(77, 255, 255, 0.5));
+}
+
+.icon-container img:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px rgba(77, 255, 255, 0.8));
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.profile-icon {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.Instructions-content {
+  padding-top: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .instructions-title {
   color: #4dffff;
-  font-size: 2rem;
-  margin: 1rem 0;
   text-align: center;
-  text-shadow: 0 0 15px rgba(77, 255, 255, 0.4);
-  font-family: "Aerglo", sans-serif;
+  font-size: 2.5rem;
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(77, 255, 255, 0.5);
   letter-spacing: 2px;
+  font-family: "Aerglo", sans-serif;
+}
+
+.instructions-title:not(:first-child) {
+  margin-top: 1rem;
 }
 
 .instructions-container {
   background: rgba(0, 255, 255, 0.05);
   border: 2px solid rgba(77, 255, 255, 0.2);
-  border-radius: 10px;
-  padding: 1.2rem 2rem;
-  width: 100%;
-  max-width: 700px;
-  margin: 0.5rem auto 1.5rem auto;
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(10px);
   box-shadow: 0 0 20px rgba(77, 255, 255, 0.1);
+  width: 100%;
 }
 
 .instructions-text {
@@ -45,6 +109,10 @@
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
   margin: 0;
   text-align: justify;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: #ffffff;
 }
 
 .effect-item {
@@ -90,3 +158,12 @@
   transform: translateY(-2px);
   box-shadow: 0 0 15px rgba(77, 255, 255, 0.3);
 }
+
+.highlight-red { color: #ff4d4d; }
+.highlight-green { color: #4dff4d; }
+.highlight-blue { color: #4d4dff; }
+.highlight-yellow { color: #ffff4d; }
+.highlight-purple { color: #ff4dff; }
+.highlight-cyan { color: #4dffff; }
+.highlight-orange { color: #ffa64d; }
+.highlight-brown { color: #bf8040; }

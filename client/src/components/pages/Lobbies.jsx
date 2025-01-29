@@ -9,6 +9,7 @@ import Lobby from "../modules/Lobby";
 import questionIcon from "../../assets/question.png";
 import trophyIcon from "../../assets/trophy.png";
 import doorIcon from "../../assets/door.png";
+import houseIcon from "../../assets/house.png";
 
 // Import SVGs
 import zuluSvg from "../../images/zulu.svg";
@@ -144,8 +145,48 @@ const Lobbies = (props) => {
     setInLobby(true);
   };
 
+  const handleLeaveLobby = () => {
+    setDisplayedLobby(null);
+    setInLobby(false);
+  };
+
   return (
     <div className="Lobbies-container">
+      {!inLobby && (
+        <div className="navbar">
+          <Link to="/" className="back-to-start-link">
+            <img src={houseIcon} alt="home" className="house-icon" />
+          </Link>
+          <div className="icon-container">
+            <Link to="/instructions" className="instructions-button">
+              <img src={questionIcon} alt="instructions" className="question-icon" />
+            </Link>
+            <Link to="/leaderboard" className="leaderboard-button">
+              <img src={trophyIcon} alt="leaderboard" className="trophy-icon" />
+            </Link>
+            <Link to="/battleProfile" className="profile-button">
+              <img
+                src={
+                  userInfo?.picture ||
+                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                }
+                alt="profile"
+                className="profile-icon"
+              />
+            </Link>
+            <button
+              onClick={() => {
+                userContext.handleLogout();
+                navigate("/");
+              }}
+              className="logout-button"
+            >
+              <img src={doorIcon} alt="sign out" className="door-icon" />
+            </button>
+          </div>
+        </div>
+      )}
+
       {isLoading ? (
         <div className="loading-message">Loading lobbies...</div>
       ) : !userInfo ? (
@@ -154,97 +195,75 @@ const Lobbies = (props) => {
           <p>Redirecting you to homepage in {countdown} seconds</p>
         </div>
       ) : (
-        <div>
-          <div className="Lobbies-top-bar">
-            <div className="icon-container">
-              <Link to="/instructions" className="instructions-button">
-                <img src={questionIcon} alt="instructions" className="question-icon" />
-              </Link>
-              <Link to="/leaderboard" className="leaderboard-button">
-                <img src={trophyIcon} alt="leaderboard" className="trophy-icon" />
-              </Link>
-              <Link to="/battleProfile" className="profile-button">
-                <img
-                  src={
-                    userInfo.picture ||
-                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                  }
-                  alt="profile"
-                  className="profile-icon"
-                />
-              </Link>
-              <button
-                onClick={() => {
-                  userContext.handleLogout();
-                  navigate("/");
-                }}
-                className="logout-button"
-              >
-                <img src={doorIcon} alt="sign out" className="door-icon" />
-              </button>
-            </div>
-          </div>
-
-          <div className="lobbies-main-content">
-            <div className="lobbies-content">
-              <div className="lobbies-left-section">
-                {!inLobby && (
-                  <div className="lobby-buttons">
-                    <button onClick={handleNewPVP}>Challenge a Player</button>
-                    <button onClick={handleNewBot}>Practice with Bot</button>
-                  </div>
-                )}
-                <div className="lobbies-list">
-                  <div className="lobbies-header">
-                    <h2>Active Lobbies</h2>
-                  </div>
-                  {(() => {
-                    const userLobby = activeLobbies.find(
-                      (lobby) =>
-                        (lobby.p1 === userInfo._id && lobby.p1ready) ||
-                        (lobby.p2 === userInfo._id && lobby.p2ready)
-                    );
-
-                    if (userLobby) {
-                      return <p className="waiting-message">Waiting for opponent to be ready...</p>;
-                    }
-
-                    return (
-                      <LobbyList
-                        lobbies={activeLobbies}
-                        setDisplayedLobby={setDisplayedLobby}
-                        displayedLobby={displayedLobby}
-                        setInLobby={setInLobby}
-                        formatPlayerDisplay={formatPlayerDisplay}
-                      />
-                    );
-                  })()}
+        <div className="lobbies-main-content">
+          <div className="lobbies-content">
+            <div className="lobbies-left-section">
+              {!inLobby ? (
+                <div className="lobby-buttons">
+                  <button className="create-lobby-button" onClick={handleNewPVP}>
+                    Challenge a Player
+                  </button>
+                  <button className="create-lobby-button" onClick={handleNewBot}>
+                    Practice with Bot
+                  </button>
                 </div>
-              </div>
+              ) : (
+                <div className="lobby-controls">
+                  <button className="leave-lobby-button" onClick={handleLeaveLobby}>
+                    Leave Lobby
+                  </button>
+                </div>
+              )}
+              <div className="lobbies-list">
+                <div className="lobbies-header">
+                  <h2>Active Lobbies</h2>
+                </div>
+                {(() => {
+                  const userLobby = activeLobbies.find(
+                    (lobby) =>
+                      (lobby.p1 === userInfo._id && lobby.p1ready) ||
+                      (lobby.p2 === userInfo._id && lobby.p2ready)
+                  );
 
-              <div className="lobby-details">
-                {displayedLobby ? (
-                  <>
-                    {displayedLobby === "newPVP" ? (
-                      <PVPLobbyCreation setDisplayedLobby={setDisplayedLobby} />
-                    ) : displayedLobby === "newBot" ? (
-                      <BotLobbyCreation />
-                    ) : (
-                      <Lobby
-                        lobbyid={displayedLobby}
-                        activeLobbies={activeLobbies}
-                        setInLobby={setInLobby}
-                        setDisplayedLobby={setDisplayedLobby}
-                        formatPlayerDisplay={formatPlayerDisplay}
-                      />
-                    )}
-                  </>
-                ) : (
-                  <div className="select-lobby-message">
-                    <p>Please choose a lobby or create your own!</p>
-                  </div>
-                )}
+                  if (userLobby) {
+                    return <p className="waiting-message">Waiting for opponent to be ready...</p>;
+                  }
+
+                  return (
+                    <LobbyList
+                      lobbies={activeLobbies}
+                      setDisplayedLobby={setDisplayedLobby}
+                      displayedLobby={displayedLobby}
+                      setInLobby={setInLobby}
+                      formatPlayerDisplay={formatPlayerDisplay}
+                    />
+                  );
+                })()}
               </div>
+            </div>
+
+            <div className="lobby-details">
+              {displayedLobby ? (
+                <>
+                  {displayedLobby === "newPVP" ? (
+                    <PVPLobbyCreation setDisplayedLobby={setDisplayedLobby} />
+                  ) : displayedLobby === "newBot" ? (
+                    <BotLobbyCreation />
+                  ) : (
+                    <Lobby
+                      lobbyid={displayedLobby}
+                      activeLobbies={activeLobbies}
+                      setInLobby={setInLobby}
+                      setDisplayedLobby={setDisplayedLobby}
+                      formatPlayerDisplay={formatPlayerDisplay}
+                    />
+                  )}
+                </>
+              ) : (
+                <div className="select-lobby-message">
+                  <p>Please choose a lobby or create your own!</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

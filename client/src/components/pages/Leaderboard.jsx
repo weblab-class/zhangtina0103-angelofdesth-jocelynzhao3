@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import doorIcon from "../../assets/door.png";
 import questionIcon from "../../assets/question.png";
 import trophyIcon from "../../assets/trophy.png";
+import houseIcon from "../../assets/house.png";
 
 const processUserStats = (user) => {
   const log = user.log || [];
@@ -51,7 +52,7 @@ const Leaderboard = () => {
   return (
     <div className="Start-container">
       <Link to="/" className="back-to-start-link">
-        Back
+        <img src={houseIcon} alt="home" className="house-icon" />
       </Link>
       <div className="icon-container">
         <Link to="/instructions" className="instructions-button">
