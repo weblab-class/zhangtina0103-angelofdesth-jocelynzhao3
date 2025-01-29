@@ -25,6 +25,7 @@ const Lobby = (props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const [p1, setP1] = useState("");
   const [p2, setP2] = useState("");
+  const [language, setLanguage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -102,10 +103,11 @@ const Lobby = (props) => {
       (userInfo._id === newlobby.p2 && newlobby.p2ready));
 
   return (
+    <>
     <div>
       <div>
         <p className="lobby-player-info">
-          You are <span>{userInfo.name}</span> (ELO: <span>{userInfo.elo}</span>)
+          Lobby <span>{props.lobbyid}</span>
         </p>
 
         <p className="lobby-player-name">
@@ -116,21 +118,22 @@ const Lobby = (props) => {
           Player 2: <span>{p2}</span>
         </p>
 
-        {p2 === "Waiting for player..." && (
+        {p2 === "Waiting for player..." ? (
           <p className="lobby-waiting-message">Waiting for another player to join...</p>
+        ) : (
+          <>
+          {hasJoined && !isReady && (
+            <button
+              className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text"
+              onClick={handleReadyClick}
+            >
+              Ready
+            </button>
+          )}
+          </>
         )}
 
-        {props.lobbyid !== "newPVP" && props.lobbyid !== "newBot" && hasJoined && (
-          <div className="button-container">
-            <button
-              type="button"
-              className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text"
-              onClick={handleLeaveClick}
-            >
-              Leave
-            </button>
-          </div>
-        )}
+        
 
         {!hasJoined && (
           <button
@@ -142,16 +145,22 @@ const Lobby = (props) => {
           </button>
         )}
 
-        {hasJoined && !isReady && (
-          <button
-            className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text"
-            onClick={handleReadyClick}
-          >
-            Ready
-          </button>
-        )}
+        
       </div>
+      
     </div>
+    {props.lobbyid !== "newPVP" && props.lobbyid !== "newBot" && hasJoined && (
+      <div className="leave-lobby-container">
+        <button
+          type="button"
+          className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text"
+          onClick={handleLeaveClick}
+        >
+          Leave Lobby
+        </button>
+      </div>
+    )}
+    </>
   );
 };
 

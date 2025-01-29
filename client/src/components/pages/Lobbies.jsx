@@ -196,24 +196,8 @@ const Lobbies = (props) => {
         </div>
       ) : (
         <div className="lobbies-main-content">
-          <div className="lobbies-content">
+            <div className="lobbies-content">
             <div className="lobbies-left-section">
-              {!inLobby ? (
-                <div className="lobby-buttons">
-                  <button className="create-lobby-button" onClick={handleNewPVP}>
-                    Challenge a Player
-                  </button>
-                  <button className="create-lobby-button" onClick={handleNewBot}>
-                    Practice with Bot
-                  </button>
-                </div>
-              ) : (
-                <div className="lobby-controls">
-                  <button className="leave-lobby-button" onClick={handleLeaveLobby}>
-                    Leave Lobby
-                  </button>
-                </div>
-              )}
               <div className="lobbies-list">
                 <div className="lobbies-header">
                   <h2>Active Lobbies</h2>
@@ -242,13 +226,31 @@ const Lobbies = (props) => {
               </div>
             </div>
 
+            <div>
+            <div className="lobbies-top"> 
+          {!inLobby ? (
+                <div className="lobby-buttons">
+                  <button  onClick={handleNewPVP}>
+                    Challenge a Player
+                  </button>
+                  <button onClick={handleNewBot}>
+                    Practice with Bot
+                  </button>
+                </div>
+              ) : (
+                <div className="lobby-controls" >
+                  <p> Cannot create lobbies while in a lobby </p>
+                </div>
+              )}
+              </div>     
             <div className="lobby-details">
               {displayedLobby ? (
                 <>
                   {displayedLobby === "newPVP" ? (
-                    <PVPLobbyCreation setDisplayedLobby={setDisplayedLobby} />
+                    <PVPLobbyCreation setDisplayedLobby={setDisplayedLobby} 
+                    handleLeaveLobby={handleLeaveLobby}/>
                   ) : displayedLobby === "newBot" ? (
-                    <BotLobbyCreation />
+                    <BotLobbyCreation handleLeaveLobby={handleLeaveLobby} />
                   ) : (
                     <Lobby
                       lobbyid={displayedLobby}
@@ -265,6 +267,7 @@ const Lobbies = (props) => {
                 </div>
               )}
             </div>
+            </div> 
           </div>
         </div>
       )}

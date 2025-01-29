@@ -37,7 +37,7 @@ const PVPLobbyCreation = (props) => {
   };
 
   return (
-    <div>
+    <>
       <div className="pvp-header">
         <h3>New Game vs. Player</h3>
       </div>
@@ -70,7 +70,13 @@ const PVPLobbyCreation = (props) => {
           </button>
         )}
       </div>
-    </div>
+      <div className="leave-lobby-container">
+        <button className="pvp-create-button button-base neon-bg neon-border neon-text"
+        onClick={props.handleLeaveLobby}>
+                    Cancel
+                  </button>
+      </div>
+    </>
   );
 };
 
