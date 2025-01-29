@@ -38,6 +38,10 @@ const Battle = (props) => {
   const [opponentInfo, setOpponentInfo] = useState(null);
   const [isPlayerOne, setIsPlayerOne] = useState(true);
 
+  // Add countdown state
+  const [countdown, setCountdown] = useState(3);
+  const [showCountdown, setShowCountdown] = useState(true);
+
   const [gameState, setGameState] = useState({
     lobby: lobby || "hardcodedlobbyname", // Use URL lobby parameter or fallback to default
     language: language,
@@ -120,6 +124,26 @@ const Battle = (props) => {
 
     prevCards.current = gameState.displayCards;
   }, [gameState.displayCards]);
+
+  useEffect(() => {
+    // Initialize countdown when component mounts
+    if (showCountdown) {
+      const countdownInterval = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev <= 0) {
+            clearInterval(countdownInterval);
+            setTimeout(() => {
+              setShowCountdown(false);
+            }, 1000); // Give time to show battlelinGO!
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(countdownInterval);
+    }
+  }, [showCountdown]);
 
   const [typedText, setTypedText] = useState(""); // Track user input
 
@@ -293,6 +317,13 @@ const Battle = (props) => {
 
   return (
     <div className="Battle-container">
+      {showCountdown && (
+        <div className="Battle-countdown-overlay">
+          <div className={`Battle-countdown ${countdown === 0 ? "title" : ""}`}>
+            {countdown === 0 ? "Battle linGO!" : countdown}
+          </div>
+        </div>
+      )}
       <div className="Battle-status-bar">
         {/* Player HP (Left) */}
         <div className="Battle-hp-container">

@@ -201,7 +201,7 @@ const Lobbies = (props) => {
               {!inLobby ? (
                 <div className="lobby-buttons">
                   <button className="create-lobby-button" onClick={handleNewPVP}>
-                    Challenge a Player
+                    Create New PVP Lobby
                   </button>
                   <button className="create-lobby-button" onClick={handleNewBot}>
                     Practice with Bot

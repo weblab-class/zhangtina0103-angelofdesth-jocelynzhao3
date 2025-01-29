@@ -1047,3 +1047,51 @@
 .Battle-status-bar {
   position: relative;
 }
+
+.Battle-countdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 10, 31, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.Battle-countdown {
+  font-family: "Codec", sans-serif;
+  font-size: 12rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 30px rgba(0, 157, 255, 0.8);
+  animation: countdownPulse 1s ease-in-out;
+  padding: 2rem;
+  text-align: center;
+}
+
+.Battle-countdown.title {
+  font-size: 10rem;
+  background: linear-gradient(90deg, #00ff87 0%, #60efff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(0, 255, 135, 0.5);
+  letter-spacing: -0.05em;
+}
+
+@keyframes countdownPulse {
+  0% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
