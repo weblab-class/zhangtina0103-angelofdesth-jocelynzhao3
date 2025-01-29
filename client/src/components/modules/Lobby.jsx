@@ -128,74 +128,73 @@ const Lobby = (props) => {
 
   return (
     <>
-    <div>
       <div>
-        <p className="lobby-player-info">
-          Lobby <span>{props.lobbyid}</span>
-        </p>
+        <div>
+          <p className="lobby-player-info">
+            Lobby <span>{props.lobbyid}</span>
+          </p>
 
-        <p className="lobby-player-name">
-          Player 1: <span>{p1}</span>
-        </p>
+          <p className="lobby-player-name">
+            Player 1: <span>{p1}</span>
+          </p>
 
-        <p className="lobby-player-name">
-          Player 2: <span>{p2}</span>
-        </p>
+          <p className="lobby-player-name">
+            Player 2: <span>{p2}</span>
+          </p>
 
-        {p2 === "Waiting for player..." ? (
-          <p className="lobby-waiting-message">Waiting for another player to join...</p>
-        ) : (
-          <>
-          {props.lobbyid !== "newPVP" && props.lobbyid !== "newBot" && hasJoined && (
-              <button
-                className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text"
-                onClick={handleReadyClick}
-              >
-                Ready
-              </button>
-            )}
+          {p2 === "Waiting for player..." ? (
+            <p className="lobby-waiting-message">Waiting for another player to join...</p>
+          ) : (
+            <>
+              {props.lobbyid !== "newPVP" && props.lobbyid !== "newBot" && hasJoined && (
+                <button
+                  className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text"
+                  onClick={handleReadyClick}
+                >
+                  Ready
+                </button>
+              )}
             </>
-        )}
+          )}
 
-        {props.lobbyid !== "newPVP" && props.lobbyid !== "newBot" && (
-          <>
-            {disconnectedPlayer && (
-              <div className="Lobby-status-message">
-                <span className="player-disconnected">
-                  {disconnectedPlayer === props.activeLobbies.find(l => l.lobbyid === props.lobbyid)?.p1 ? p1 : p2} is disconnected, wait for reconnection
-                </span>
-              </div>
-            )}
-          </>
-        )}
+          {props.lobbyid !== "newPVP" && props.lobbyid !== "newBot" && (
+            <>
+              {disconnectedPlayer && (
+                <div className="Lobby-status-message">
+                  <span className="player-disconnected">
+                    {disconnectedPlayer ===
+                    props.activeLobbies.find((l) => l.lobbyid === props.lobbyid)?.p1
+                      ? p1
+                      : p2}{" "}
+                    is disconnected, wait for reconnection or leave the lobby
+                  </span>
+                </div>
+              )}
+            </>
+          )}
 
-        
-
-        {!hasJoined && (
+          {!hasJoined && (
+            <button
+              className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text"
+              onClick={handleJoinClick}
+              disabled={newlobby && newlobby.p2}
+            >
+              {newlobby && newlobby.p2 ? "Lobby Full" : "Join"}
+            </button>
+          )}
+        </div>
+      </div>
+      {props.lobbyid !== "newPVP" && props.lobbyid !== "newBot" && hasJoined && (
+        <div className="leave-lobby-container">
           <button
+            type="button"
             className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text"
-            onClick={handleJoinClick}
-            disabled={newlobby && newlobby.p2}
+            onClick={handleLeaveClick}
           >
-            {newlobby && newlobby.p2 ? "Lobby Full" : "Join"}
+            Leave Lobby
           </button>
-        )}
-
-        
-      </div>
-      
-    </div>
-    {props.lobbyid !== "newPVP" && props.lobbyid !== "newBot" && hasJoined && (
-      <div className="leave-lobby-container">
-        <button
-          type="button"
-          className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text"
-          onClick={handleLeaveClick}
-        >
-          Leave Lobby
-        </button>
-      </div>
-    )}
+        </div>
+      )}
     </>
   );
 };
