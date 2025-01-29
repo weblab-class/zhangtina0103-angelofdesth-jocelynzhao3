@@ -328,6 +328,8 @@ const playerTakeCard = async (lobby, player, cardData, playerType = "player") =>
     return;
   }
 
+  console.log("Processing cards:", processingCards);
+
   // Check if card is being processed
   const cardKey = `${lobby}-${cardIndex}`;
   if (processingCards.has(cardKey)) {
