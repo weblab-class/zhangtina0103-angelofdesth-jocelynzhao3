@@ -60,6 +60,7 @@ const Battle = (props) => {
     p2Name: "",
     p1Picture: null,
     p2Picture: null,
+    createdAt: null,
   });
   const [animatingCards, setAnimatingCards] = useState(new Set());
   const prevCards = useRef(gameState.displayCards);

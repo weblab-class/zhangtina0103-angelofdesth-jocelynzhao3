@@ -30,6 +30,7 @@ const addUser = (user, socket) => {
 
   for (const [lobbyId, game] of gameLogic.activeGames) {
     if (game.p1 === user._id || game.p2 === user._id) {
+      console.log("reconnecting attempt", lobbyId);
       io.emit(lobbyId, {
         ...game,
       });

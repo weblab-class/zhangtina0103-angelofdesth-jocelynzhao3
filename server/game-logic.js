@@ -182,7 +182,7 @@ const newGame = async (lobby, p1, p2, language, difficulty = 1) => {
     if (p2 !== "bot") {
       user2 = await User.findOne({ _id: p2 });
     }
-    game = {
+    const game = {
       lobby: lobby,
       language: language,
       winner: null,
@@ -194,11 +194,12 @@ const newGame = async (lobby, p1, p2, language, difficulty = 1) => {
       p1Effects: { freezeUntil: 0, block: [] }, // block is an increasing array of times when the player is blocked
       p2Effects: { freezeUntil: 0, block: [] },
       multiplier: 1, // Start with 1x multiplier
-      lastCardEffect: null, // Initialize lastCardEffect to null
+      lastCardEffect: null, // Initialize lastCardEffect to null, unused
       p1Name: user1 ? user1.name : "bot",
       p2Name: user2 ? user2.name : "bot",
       p1Picture: user1 ? user1.picture : null,
       p2Picture: user2 ? user2.picture : null,
+      createdAt: Date.now(), // Add creation timestamp
     };
 
     //populate the three starting cards efficiently
@@ -455,6 +456,21 @@ const startBotPlay = (lobby, difficulty) => {
 
   return interval;
 };
+
+const HOUR_IN_MS = 60 * 60 * 1000;
+setInterval(() => {
+  const now = Date.now();
+  for (const [lobbyId, game] of activeGames) {
+    if (now - game.createdAt >= HOUR_IN_MS) {
+      console.log(`Game ${lobbyId} has expired (over 1 hour old)`);
+      activeGames.delete(lobbyId);
+      const io = require("./server-socket").getIo();
+      if (io) {
+        io.emit(lobbyId, "over");
+      }
+    }
+  }
+}, 60 * 1000); // Check every minute
 
 module.exports = {
   activeGames,
