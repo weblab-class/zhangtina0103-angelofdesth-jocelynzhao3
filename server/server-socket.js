@@ -53,7 +53,7 @@ const removeUser = (user, socket) => {
       );
       for (const [lobbyId, lobby] of lobbyLogic.activeLobbies) {
         if (lobby.p1 === user._id || lobby.p2 === user._id) {
-          leaveLobby(lobbyId, user._id);
+          lobbyLogic.leaveLobby(lobbyId, user._id);
         }
       }
       userToTimeout.delete(user._id);
