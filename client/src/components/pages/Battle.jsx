@@ -466,7 +466,6 @@ const Battle = (props) => {
           </div>
           { ((userInfo._id === gameState.p1) || (userInfo._id === gameState.p2)) && (
             <>
-            {console.log("test")}
             <TypeBar onType={handleTyping} typedText={typedText} isFrozen={isKeyboardFrozen()} />
             </>
           )
