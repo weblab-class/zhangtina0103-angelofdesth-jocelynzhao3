@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="600px" viewBox="0 0 800 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path d="M200,300 C250,250 350,250 400,300 S550,350 600,300" 
+          stroke="#ff3333" 
+          stroke-width="2" 
+          fill="none" 
+          stroke-linecap="round"
+          stroke-dasharray="1000"
+          stroke-dashoffset="1000">
+        <animate attributeName="stroke-dashoffset"
+                 from="1000"
+                 to="0"
+                 dur="3s"
+                 fill="freeze"
+                 begin="0s"/>
+    </path>
+</svg>

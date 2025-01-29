@@ -1,21 +1,7 @@
 import "../../utilities.css";
 import "./Start.css";
-import zuluSvg from "../../images/zulu.svg";
-import spanishSvg from "../../images/spanish.svg";
 import chineseSvg from "../../images/chinese.svg";
-import arabicSvg from "../../images/arabic.svg";
-import frenchSvg from "../../images/french.svg";
-import germanSvg from "../../images/german.svg";
-import koreanSvg from "../../images/korean.svg";
-import hindiSvg from "../../images/hindi.svg";
-import portugueseSvg from "../../images/portuguese.svg";
-import afrikaansSvg from "../../images/afrikaans.svg";
-import vietnameseSvg from "../../images/vietnamese.svg";
-import japaneseSvg from "../../images/japanese.svg";
-import teluguSvg from "../../images/telugu.svg";
-import russianSvg from "../../images/russian.svg";
-import italianSvg from "../../images/italian.svg";
-import turkishSvg from "../../images/turkish.svg";
+import chineseAnimatedSvg from "../../images/chinese-animated.svg";
 import questionIcon from "../../assets/question.png";
 import trophyIcon from "../../assets/trophy.png";
 import doorIcon from "../../assets/door.png";
@@ -75,9 +61,6 @@ const Start = (props) => {
 
   return (
     <div className="Start-container">
-      <div id="chinese-svg-wrapper">
-        <img src={chineseSvg} alt="chinese design" />
-      </div>
       <div className="Start-content">
         {userContext.userId && (
           <div className="Start-top-bar">
@@ -149,6 +132,9 @@ const Start = (props) => {
             </button>
           )}
         </div>
+      </div>
+      <div className="chinese-svg-container">
+        <img src={chineseSvg} alt="chinese design" className="chinese-svg reveal-animation" />
       </div>
     </div>
   );
