@@ -7,6 +7,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { get } from "../../utilities";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
+import doorIcon from "../../assets/door.png";
+import questionIcon from "../../assets/question.png";
+import trophyIcon from "../../assets/trophy.png";
+import houseIcon from "../../assets/house.png";
 
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -170,7 +174,31 @@ const BattleProfile = (props) => {
 
   return (
     <div className="BattleEnd-container">
-      <div>
+      <Link to="/" className="back-to-start-link">
+        <img src={houseIcon} alt="home" className="house-icon" />
+      </Link>
+      <div className="icon-container">
+        <Link to="/instructions" className="instructions-button">
+          <img src={questionIcon} alt="instructions" className="question-icon" />
+        </Link>
+        <Link to="/leaderboard" className="leaderboard-button">
+          <img src={trophyIcon} alt="leaderboard" className="trophy-icon" />
+        </Link>
+        <Link to="/battleProfile" className="profile-button">
+          <img
+            src={
+              userInfo?.picture ||
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            }
+            alt="profile"
+            className="profile-icon"
+          />
+        </Link>
+        <button onClick={() => setUserInfo(null)} className="logout-button">
+          <img src={doorIcon} alt="sign out" className="door-icon" />
+        </button>
+      </div>
+      <div className="battleEnd-title-container">
         <h1 className="BattleEnd-title">Battle Profile</h1>
       </div>
       <div className="BattleEnd-userinfo">
@@ -258,7 +286,6 @@ const BattleProfile = (props) => {
               null
             )}
           </div>
-
           <Link to="/" className="BattleEnd-button">
             Back to start page!
           </Link>
