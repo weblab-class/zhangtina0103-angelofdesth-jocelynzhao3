@@ -4,7 +4,7 @@ import { drawCanvas } from "../../canvasManager.js";
 import TypeBar from "../modules/Typebar";
 import Player from "../modules/Player";
 
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { get, post } from "../../utilities";
 import { takeCard } from "../../client-socket";
 import React, { useState, useEffect, useContext, useRef } from "react";
@@ -28,7 +28,9 @@ const hardcodedCards = [
 
 const Battle = (props) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { lobby } = useParams(); // Get lobby parameter from URL
+  const gameMode = location.state?.gameMode || "pvp";
   const userContext = useContext(UserContext);
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const { language } = useContext(LanguageContext);
@@ -245,19 +247,21 @@ const Battle = (props) => {
             blocks: numberBlocks().p1Blocks,
           }
         : {
-            name: opponentInfo?.name || "Bot",
-            picture: opponentInfo?.picture,
+            name: gameMode === "bot" ? "Bot" : (opponentInfo?.name || "Bot"),
+            picture: gameMode === "bot" ? null : opponentInfo?.picture,
             hp: gameState.p2HP,
             blocks: numberBlocks().p2Blocks,
+            isBot: gameMode === "bot"
           };
     } else {
       // If we're player two, we go on the right
       return isP1Side
         ? {
-            name: opponentInfo?.name || "Bot",
-            picture: opponentInfo?.picture,
+            name: gameMode === "bot" ? "Bot" : (opponentInfo?.name || "Bot"),
+            picture: gameMode === "bot" ? null : opponentInfo?.picture,
             hp: gameState.p1HP,
             blocks: numberBlocks().p1Blocks,
+            isBot: gameMode === "bot"
           }
         : {
             name: userInfo.name,
@@ -363,7 +367,11 @@ const Battle = (props) => {
         {/* HP Bars and Avatars */}
         <div className="Battle-players">
           <div className="Battle-player-left">
-            <Player player={getPlayerInfo(true)} isEnemy={!isPlayerOne} />
+            <Player 
+              player={getPlayerInfo(true)} 
+              isEnemy={!isPlayerOne} 
+              isBot={getPlayerInfo(true).isBot}
+            />
             <div className="Battle-healthbar">
               <div
                 className="Battle-healthbar-fill"
@@ -372,7 +380,11 @@ const Battle = (props) => {
             </div>
           </div>
           <div className="Battle-player-right">
-            <Player player={getPlayerInfo(false)} isEnemy={isPlayerOne} />
+            <Player 
+              player={getPlayerInfo(false)} 
+              isEnemy={isPlayerOne}
+              isBot={getPlayerInfo(false).isBot}
+            />
             <div className="Battle-healthbar">
               <div
                 className="Battle-healthbar-fill"

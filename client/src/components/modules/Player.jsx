@@ -2,6 +2,7 @@
 import React from "react";
 import "./Player.css";
 import shield from "../../assets/shield.png";
+import botIcon from "../../assets/bot.png";
 
 /**
  * Player component for battle page
@@ -14,18 +15,21 @@ import shield from "../../assets/shield.png";
  *   @param {number} player.blocks - number of active blocks (optional)
  *   @param {number} player.remainingSeconds - remaining seconds for block (optional)
  * @param {boolean} isEnemy - Whether the player is an enemy
+ * @param {boolean} isBot - Whether the player is a bot
  */
-const Player = ({ player, isEnemy }) => {
+const Player = ({ player, isEnemy, isBot }) => {
   return (
     <div className={`Battle-avatar ${isEnemy ? 'enemy' : 'player'}`}>
       <div className="Battle-avatar-wrapper">
-        {player.picture ? (
-          <img src={player.picture} alt={player.name} className="Battle-avatar-circle" />
-        ) : (
-          <div className="Battle-avatar-circle">
-            {player.name ? player.name.charAt(0).toUpperCase() : "?"}
-          </div>
-        )}
+        <div className="Battle-avatar-circle">
+          {isBot ? (
+            <img src={botIcon} alt="Bot" className="Battle-avatar-image" />
+          ) : player.picture ? (
+            <img src={player.picture} alt={player.name} className="Battle-avatar-image" />
+          ) : (
+            player.name ? player.name.charAt(0).toUpperCase() : "?"
+          )}
+        </div>
         {player.blocks > 0 && (
           <div className="Battle-avatar-shield">
             <img 

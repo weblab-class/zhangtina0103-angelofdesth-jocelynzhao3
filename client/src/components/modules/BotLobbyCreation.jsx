@@ -23,7 +23,7 @@ const BotLobbyCreation = () => {
       p1: userInfo._id,
       language: language,
       difficulty: difficulty,
-    }).then(navigate("/battle/"));
+    }).then(() => navigate("/battle", { state: { gameMode: "bot" } }));
   };
 
   return (
