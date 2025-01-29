@@ -21,7 +21,7 @@ const possibleEffects = [
   "lifesteal",
   "freeze",
   "3x",
-  "block",
+  // "block",
 ];
 // const possibleEffects = ["freeze"];
 
@@ -37,20 +37,20 @@ const doEffect = (effectType, game, card, playerNumber) => {
   if (playerNumber === 2) {
     //p2 attacking
     if (effectType === "lifesteal") {
-      // check for block
-      const timeNow = Date.now();
-      while (game.p1Effects.block.length > 0) {
-        const blockTime = game.p1Effects.block[0];
-        if (blockTime > timeNow) {
-          // Block is still active
-          console.log("Lifesteal blocked by P1 and P2 does not heal");
-          // Remove just one block
-          game.p1Effects.block.shift();
-          return game;
-        }
-        // Remove expired block
-        game.p1Effects.block.shift();
-      }
+      // // check for block
+      // const timeNow = Date.now();
+      // while (game.p1Effects.block.length > 0) {
+      //   const blockTime = game.p1Effects.block[0];
+      //   if (blockTime > timeNow) {
+      //     // Block is still active
+      //     console.log("Lifesteal blocked by P1 and P2 does not heal");
+      //     // Remove just one block
+      //     game.p1Effects.block.shift();
+      //     return game;
+      //   }
+      //   // Remove expired block
+      //   game.p1Effects.block.shift();
+      // }
       game.p1HP = Math.max(0, game.p1HP - amount); // Don't let HP go below 0
       game.p2HP = Math.min(100, game.p2HP + amount); // Don't let HP go above 100
       return game;
@@ -58,19 +58,19 @@ const doEffect = (effectType, game, card, playerNumber) => {
 
     if (effectType === "attack") {
       // check for block
-      const timeNow = Date.now();
-      while (game.p1Effects.block.length > 0) {
-        const blockTime = game.p1Effects.block[0];
-        if (blockTime > timeNow) {
-          // Block is still active
-          console.log("Attack blocked by P1!");
-          // Remove just one block
-          game.p1Effects.block.shift();
-          return game;
-        }
-        // Remove expired block
-        game.p1Effects.block.shift();
-      }
+      // const timeNow = Date.now();
+      // while (game.p1Effects.block.length > 0) {
+      //   const blockTime = game.p1Effects.block[0];
+      //   if (blockTime > timeNow) {
+      //     // Block is still active
+      //     console.log("Attack blocked by P1!");
+      //     // Remove just one block
+      //     game.p1Effects.block.shift();
+      //     return game;
+      //   }
+      //   // Remove expired block
+      //   game.p1Effects.block.shift();
+      // }
 
       game.p1HP = Math.max(0, game.p1HP - amount); // Don't let HP go below 0
       console.log(`Attacked for ${amount} damage. P1 HP now: ${game.p1HP}`);
@@ -83,19 +83,19 @@ const doEffect = (effectType, game, card, playerNumber) => {
     // playerNumber === 1
     if (effectType === "lifesteal") {
       // check for block
-      const timeNow = Date.now();
-      while (game.p2Effects.block.length > 0) {
-        const blockTime = game.p2Effects.block[0];
-        if (blockTime > timeNow) {
-          // Block is still active
-          console.log("Lifesteal blocked by P2 and P1 does not heal");
-          // Remove just one block
-          game.p2Effects.block.shift();
-          return game;
-        }
-        // Remove expired block
-        game.p1Effects.block.shift();
-      }
+      // const timeNow = Date.now();
+      // while (game.p2Effects.block.length > 0) {
+      //   const blockTime = game.p2Effects.block[0];
+      //   if (blockTime > timeNow) {
+      //     // Block is still active
+      //     console.log("Lifesteal blocked by P2 and P1 does not heal");
+      //     // Remove just one block
+      //     game.p2Effects.block.shift();
+      //     return game;
+      //   }
+      //   // Remove expired block
+      //   game.p1Effects.block.shift();
+      // }
       game.p2HP = Math.max(0, game.p2HP - amount); // Don't let HP go below 0
       game.p1HP = Math.min(100, game.p1HP + amount); // Don't let HP go above 100
       return game;
@@ -104,19 +104,19 @@ const doEffect = (effectType, game, card, playerNumber) => {
     //p1 attacking
     if (effectType === "attack") {
       // check for block
-      const timeNow = Date.now();
-      while (game.p2Effects.block.length > 0) {
-        const blockTime = game.p2Effects.block[0];
-        if (blockTime > timeNow) {
-          // Block is still active
-          console.log("Attack blocked by P2!");
-          // Remove just one block
-          game.p2Effects.block.shift();
-          return game;
-        }
-        // Remove expired block
-        game.p2Effects.block.shift();
-      }
+      // const timeNow = Date.now();
+      // while (game.p2Effects.block.length > 0) {
+      //   const blockTime = game.p2Effects.block[0];
+      //   if (blockTime > timeNow) {
+      //     // Block is still active
+      //     console.log("Attack blocked by P2!");
+      //     // Remove just one block
+      //     game.p2Effects.block.shift();
+      //     return game;
+      //   }
+      //   // Remove expired block
+      //   game.p2Effects.block.shift();
+      // }
 
       game.p2HP = Math.max(0, game.p2HP - amount); // Don't let HP go below 0
       console.log(`Attacked for ${amount} damage. P2 HP now: ${game.p2HP}`);
