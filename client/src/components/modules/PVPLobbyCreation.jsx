@@ -43,7 +43,7 @@ const PVPLobbyCreation = (props) => {
       </div>
       <div className="pvp-container">
         <p className="player-info">
-          Player 1: <span>{userInfo.name}</span> [ELO: <span>{userInfo.elo}</span>]
+          Player 1: <span>{userInfo.name}</span> [<span>{userInfo.elo}</span>]
         </p>
         <select
           name="language"

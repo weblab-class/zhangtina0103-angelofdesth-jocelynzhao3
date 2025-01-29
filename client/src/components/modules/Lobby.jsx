@@ -26,6 +26,8 @@ const Lobby = (props) => {
   const [p1, setP1] = useState("");
   const [p2, setP2] = useState("");
   const [language, setLanguage] = useState("");
+  const [p1ready, setP1Ready] = useState(false);
+  const [p2ready, setP2Ready] = useState(false);
   const [disconnectedPlayer, setDisconnectedPlayer] = useState(null);
   const navigate = useNavigate();
 
@@ -41,6 +43,9 @@ const Lobby = (props) => {
     if (newlobby) {
       props.formatPlayerDisplay(setP1, newlobby.p1);
       props.formatPlayerDisplay(setP2, newlobby.p2);
+      setLanguage(newlobby.language);
+      setP1Ready(newlobby.p1ready);
+      setP2Ready(newlobby.p2ready);
 
       if (newlobby.p1ready && newlobby.p2ready) {
         navigate("/battle/" + newlobby.lobbyid);
@@ -82,12 +87,27 @@ const Lobby = (props) => {
 
   const handleReadyClick = () => {
     const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid);
+    
     if (!newlobby) return; // Don't try to ready up if lobby doesn't exist
 
     post("/api/updateReadyStatus", {
       lobbyid: newlobby.lobbyid,
       player: userInfo._id,
       isReady: true,
+    }).then((result) => {
+      console.log("ready result: ", result);
+    });
+  };
+
+  const handleUnreadyClick = () => {
+    const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid);
+    
+    if (!newlobby) return; // Don't try to ready up if lobby doesn't exist
+
+    post("/api/updateReadyStatus", {
+      lobbyid: newlobby.lobbyid,
+      player: userInfo._id,
+      isReady: false,
     }).then((result) => {
       console.log("ready result: ", result);
     });
@@ -131,7 +151,8 @@ const Lobby = (props) => {
       <div>
         <div>
           <p className="lobby-player-info">
-            Lobby <span>{props.lobbyid}</span>
+            Lobby <span>{props.lobbyid}</span> <br/> 
+            <strong> {language} </strong> 
           </p>
 
           <p className="lobby-player-name">
@@ -146,13 +167,33 @@ const Lobby = (props) => {
             <p className="lobby-waiting-message">Waiting for another player to join...</p>
           ) : (
             <>
-              {props.lobbyid !== "newPVP" && props.lobbyid !== "newBot" && hasJoined && (
-                <button
-                  className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text"
+              {hasJoined && (
+                <>
+                { ((p1.slice(-6) === "(You!)" && !p1ready) || (p2.slice(-6) == "(You!)" && !p2ready)) ? (
+                  <button
+                  className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text" style={{ margin: "6rem auto 0rem auto" }}
                   onClick={handleReadyClick}
                 >
                   Ready
                 </button>
+                ) : (
+                  <button
+                  className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text" style={{ margin: "6rem auto 0rem auto" }}
+                  onClick={handleUnreadyClick}
+                >
+                  Unready
+                </button>
+                )
+                }
+                
+                {p1ready && (
+                  <p className="lobby-ready-text"> P1 is ready </p> 
+                )}
+                {p2ready && (
+                  <p className="lobby-ready-text"> P2 is ready</p>
+                )}
+                
+                </>
               )}
             </>
           )}
@@ -184,7 +225,7 @@ const Lobby = (props) => {
           )}
         </div>
       </div>
-      {props.lobbyid !== "newPVP" && props.lobbyid !== "newBot" && hasJoined && (
+      {props.lobbyid !== "newPVP" && props.lobbyid !== "newBot" && (
         <div className="leave-lobby-container">
           <button
             type="button"

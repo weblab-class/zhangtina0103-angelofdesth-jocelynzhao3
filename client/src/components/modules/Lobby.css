@@ -20,6 +20,10 @@ so I linked all of them to this file. Feel free to edit as you see fit */
   font-weight: bold;
 }
 
+.lobby-player-info strong{
+  font-size: 80%;
+}
+
 .lobby-player-name {
   margin: 0.5rem 0;
   font-family: "Orbitron", sans-serif;
@@ -46,6 +50,12 @@ so I linked all of them to this file. Feel free to edit as you see fit */
   animation: pulse 2s infinite;
 }
 
+.lobby-ready-text {
+  margin-top: 5px;
+  font-size: 0.8rem;
+  color: #d4d4d4;
+}
+
 @keyframes pulse {
   0% {
     opacity: 0.6;
@@ -63,6 +73,7 @@ so I linked all of them to this file. Feel free to edit as you see fit */
   font-style: italic;
   text-shadow: 0 0 8px rgba(77, 255, 255, 0.6);
 }
+
 
 .Lobby-status-message {
   text-align: center;
