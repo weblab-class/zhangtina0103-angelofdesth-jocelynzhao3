@@ -50,7 +50,7 @@ const SingleActiveLobby = (props) => {
         if (gotInfo) {
           let item = `${gotInfo.name} [${gotInfo.elo}]`;
           if (userInfo && gotInfo._id === userInfo._id) {
-            item = item + " (You!)";
+            item = item;
           }
           playerSetFunc(item);
         } else {
@@ -88,19 +88,8 @@ const SingleActiveLobby = (props) => {
       }}
     >
       <div className="lobby-cell">{props.lobby.lobbyid}</div>
-      <div
-        className={`lobby-cell ${props.lobby.p1ready ? "player-ready" : ""} ${
-          disconnectedPlayer === props.lobby.p1 ? "player-disconnected" : ""
-        }`}
-      >
-        {p1}
-      </div>
-      <div
-        className={`lobby-cell ${props.lobby.p2ready ? "player-ready" : ""} ${
-          disconnectedPlayer === props.lobby.p2 ? "player-disconnected" : ""
-        }`}
-      >
-        {p2}
+      <div className={`lobby-cell ${props.lobby.p1ready ? "player-ready" : ""}`}>
+      <span className="lobby-language"> <strong>P1: </strong> {p1} <br/> <strong>P2:</strong> {p2}</span> 
       </div>
       <div className="lobby-cell">
         <span className="lobby-language">{props.lobby.language}</span>

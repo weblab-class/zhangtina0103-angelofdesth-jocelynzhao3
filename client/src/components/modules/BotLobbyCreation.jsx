@@ -1,6 +1,7 @@
 import "../../utilities.css";
 import "./Lobby.css";
 import "./BotLobbyCreation.css";
+import "./PVPLobbyCreation.css";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
@@ -9,7 +10,7 @@ import { UserContext } from "../App";
 import { UserInfoContext } from "../App";
 import { post } from "../../utilities";
 
-const BotLobbyCreation = () => {
+const BotLobbyCreation = (props) => {
   const userContext = useContext(UserContext);
   const { language, setLanguage } = useContext(LanguageContext);
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
@@ -27,6 +28,7 @@ const BotLobbyCreation = () => {
   };
 
   return (
+    <>
     <div className="bot-container">
       <h3>New Game vs. Bot</h3>
       <div>
@@ -87,7 +89,15 @@ const BotLobbyCreation = () => {
           </>
         )}
       </div>
+      
     </div>
+    <div className="leave-lobby-container">
+        <button className="pvp-create-button button-base neon-bg neon-border neon-text" 
+        onClick={props.handleLeaveLobby}>
+                    Cancel
+                  </button>
+      </div>
+    </>
   );
 };
 

@@ -171,8 +171,14 @@ body {
   flex-direction: column;
   gap: 1rem;
   flex: 1;
-  max-width: 50%;
+  max-width: 10%;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lobbies-top {
+  display: flex;
+  width: 100%;
+  height: 63px;
 }
 
 .lobby-buttons {
@@ -185,6 +191,7 @@ body {
   opacity: 1;
   visibility: visible;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  align-items: left
 }
 
 .lobby-buttons:empty {
@@ -200,6 +207,9 @@ body {
   gap: 2rem;
   flex: 1;
   min-height: 0;
+  flex-direction: row;
+  color: white;
+  font-family: "Press Start 2P", monospace;
 }
 
 .lobbies-left-section {
@@ -214,7 +224,7 @@ body {
 .lobby-buttons {
   display: flex;
   gap: 1rem;
-  justify-content: center;
+  justify-content: left;
   margin-bottom: 1rem;
   width: 100%;
   max-height: 120px;
@@ -234,13 +244,12 @@ body {
 .lobbies-list {
   flex: 1;
   background: rgba(0, 0, 0, 0.8);
-  border: 2px solid #4dffff;
-  border-radius: 8px;
-  padding: 1.5rem;
   overflow-y: auto;
   text-align: center;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 1px; /* Match the header height + margins */
   min-height: 500px;
+  max-height: 538px;
 }
 
 .lobby-buttons button {
@@ -286,13 +295,17 @@ body {
   background: rgba(0, 0, 0, 0.8);
   border: 2px solid #4dffff;
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 0 1.5rem 1.5rem; 
   display: flex;
   flex-direction: column;
-  max-width: 50%;
-  margin-top: 103px; /* Match the header height + margins */
+  /* max-width: 50%; */
   max-height: 538px;
+  color: #4dffff;
+  text-align: center;
+  min-height: 500px; 
+  gap: 1rem;
 }
+
 
 .select-lobby-message {
   display: flex;
@@ -312,35 +325,6 @@ body {
   margin-top: 4.5rem; /* Match the header + margin (2rem + 1.5rem + 1rem) */
 }
 
-.lobbies-list {
-  flex: 1;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid #4dffff;
-  border-radius: 8px;
-  padding: 1.5rem;
-  overflow-y: auto;
-  text-align: center;
-  min-height: 500px;
-}
-
-.lobby-details {
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid #4dffff;
-  border-radius: 8px;
-  padding: 1.5rem;
-  color: #4dffff;
-  text-align: center;
-  min-height: 500px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.lobbies-header {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  font-family: "Orbitron", sans-serif;
-}
 
 .lobbies-header h2 {
   color: #4dffff;
@@ -516,10 +500,6 @@ body {
   margin-bottom: 1.5rem;
 }
 
-.Lobbies-content {
-  color: white;
-  font-family: "Press Start 2P", monospace;
-}
 
 /* Ensure all text within the lobbies page is white */
 .Lobbies-container p,
@@ -573,6 +553,8 @@ body {
   font-family: "Aerglo", sans-serif;
   box-shadow: 0 0 15px rgba(77, 255, 255, 0.2);
   backdrop-filter: blur(10px);
+  align-self: flex-end;
+  justify-content: center;
 }
 
 .leave-lobby-button:hover {
@@ -585,6 +567,12 @@ body {
 .leave-lobby-button:active {
   transform: translateY(1px);
   box-shadow: 0 0 10px rgba(77, 255, 255, 0.3);
+}
+
+.leave-lobby-container {
+  align-self: last baseline;
+  bottom: 0;
+  margin-top: auto;
 }
 
 .lobby-controls {

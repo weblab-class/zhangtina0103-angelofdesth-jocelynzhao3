@@ -18,7 +18,7 @@
 
 .lobby-row {
   display: grid;
-  grid-template-columns: 0.7fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr;
   gap: 1rem;
   padding: 0.75rem;
   border: none;
@@ -55,7 +55,7 @@
 
 .lobby-cell {
   color: #4dffff;
-  font-weight: 500;
+  font-weight: 100;
   text-align: left;
   text-shadow: 0 0 5px rgba(77, 255, 255, 0.5);
   letter-spacing: 0.5px;
@@ -68,7 +68,13 @@
   color: #00ff9d;
   text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
   text-align: center;
+  align-items: center;
 }
+
+strong {
+  font-weight: 700;
+}
+
 
 .lobby-table-header .lobby-cell:first-child {
   color: #4dffff;
@@ -89,6 +95,7 @@
     rgba(77, 255, 255, 0.1) 100%
   );
   backdrop-filter: blur(5px);
+  font-size: 0.7rem;
 }
 
 .lobby-row:after {
