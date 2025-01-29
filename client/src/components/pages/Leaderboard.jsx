@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { get } from "../../utilities";
 import "./Leaderboard.css";
-import { UserInfoContext } from "../App.jsx";
+import { UserInfoContext, UserContext } from "../App.jsx";
 import { Link } from "react-router-dom";
 import doorIcon from "../../assets/door.png";
 import questionIcon from "../../assets/question.png";
@@ -35,7 +35,8 @@ const processUserStats = (user) => {
 
 const Leaderboard = () => {
   const [users, setUsers] = useState([]);
-  const { userInfo, setUserInfo } = useContext(UserInfoContext);
+  const { userInfo } = useContext(UserInfoContext);
+  const { handleLogout } = useContext(UserContext);
 
   useEffect(() => {
     get("/api/leaderboard").then((userList) => {
@@ -71,12 +72,12 @@ const Leaderboard = () => {
             className="profile-icon"
           />
         </Link>
-        <button onClick={() => setUserInfo(null)} className="logout-button">
+        <button onClick={handleLogout} className="logout-button">
           <img src={doorIcon} alt="sign out" className="door-icon" />
         </button>
       </div>
       <div className="Leaderboard-container">
-        <h1>Leaderboard</h1>
+        <h1 className="Leaderboard-title">Leaderboard</h1>
         {userRank > 0 && <div className="Leaderboard-userRank">Your Rank: #{userRank}</div>}
         <table className="Leaderboard-table">
           <thead>

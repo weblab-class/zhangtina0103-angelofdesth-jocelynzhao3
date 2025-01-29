@@ -3,12 +3,36 @@ import "./SingleActiveLobby.css";
 import { useState, useContext, useEffect } from "react";
 import { UserInfoContext } from "../App";
 import { get, post } from "../../utilities";
+import { socket } from "../../client-socket.js";
 
 const SingleActiveLobby = (props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const [p1, setP1] = useState("Loading...");
   const [p2, setP2] = useState("Loading...");
   const [isUserInLobby, setIsUserInLobby] = useState(false);
+  const [disconnectedPlayer, setDisconnectedPlayer] = useState(null);
+
+  useEffect(() => {
+    const handleDisconnect = (data) => {
+      if (data.userId === props.lobby.p1 || data.userId === props.lobby.p2) {
+        setDisconnectedPlayer(data.userId);
+      }
+    };
+
+    const handleReconnect = (data) => {
+      if (data.userId === disconnectedPlayer) {
+        setDisconnectedPlayer(null);
+      }
+    };
+
+    socket.on("user_disconnected", handleDisconnect);
+    socket.on("user_reconnected", handleReconnect);
+
+    return () => {
+      socket.off("user_disconnected", handleDisconnect);
+      socket.off("user_reconnected", handleReconnect);
+    };
+  }, [props.lobby.p1, props.lobby.p2, disconnectedPlayer]);
 
   useEffect(() => {
     let isMounted = true;
@@ -64,8 +88,20 @@ const SingleActiveLobby = (props) => {
       }}
     >
       <div className="lobby-cell">{props.lobby.lobbyid}</div>
-      <div className={`lobby-cell ${props.lobby.p1ready ? "player-ready" : ""}`}>{p1}</div>
-      <div className={`lobby-cell ${props.lobby.p2ready ? "player-ready" : ""}`}>{p2}</div>
+      <div
+        className={`lobby-cell ${props.lobby.p1ready ? "player-ready" : ""} ${
+          disconnectedPlayer === props.lobby.p1 ? "player-disconnected" : ""
+        }`}
+      >
+        {p1}
+      </div>
+      <div
+        className={`lobby-cell ${props.lobby.p2ready ? "player-ready" : ""} ${
+          disconnectedPlayer === props.lobby.p2 ? "player-disconnected" : ""
+        }`}
+      >
+        {p2}
+      </div>
       <div className="lobby-cell">
         <span className="lobby-language">{props.lobby.language}</span>
       </div>
