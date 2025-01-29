@@ -55,7 +55,11 @@ const Battle = (props) => {
     p1Effects: { freezeUntil: 0, block: [] }, // possible effects
     p2Effects: { freezeUntil: 0, block: [] },
     multiplier: 1,
-    lastCardEffect: "", // Track the last card effect
+    lastCardEffect: null, // Track the last card effect
+    p1Name: "",
+    p2Name: "",
+    p1Picture: null,
+    p2Picture: null,
   });
   const [animatingCards, setAnimatingCards] = useState(new Set());
   const prevCards = useRef(gameState.displayCards);
@@ -206,31 +210,31 @@ const Battle = (props) => {
     };
   };
 
-  // Add effect to fetch opponent info when game state updates
-  useEffect(() => {
-    const fetchOpponentInfo = async () => {
-      // Determine if we're player 1 or 2
-      const amIPlayerOne = gameState.p1 === userInfo._id;
-      setIsPlayerOne(amIPlayerOne);
+  // // Add effect to fetch opponent info when game state updates
+  // useEffect(() => {
+  //   const fetchOpponentInfo = async () => {
+  //     // Determine if we're player 1 or 2
+  //     const amIPlayerOne = gameState.p1 === userInfo._id;
+  //     setIsPlayerOne(amIPlayerOne);
 
-      // Get opponent's ID
-      const opponentId = amIPlayerOne ? gameState.p2 : gameState.p1;
+  //     // Get opponent's ID
+  //     const opponentId = amIPlayerOne ? gameState.p2 : gameState.p1;
 
-      // Only fetch if we don't have opponent info yet and have a valid opponent ID
-      if (!opponentInfo && opponentId && opponentId !== "bot") {
-        try {
-          const data = await get("/api/otheruserinfo", { _id: opponentId });
-          if (data) {
-            setOpponentInfo(data);
-          }
-        } catch (error) {
-          console.error("Failed to fetch opponent info:", error);
-        }
-      }
-    };
+  //     // Only fetch if we don't have opponent info yet and have a valid opponent ID
+  //     if (!opponentInfo && opponentId && opponentId !== "bot") {
+  //       try {
+  //         const data = await get("/api/otheruserinfo", { _id: opponentId });
+  //         if (data) {
+  //           setOpponentInfo(data);
+  //         }
+  //       } catch (error) {
+  //         console.error("Failed to fetch opponent info:", error);
+  //       }
+  //     }
+  //   };
 
-    fetchOpponentInfo();
-  }, [gameState.p1, gameState.p2, userInfo._id]);
+  //   fetchOpponentInfo();
+  // }, [gameState.p1, gameState.p2, userInfo._id]);
 
   // Helper function to get player info for display
   const getPlayerInfo = (isLeft) => {
@@ -241,31 +245,31 @@ const Battle = (props) => {
     if (isPlayerOne) {
       return isP1Side
         ? {
-            name: userInfo.name,
-            picture: userInfo.picture,
+            name: gameState.p1Name,
+            picture: gameState.p1Picture,
             hp: gameState.p1HP,
             blocks: numberBlocks().p1Blocks,
           }
         : {
-            name: gameMode === "bot" ? "Bot" : (opponentInfo?.name || "Bot"),
-            picture: gameMode === "bot" ? null : opponentInfo?.picture,
+            name: gameMode === "bot" ? "Bot" : gameState.p2Name,
+            picture: gameMode === "bot" ? null : gameState.p2Picture,
             hp: gameState.p2HP,
             blocks: numberBlocks().p2Blocks,
-            isBot: gameMode === "bot"
+            isBot: gameMode === "bot",
           };
     } else {
       // If we're player two, we go on the right
       return isP1Side
         ? {
-            name: gameMode === "bot" ? "Bot" : (opponentInfo?.name || "Bot"),
-            picture: gameMode === "bot" ? null : opponentInfo?.picture,
+            name: gameMode === "bot" ? "Bot" : gameState.p1Name,
+            picture: gameMode === "bot" ? null : gameState.p1Picture,
             hp: gameState.p1HP,
             blocks: numberBlocks().p1Blocks,
-            isBot: gameMode === "bot"
+            isBot: gameMode === "bot",
           }
         : {
-            name: userInfo.name,
-            picture: userInfo.picture,
+            name: gameState.p2Name,
+            picture: gameState.p2Picture,
             hp: gameState.p2HP,
             blocks: numberBlocks().p2Blocks,
           };
@@ -367,9 +371,9 @@ const Battle = (props) => {
         {/* HP Bars and Avatars */}
         <div className="Battle-players">
           <div className="Battle-player-left">
-            <Player 
-              player={getPlayerInfo(true)} 
-              isEnemy={!isPlayerOne} 
+            <Player
+              player={getPlayerInfo(true)}
+              isEnemy={!isPlayerOne}
               isBot={getPlayerInfo(true).isBot}
             />
             <div className="Battle-healthbar">
@@ -380,8 +384,8 @@ const Battle = (props) => {
             </div>
           </div>
           <div className="Battle-player-right">
-            <Player 
-              player={getPlayerInfo(false)} 
+            <Player
+              player={getPlayerInfo(false)}
               isEnemy={isPlayerOne}
               isBot={getPlayerInfo(false).isBot}
             />
