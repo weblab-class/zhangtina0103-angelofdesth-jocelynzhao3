@@ -94,43 +94,43 @@ const removeUser = (user, socket) => {
     userToTimeout.set(user._id, timeout);
 
     // Handle game disconnection
-    for (const [gameId, game] of gameLogic.activeGames) {
-      if (game.p1 === user._id || game.p2 === user._id) {
-        // Clear any existing game timeout
-        if (gameToTimeout.has(gameId)) {
-          clearTimeout(gameToTimeout.get(gameId));
-        }
+    // for (const [gameId, game] of gameLogic.activeGames) {
+    //   if (game.p1 === user._id || game.p2 === user._id) {
+    //     // Clear any existing game timeout
+    //     if (gameToTimeout.has(gameId)) {
+    //       clearTimeout(gameToTimeout.get(gameId));
+    //     }
 
-        // Set new timeout for game cleanup
-        const gameTimeout = setTimeout(() => {
-          console.log(
-            `User ${user._id} did not reconnect to game ${gameId} within ${
-              GAME_TIMEOUT / 1000
-            } seconds, ending the game`
-          );
+    // // Set new timeout for game cleanup
+    // const gameTimeout = setTimeout(() => {
+    //   console.log(
+    //     `User ${user._id} did not reconnect to game ${gameId} within ${
+    //       GAME_TIMEOUT / 1000
+    //     } seconds, ending the game`
+    //   );
 
-          // Determine winner (the player who didn't disconnect)
-          const winner = game.p1 === user._id ? game.p2 : game.p1;
-          game.winner = winner;
+    //   // Determine winner (the player who didn't disconnect)
+    //   const winner = game.p1 === user._id ? game.p2 : game.p1;
+    //   game.winner = winner;
 
-          // Clean up the game
-          gameLogic.activeGames.delete(gameId);
-          lobbyLogic.leaveLobby(gameId, game.p1); // kill the lobby after game is over
-          io.emit(gameId, "over");
+    //   // Clean up the game
+    //   gameLogic.activeGames.delete(gameId);
+    //   lobbyLogic.leaveLobby(gameId, game.p1); // kill the lobby after game is over
+    //   io.emit(gameId, "over");
 
-          gameToTimeout.delete(gameId);
-        }, GAME_TIMEOUT);
+    //   gameToTimeout.delete(gameId);
+    // }, GAME_TIMEOUT);
 
-        gameToTimeout.set(gameId, gameTimeout);
+    // gameToTimeout.set(gameId, gameTimeout);
 
-        // Notify other players about disconnection
-        io.emit(gameId, {
-          ...game,
-          disconnectedPlayer: user._id,
-          timeoutAt: Date.now() + GAME_TIMEOUT,
-        });
-      }
-    }
+    // // Notify other players about disconnection
+    // io.emit(gameId, {
+    //   ...game,
+    //   disconnectedPlayer: user._id,
+    //   timeoutAt: Date.now() + GAME_TIMEOUT,
+    // });
+    //     }
+    //   }
   }
 };
 

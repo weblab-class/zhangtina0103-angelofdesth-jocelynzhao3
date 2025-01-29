@@ -284,9 +284,6 @@ const BattleProfile = (props) => {
               </ChartErrorBoundary>
             ) : null}
           </div>
-          <Link to="/" className="BattleEnd-button">
-            Back to start page!
-          </Link>
         </div>
 
         <h3>Battle History</h3>
