@@ -404,6 +404,7 @@ const playerTakeCard = async (lobby, player, cardData, playerType = "player") =>
       // Reset multiplier
       game = doEffect("block", game, takenCard, playerNumber);
     }
+    console.log("Updated game state:", game);
 
     // Update last card effect for either player or bot
     game.lastCardEffect = takenCard.effect.type;
