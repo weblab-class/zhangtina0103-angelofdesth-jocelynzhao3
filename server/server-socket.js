@@ -25,6 +25,7 @@ const addUser = (user, socket) => {
 
   userToSocketMap[user._id] = socket;
   socketToUserMap[socket.id] = user;
+  io.emit("user_reconnected", { userId: user._id }); // Emit reconnect event
 
   // If there was a pending timeout for this user, clear it
   if (userToTimeout.has(user._id)) {
@@ -34,7 +35,11 @@ const addUser = (user, socket) => {
 };
 
 const removeUser = (user, socket) => {
-  if (user) delete userToSocketMap[user._id];
+  if (user) {
+    delete userToSocketMap[user._id];
+    // Emit disconnect event to all clients
+    io.emit("user_disconnected", { userId: user._id, timeout: LOBBY_TIMEOUT });
+  }
   delete socketToUserMap[socket.id];
 
   // Set a timeout to remove the user's lobby if they don't reconnect
@@ -121,6 +126,7 @@ const startRunningGames = (activeGames) => {
         activeGames.delete(game.lobby);
         lobbyLogic.leaveLobby(game.lobby, game.p1); // kill the lobby after game is over
         console.log("Game ended");
+        console.log(activeGames);
         io.emit(game.lobby, "over");
       } catch (error) {
         console.error("Error handling game end:", error);

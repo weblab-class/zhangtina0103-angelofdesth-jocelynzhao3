@@ -25,6 +25,7 @@ const Lobby = (props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const [p1, setP1] = useState("");
   const [p2, setP2] = useState("");
+  const [disconnectedPlayer, setDisconnectedPlayer] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,6 +46,29 @@ const Lobby = (props) => {
       }
     }
   }, [props.activeLobbies, props.lobbyid]);
+
+  useEffect(() => {
+    const handleDisconnect = (data) => {
+      const currentLobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid);
+      if (currentLobby && (data.userId === currentLobby.p1 || data.userId === currentLobby.p2)) {
+        setDisconnectedPlayer(data.userId);
+      }
+    };
+
+    const handleReconnect = (data) => {
+      if (data.userId === disconnectedPlayer) {
+        setDisconnectedPlayer(null);
+      }
+    };
+
+    socket.on("user_disconnected", handleDisconnect);
+    socket.on("user_reconnected", handleReconnect);
+
+    return () => {
+      socket.off("user_disconnected", handleDisconnect);
+      socket.off("user_reconnected", handleReconnect);
+    };
+  }, [props.lobbyid, props.activeLobbies, disconnectedPlayer]);
 
   const handleJoinClick = () => {
     const newlobby = props.activeLobbies.find((lobbyc) => lobbyc.lobbyid === props.lobbyid);
@@ -118,6 +142,18 @@ const Lobby = (props) => {
 
         {p2 === "Waiting for player..." && (
           <p className="lobby-waiting-message">Waiting for another player to join...</p>
+        )}
+
+        {props.lobbyid !== "newPVP" && props.lobbyid !== "newBot" && (
+          <>
+            {disconnectedPlayer && (
+              <div className="Lobby-status-message">
+                <span className="player-disconnected">
+                  {disconnectedPlayer === props.activeLobbies.find(l => l.lobbyid === props.lobbyid)?.p1 ? p1 : p2} is disconnected, wait for reconnection
+                </span>
+              </div>
+            )}
+          </>
         )}
 
         {props.lobbyid !== "newPVP" && props.lobbyid !== "newBot" && hasJoined && (

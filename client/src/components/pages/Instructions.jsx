@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "./Instructions.css";
+import { UserInfoContext, UserContext } from "../App.jsx";
 import doorIcon from "../../assets/door.png";
 import questionIcon from "../../assets/question.png";
 import trophyIcon from "../../assets/trophy.png";
 import houseIcon from "../../assets/house.png";
-import { UserInfoContext } from "../App";
 
-const Instructions = (props) => {
-  const { userInfo, setUserInfo } = useContext(UserInfoContext);
+const Instructions = () => {
+  const { userInfo } = useContext(UserInfoContext);
+  const { handleLogout } = useContext(UserContext);
 
   return (
     <div className="Instructions-container">
@@ -32,7 +33,7 @@ const Instructions = (props) => {
             className="profile-icon"
           />
         </Link>
-        <button onClick={() => setUserInfo(null)} className="logout-button">
+        <button onClick={handleLogout} className="logout-button">
           <img src={doorIcon} alt="sign out" className="door-icon" />
         </button>
       </div>

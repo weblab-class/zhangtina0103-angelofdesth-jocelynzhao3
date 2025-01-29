@@ -2,7 +2,7 @@ import "../../utilities.css";
 import "./BattleProfile.css";
 
 import React, { useContext, useState, useEffect, Component } from "react";
-import { UserInfoContext } from "../App";
+import { UserInfoContext, UserContext } from "../App";
 import { Link, useNavigate } from "react-router-dom";
 import { get } from "../../utilities";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
@@ -36,6 +36,7 @@ class ChartErrorBoundary extends Component {
 
 const BattleProfile = (props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
+  const { handleLogout } = useContext(UserContext);
   const [showAllResults, setShowAllResults] = useState(false);
   const INITIAL_RESULTS_COUNT = 10;
 
@@ -161,7 +162,6 @@ const BattleProfile = (props) => {
     return (
       <div className="BattleEnd-container">
         <div className="BattleEnd-userinfo" style={{ textAlign: "center" }}>
-          <h2 style={{ color: "#ff4d4d" }}>Access Denied</h2>
           <p>Please log in to view your battle profile.</p>
           <p>Redirecting to start page in {countdown} seconds...</p>
           <Link to="/" className="BattleEnd-button" style={{ marginTop: "20px" }}>
@@ -194,7 +194,7 @@ const BattleProfile = (props) => {
             className="profile-icon"
           />
         </Link>
-        <button onClick={() => setUserInfo(null)} className="logout-button">
+        <button onClick={handleLogout} className="logout-button">
           <img src={doorIcon} alt="sign out" className="door-icon" />
         </button>
       </div>
@@ -282,9 +282,7 @@ const BattleProfile = (props) => {
                   className="BattleEnd-chart"
                 />
               </ChartErrorBoundary>
-            ) : (
-              null
-            )}
+            ) : null}
           </div>
           <Link to="/" className="BattleEnd-button">
             Back to start page!

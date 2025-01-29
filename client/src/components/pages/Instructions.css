@@ -26,18 +26,19 @@
 
 .back-to-start-link {
   position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 100;
+  top: 1rem;
+  left: 1rem;
+  z-index: 2;
 }
 
 .icon-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 1rem;
+  right: 1rem;
   display: flex;
-  gap: 1rem;
-  z-index: 100;
+  gap: 0.75rem;
+  z-index: 2;
+  align-items: center;
 }
 
 .icon-container img {
@@ -167,3 +168,15 @@
 .highlight-cyan { color: #4dffff; }
 .highlight-orange { color: #ffa64d; }
 .highlight-brown { color: #bf8040; }
+
+.house-icon {
+  width: 32px;
+  height: 32px;
+  transition: all 0.3s ease;
+  filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(77, 255, 255, 0.5));
+}
+
+.house-icon:hover {
+  transform: scale(1.1);
+  filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(77, 255, 255, 0.8));
+}
