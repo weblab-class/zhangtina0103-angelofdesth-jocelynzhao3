@@ -119,7 +119,7 @@ const startRunningGames = (activeGames) => {
     if (game.winner) {
       try {
         activeGames.delete(game.lobby);
-
+        lobbyLogic.leaveLobby(game.lobby, game.p1); // kill the lobby after game is over
         console.log("Game ended");
         io.emit(game.lobby, "over");
       } catch (error) {

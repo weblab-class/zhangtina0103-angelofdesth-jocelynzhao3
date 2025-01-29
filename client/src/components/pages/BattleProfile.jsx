@@ -255,7 +255,7 @@ const BattleProfile = (props) => {
                 />
               </ChartErrorBoundary>
             ) : (
-              <p>No language data available</p>
+              null
             )}
           </div>
 
