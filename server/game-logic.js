@@ -363,7 +363,7 @@ const playerTakeCard = async (lobby, player, cardData, playerType = "player") =>
       console.error("No card found", takenCard);
       return;
     }
-
+    console.log("Taking card:", takenCard);
     if (takenCard.effect.type === "attack" || takenCard.effect.type === "heal") {
       game = doEffect(takenCard.effect.type, game, takenCard, playerNumber);
     } else if (takenCard.effect.type === "lifesteal") {
