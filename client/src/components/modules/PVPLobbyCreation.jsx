@@ -59,6 +59,17 @@ const PVPLobbyCreation = (props) => {
           <option value="German">German</option>
           <option value="French">French</option>
           <option value="Arabic">Arabic</option>
+          <option value="Portuguese">Portuguese</option>
+          <option value="Afrikaans">Afrikaans</option>
+          <option value="Hindi">Hindi</option>
+          <option value="Korean">Korean</option>
+          <option value="Zulu">Zulu</option>
+          <option value="Vietnamese">Vietnamese</option>
+          <option value="Japanese">Japanese</option>
+          <option value="Telugu">Telugu</option>
+          <option value="Russian">Russian</option>
+          <option value="Italian">Italian</option>
+          <option value="Turkish">Turkish</option>
         </select>
 
         {language && (
@@ -71,10 +82,12 @@ const PVPLobbyCreation = (props) => {
         )}
       </div>
       <div className="leave-lobby-container">
-        <button className="pvp-create-button button-base neon-bg neon-border neon-text"
-        onClick={props.handleLeaveLobby}>
-                    Cancel
-                  </button>
+        <button
+          className="pvp-create-button button-base neon-bg neon-border neon-text"
+          onClick={props.handleLeaveLobby}
+        >
+          Cancel
+        </button>
       </div>
     </>
   );
