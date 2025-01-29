@@ -6,8 +6,10 @@ let io;
 const userToSocketMap = {}; // maps user ID to socket object
 const socketToUserMap = {}; // maps socket ID to user object
 const userToTimeout = new Map(); // maps user ID -> timeout object
+const gameToTimeout = new Map(); // maps game ID -> timeout object
 
 const LOBBY_TIMEOUT = 60 * 1000; // 1 minute in milliseconds
+const GAME_TIMEOUT = 60 * 1000; // 1 minute in milliseconds
 
 const getAllConnectedUsers = () => Object.values(socketToUserMap);
 const getSocketFromUserID = (userid) => userToSocketMap[userid];
@@ -18,7 +20,6 @@ const addUser = (user, socket) => {
   const oldSocket = userToSocketMap[user._id];
   if (oldSocket && oldSocket.id !== socket.id) {
     // there was an old tab open for this user, force it to disconnect
-    // FIXME: is this the behavior you want?
     oldSocket.disconnect();
     delete socketToUserMap[oldSocket.id];
   }
@@ -31,6 +32,23 @@ const addUser = (user, socket) => {
   if (userToTimeout.has(user._id)) {
     clearTimeout(userToTimeout.get(user._id));
     userToTimeout.delete(user._id);
+  }
+
+  // Clear any game timeouts for games this user is in
+  for (const [gameId, game] of gameLogic.activeGames) {
+    if (game.p1 === user._id || game.p2 === user._id) {
+      if (gameToTimeout.has(gameId)) {
+        clearTimeout(gameToTimeout.get(gameId));
+        gameToTimeout.delete(gameId);
+
+        // Notify other players about reconnection
+        io.emit(gameId, {
+          ...game,
+          disconnectedPlayer: null,
+          timeoutAt: null,
+        });
+      }
+    }
   }
 };
 
@@ -49,7 +67,16 @@ const removeUser = (user, socket) => {
       clearTimeout(userToTimeout.get(user._id));
     }
 
-    // Set new timeout
+    // can't be ready if they didn't reconnect
+    for (const [lobbyId, lobby] of lobbyLogic.activeLobbies) {
+      if (lobby.p1 === user._id) {
+        lobbyLogic.updateReadyStatus(lobbyId, lobby.p1, false);
+      } else if (lobby.p2 === user._id) {
+        lobbyLogic.updateReadyStatus(lobbyId, lobby.p2, false);
+      }
+    }
+
+    // Set new timeout for lobby cleanup
     const timeout = setTimeout(() => {
       console.log(
         `User ${user._id} did not reconnect within ${
@@ -65,6 +92,45 @@ const removeUser = (user, socket) => {
     }, LOBBY_TIMEOUT);
 
     userToTimeout.set(user._id, timeout);
+
+    // Handle game disconnection
+    for (const [gameId, game] of gameLogic.activeGames) {
+      if (game.p1 === user._id || game.p2 === user._id) {
+        // Clear any existing game timeout
+        if (gameToTimeout.has(gameId)) {
+          clearTimeout(gameToTimeout.get(gameId));
+        }
+
+        // Set new timeout for game cleanup
+        const gameTimeout = setTimeout(() => {
+          console.log(
+            `User ${user._id} did not reconnect to game ${gameId} within ${
+              GAME_TIMEOUT / 1000
+            } seconds, ending the game`
+          );
+
+          // Determine winner (the player who didn't disconnect)
+          const winner = game.p1 === user._id ? game.p2 : game.p1;
+          game.winner = winner;
+
+          // Clean up the game
+          gameLogic.activeGames.delete(gameId);
+          lobbyLogic.leaveLobby(gameId, game.p1); // kill the lobby after game is over
+          io.emit(gameId, "over");
+
+          gameToTimeout.delete(gameId);
+        }, GAME_TIMEOUT);
+
+        gameToTimeout.set(gameId, gameTimeout);
+
+        // Notify other players about disconnection
+        io.emit(gameId, {
+          ...game,
+          disconnectedPlayer: user._id,
+          timeoutAt: Date.now() + GAME_TIMEOUT,
+        });
+      }
+    }
   }
 };
 
@@ -159,7 +225,7 @@ module.exports = {
       console.log(`socket has connected ${socket.id}`);
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
-        console.log("user disconnet");
+        console.log("user disconnected");
         // if (user) {
         // check if player socket disconnects, end their lobby
         // if player disconnects, they can rejoin their game? (how are unfinished games cleaned?)
