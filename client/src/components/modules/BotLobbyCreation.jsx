@@ -19,7 +19,7 @@ const BotLobbyCreation = (props) => {
   const [selectedDifficulty, setSelectedDifficulty] = useState(null);
 
   const handleStartClick = (difficulty) => {
-    console.log(userContext);
+    // console.log(userContext);
     post("/api/startBotGame", {
       p1: userInfo._id,
       language: language,

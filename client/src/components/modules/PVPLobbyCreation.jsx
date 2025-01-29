@@ -24,14 +24,14 @@ const PVPLobbyCreation = (props) => {
 
   const handleCreateClick = () => {
     // TODO: put player name in here too?
-    console.log(userContext);
+    // console.log(userContext);
     // TODO: implement difficulty. Difficulty hardcoded to 1 for now
     post("/api/createLobby", { p1: userInfo._id, language: language }).then((lobby) => {
       if (lobby) {
-        console.log("the new lobby id is", lobby.lobby);
+        // console.log("the new lobby id is", lobby.lobby);
         props.setDisplayedLobby(lobby.lobby.lobbyid);
       } else {
-        console.log("you are already in a lobby");
+        // console.log("you are already in a lobby");
       }
     });
   };
