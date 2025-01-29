@@ -8,7 +8,7 @@ const socketToUserMap = {}; // maps socket ID to user object
 const userToTimeout = new Map(); // maps user ID -> timeout object
 const gameToTimeout = new Map(); // maps game ID -> timeout object
 
-const LOBBY_TIMEOUT = 60 * 1000; // 1 minute in milliseconds
+const LOBBY_TIMEOUT = 30 * 1000; // 1 minute in milliseconds
 const GAME_TIMEOUT = 60 * 1000; // 1 minute in milliseconds
 
 const getAllConnectedUsers = () => Object.values(socketToUserMap);
