@@ -293,164 +293,158 @@ const Battle = (props) => {
 
   return (
     <div className="Battle-container">
-      <Link to="/" className="back-to-start-link">
-        <img src={houseIcon} alt="home" className="house-icon" />
-      </Link>
-      <div className="icon-container">
-        {/* HP Bars and Timer */}
-        <div className="Battle-status-bar">
-          {/* Player HP (Left) */}
-          <div className="Battle-hp-container">
-            <div className="Battle-hp-bar" data-hp={gameState.p1HP <= 30 ? "low" : "normal"}>
-              <div
-                className={`Battle-hp-fill player-hp`}
-                style={{ width: `${(gameState.p1HP / 100) * 100}%` }}
-              />
-              <div className="Battle-hp-text" data-hp={gameState.p1HP <= 30 ? "low" : "normal"}>
-                {gameState.p1HP} HP
-              </div>
-            </div>
-          </div>
-
-          {/* Enemy HP (Right) */}
-          <div className="Battle-hp-container">
-            <div className="Battle-hp-bar" data-hp={gameState.p2HP <= 30 ? "low" : "normal"}>
-              <div
-                className={`Battle-hp-fill enemy-hp`}
-                style={{ width: `${(gameState.p2HP / 100) * 100}%` }}
-              />
-              <div className="Battle-hp-text" data-hp={gameState.p2HP <= 30 ? "low" : "normal"}>
-                {gameState.p2HP} HP
-              </div>
+      <div className="Battle-status-bar">
+        {/* Player HP (Left) */}
+        <div className="Battle-hp-container">
+          <div className="Battle-hp-bar" data-hp={gameState.p1HP <= 30 ? "low" : "normal"}>
+            <div
+              className={`Battle-hp-fill player-hp`}
+              style={{ width: `${(gameState.p1HP / 100) * 100}%` }}
+            />
+            <div className="Battle-hp-text" data-hp={gameState.p1HP <= 30 ? "low" : "normal"}>
+              {gameState.p1HP} HP
             </div>
           </div>
         </div>
 
-        <div className="Battle-game-area">
-          {/* Multiplier Display - show when either player or bot uses 3x */}
-          {gameState.lastCardEffect === "3x" && gameState.multiplier >= 3 && (
-            <div className="Battle-multiplier">
-              <div className="Battle-multiplier-text">{gameState.multiplier}x</div>
-            </div>
-          )}
-
-          {/* HP Bars and Avatars */}
-          <div className="Battle-players">
-            <div className="Battle-player-left">
-              <Player player={getPlayerInfo(true)} isEnemy={!isPlayerOne} />
-              <div className="Battle-healthbar">
-                <div
-                  className="Battle-healthbar-fill"
-                  style={{ width: `${getPlayerInfo(true).hp}%` }}
-                />
-              </div>
-            </div>
-            <div className="Battle-player-right">
-              <Player player={getPlayerInfo(false)} isEnemy={isPlayerOne} />
-              <div className="Battle-healthbar">
-                <div
-                  className="Battle-healthbar-fill"
-                  style={{ width: `${getPlayerInfo(false).hp}%` }}
-                />
-              </div>
+        {/* Enemy HP (Right) */}
+        <div className="Battle-hp-container">
+          <div className="Battle-hp-bar" data-hp={gameState.p2HP <= 30 ? "low" : "normal"}>
+            <div
+              className={`Battle-hp-fill enemy-hp`}
+              style={{ width: `${(gameState.p2HP / 100) * 100}%` }}
+            />
+            <div className="Battle-hp-text" data-hp={gameState.p2HP <= 30 ? "low" : "normal"}>
+              {gameState.p2HP} HP
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Main game canvas */}
-          <canvas ref={canvasRef} className="Battle-canvas" />
+      <div className="Battle-game-area">
+        {/* Multiplier Display - show when either player or bot uses 3x */}
+        {gameState.lastCardEffect === "3x" && gameState.multiplier >= 3 && (
+          <div className="Battle-multiplier">
+            <div className="Battle-multiplier-text">{gameState.multiplier}x</div>
+          </div>
+        )}
 
-          <div className="Battle-gameplay">
-            {/* Word Cards */}
-            <div className="Battle-cards-container">
-              {gameState.displayCards.map((card, index) => {
-                const containerRef = useRef(null);
-                const textRef = useTextFit(card.word, containerRef, 40, 16);
+        {/* HP Bars and Avatars */}
+        <div className="Battle-players">
+          <div className="Battle-player-left">
+            <Player player={getPlayerInfo(true)} isEnemy={!isPlayerOne} />
+            <div className="Battle-healthbar">
+              <div
+                className="Battle-healthbar-fill"
+                style={{ width: `${getPlayerInfo(true).hp}%` }}
+              />
+            </div>
+          </div>
+          <div className="Battle-player-right">
+            <Player player={getPlayerInfo(false)} isEnemy={isPlayerOne} />
+            <div className="Battle-healthbar">
+              <div
+                className="Battle-healthbar-fill"
+                style={{ width: `${getPlayerInfo(false).hp}%` }}
+              />
+            </div>
+          </div>
+        </div>
 
-                return (
-                  <div
-                    key={`${card.word}-${index}`}
-                    className={`Battle-card ${animatingCards.has(index) ? "animate-card" : ""}`}
-                    data-effect={card.effect.type}
-                    ref={(el) => (cardRefs.current[index] = el)}
-                  >
-                    <div className="Battle-card-content">
-                      <div className="Battle-card-effect">{card.effect.type}</div>
-                      <div className="Battle-card-divider"></div>
-                      <div className="Battle-card-middle">
-                        <div className="Battle-card-word-container" ref={containerRef}>
-                          <div className="Battle-card-word" ref={textRef}>
-                            {card.word}
-                          </div>
+        {/* Main game canvas */}
+        <canvas ref={canvasRef} className="Battle-canvas" />
+
+        <div className="Battle-gameplay">
+          {/* Word Cards */}
+          <div className="Battle-cards-container">
+            {gameState.displayCards.map((card, index) => {
+              const containerRef = useRef(null);
+              const textRef = useTextFit(card.word, containerRef, 40, 16);
+
+              return (
+                <div
+                  key={`${card.word}-${index}`}
+                  className={`Battle-card ${animatingCards.has(index) ? "animate-card" : ""}`}
+                  data-effect={card.effect.type}
+                  ref={(el) => (cardRefs.current[index] = el)}
+                >
+                  <div className="Battle-card-content">
+                    <div className="Battle-card-effect">{card.effect.type}</div>
+                    <div className="Battle-card-divider"></div>
+                    <div className="Battle-card-middle">
+                      <div className="Battle-card-word-container" ref={containerRef}>
+                        <div className="Battle-card-word" ref={textRef}>
+                          {card.word}
                         </div>
-                        <div className="Battle-card-english">{card.english}</div>
-                        <div className="Battle-card-amount">
-                          {card.effect.type === "heal" ? (
-                            <span>+{card.effect.amount} HP</span>
-                          ) : card.effect.type === "attack" ? (
-                            <span>-{card.effect.amount} HP</span>
-                          ) : card.effect.type === "lifesteal" ? (
-                            <span>±{card.effect.amount} HP</span>
-                          ) : card.effect.type === "freeze" ? (
-                            <span>+3 seconds</span>
-                          ) : card.effect.type === "3x" ? (
-                            <span>3x</span>
-                          ) : card.effect.type === "block" ? (
-                            <span>+3 seconds </span>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                        <div className="Battle-card-effect-description">
-                          {card.effect.type === "heal"
-                            ? `Heals you for ${card.effect.amount} HP`
-                            : card.effect.type === "attack"
-                            ? `Deals ${card.effect.amount} damage to your opponent`
-                            : card.effect.type === "lifesteal"
-                            ? `Deals ${card.effect.amount} damage and heals you for the same amount`
-                            : card.effect.type === "freeze"
-                            ? "Freezes your opponent for 3 seconds"
-                            : card.effect.type === "3x"
-                            ? "Triples the effect of your next card"
-                            : card.effect.type === "block"
-                            ? "3 seconds protection from your opponent's next attack"
-                            : ""}
-                        </div>
+                      </div>
+                      <div className="Battle-card-english">{card.english}</div>
+                      <div className="Battle-card-amount">
+                        {card.effect.type === "heal" ? (
+                          <span>+{card.effect.amount} HP</span>
+                        ) : card.effect.type === "attack" ? (
+                          <span>-{card.effect.amount} HP</span>
+                        ) : card.effect.type === "lifesteal" ? (
+                          <span>±{card.effect.amount} HP</span>
+                        ) : card.effect.type === "freeze" ? (
+                          <span>+3 seconds</span>
+                        ) : card.effect.type === "3x" ? (
+                          <span>3x</span>
+                        ) : card.effect.type === "block" ? (
+                          <span>+3 seconds </span>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                      <div className="Battle-card-effect-description">
+                        {card.effect.type === "heal"
+                          ? `Heals you for ${card.effect.amount} HP`
+                          : card.effect.type === "attack"
+                          ? `Deals ${card.effect.amount} damage to your opponent`
+                          : card.effect.type === "lifesteal"
+                          ? `Deals ${card.effect.amount} damage and heals you for the same amount`
+                          : card.effect.type === "freeze"
+                          ? "Freezes your opponent for 3 seconds"
+                          : card.effect.type === "3x"
+                          ? "Triples the effect of your next card"
+                          : card.effect.type === "block"
+                          ? "3 seconds protection from your opponent's next attack"
+                          : ""}
                       </div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-
-            <TypeBar onType={handleTyping} typedText={typedText} isFrozen={isKeyboardFrozen()} />
-
-            {/* <div className="language-display">
-              Debug area: language= <span className="language-text">{language}</span>
-            </div>
-            <div className="language-display">
-              Debug area: typedText= <span className="language-text">{typedText}</span>
-            </div> */}
-            {/*
-            <div className="language-display">
-              Debug area: p1 blocks= <span className="language-text">{numberBlocks().p1Blocks}</span>
-            </div>
-            <div className="language-display">
-              Debug area: p1 remaining seconds= <span className="language-text">{numberBlocks().p1RemainingSeconds}</span>
-            </div>
-            <div className="language-display">
-              Debug area: p2 blocks= <span className="language-text">{numberBlocks().p2Blocks}</span>
-            </div>
-            <div className="language-display">
-              Debug area: p2 remaining seconds= <span className="language-text">{numberBlocks().p2RemainingSeconds}</span>
-            </div>
-            <div className="language-display">
-              Debug area: multiplier= <span className="language-text">{gameState.multiplier}</span>
-            </div>
-}
-            {/* <Link to="/end/" className="NavBar-link u-inlineBlock">
-              Quit - TODO needs to tell server to end the game
-            </Link> */}
+                </div>
+              );
+            })}
           </div>
+
+          <TypeBar onType={handleTyping} typedText={typedText} isFrozen={isKeyboardFrozen()} />
+
+          {/* <div className="language-display">
+            Debug area: language= <span className="language-text">{language}</span>
+          </div>
+          <div className="language-display">
+            Debug area: typedText= <span className="language-text">{typedText}</span>
+          </div> */}
+          {/*
+          <div className="language-display">
+            Debug area: p1 blocks= <span className="language-text">{numberBlocks().p1Blocks}</span>
+          </div>
+          <div className="language-display">
+            Debug area: p1 remaining seconds= <span className="language-text">{numberBlocks().p1RemainingSeconds}</span>
+          </div>
+          <div className="language-display">
+            Debug area: p2 blocks= <span className="language-text">{numberBlocks().p2Blocks}</span>
+          </div>
+          <div className="language-display">
+            Debug area: p2 remaining seconds= <span className="language-text">{numberBlocks().p2RemainingSeconds}</span>
+          </div>
+          <div className="language-display">
+            Debug area: multiplier= <span className="language-text">{gameState.multiplier}</span>
+          </div>
+}
+          {/* <Link to="/end/" className="NavBar-link u-inlineBlock">
+            Quit - TODO needs to tell server to end the game
+          </Link> */}
         </div>
       </div>
     </div>
