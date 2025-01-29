@@ -340,91 +340,90 @@ const playerTakeCard = async (lobby, player, cardData, playerType = "player") =>
   // Add card to processing set
   processingCards.add(cardKey);
 
-  try {
-    let playerNumber;
-    if (player === game.p1) {
-      playerNumber = 1;
-      console.log("Player 1 taking card");
-    } else if (player === game.p2) {
-      playerNumber = 2;
-      console.log("Player 2 taking card");
-    } else {
-      console.error("Invalid player:", player);
-      return;
-    }
-
-    // Double check card is still available
-    if (game.displayCards[cardIndex].word !== takenCard.word) {
-      console.log("Card has already been taken");
-      return;
-    }
-
-    if (!takenCard) {
-      console.error("No card found", takenCard);
-      return;
-    }
-    console.log("Taking card:", takenCard);
-    if (takenCard.effect.type === "attack" || takenCard.effect.type === "heal") {
-      game = doEffect(takenCard.effect.type, game, takenCard, playerNumber);
-    } else if (takenCard.effect.type === "lifesteal") {
-      // do attack and heal
-      game = doEffect("lifesteal", game, takenCard, playerNumber);
-    } else if (takenCard.effect.type === "freeze") {
-      // Calculate freeze duration before resetting multiplier
-      const freezeDuration = basefreezeDuration * game.multiplier;
-      console.log(`Applying freeze for ${freezeDuration}ms with multiplier ${game.multiplier}`);
-
-      // Then reset multiplier through doEffect
-      game = doEffect("freeze", game, takenCard, playerNumber);
-
-      // Apply freeze effect with saved duration
-      if (playerNumber === 2) {
-        game.p1Effects.freezeUntil = Date.now() + freezeDuration;
-      } else {
-        game.p2Effects.freezeUntil = Date.now() + freezeDuration;
-      }
-    } else if (takenCard.effect.type === "3x") {
-      game = doEffect("3x", game, takenCard, playerNumber);
-    } else if (takenCard.effect.type === "block") {
-      // Save current multiplier
-      const currentMultiplier = game.multiplier;
-
-      // Apply block effect with current multiplier
-      if (playerNumber === 2) {
-        game.p2Effects.block = game.p2Effects.block.concat(
-          new Array(currentMultiplier).fill(Date.now() + 3000) // Block for 3 seconds
-        );
-      } else {
-        game.p1Effects.block = game.p1Effects.block.concat(
-          new Array(currentMultiplier).fill(Date.now() + 3000)
-        );
-      }
-      console.log(`Block effect applied with multiplier ${currentMultiplier}!`);
-
-      // Reset multiplier
-      game = doEffect("block", game, takenCard, playerNumber);
-    }
-    console.log("Updated game state:", game);
-
-    // Update last card effect for either player or bot
-    game.lastCardEffect = takenCard.effect.type;
-
-    // Update the game in activeGames map
-    activeGames.set(lobby, game);
-    console.log("Updated game state:", game);
-
-    // checks if the game is complete with the new updated hps
-    await checkWin(game);
-
-    // removes the card and replaces it with a new card
-    let replacement = await newCard(game.language);
-    game.displayCards[cardIndex] = replacement;
-    activeGames.set(lobby, { ...game });
-    console.log("new cards are now", game.displayCards);
-  } finally {
-    // Always remove from processing set
-    processingCards.delete(cardKey);
+  let playerNumber;
+  if (player === game.p1) {
+    playerNumber = 1;
+    console.log("Player 1 taking card");
+  } else if (player === game.p2) {
+    playerNumber = 2;
+    console.log("Player 2 taking card");
+  } else {
+    console.error("Invalid player:", player);
+    return;
   }
+
+  // Double check card is still available
+  if (game.displayCards[cardIndex].word !== takenCard.word) {
+    console.log("Card has already been taken");
+    return;
+  }
+
+  if (!takenCard) {
+    console.error("No card found", takenCard);
+    return;
+  }
+  console.log("Taking card:", takenCard);
+  if (takenCard.effect.type === "attack" || takenCard.effect.type === "heal") {
+    game = doEffect(takenCard.effect.type, game, takenCard, playerNumber);
+  } else if (takenCard.effect.type === "lifesteal") {
+    // do attack and heal
+    game = doEffect("lifesteal", game, takenCard, playerNumber);
+  } else if (takenCard.effect.type === "freeze") {
+    // Calculate freeze duration before resetting multiplier
+    const freezeDuration = basefreezeDuration * game.multiplier;
+    console.log(`Applying freeze for ${freezeDuration}ms with multiplier ${game.multiplier}`);
+
+    // Then reset multiplier through doEffect
+    game = doEffect("freeze", game, takenCard, playerNumber);
+
+    // Apply freeze effect with saved duration
+    if (playerNumber === 2) {
+      game.p1Effects.freezeUntil = Date.now() + freezeDuration;
+    } else {
+      game.p2Effects.freezeUntil = Date.now() + freezeDuration;
+    }
+  } else if (takenCard.effect.type === "3x") {
+    game = doEffect("3x", game, takenCard, playerNumber);
+  } else if (takenCard.effect.type === "block") {
+    // Save current multiplier
+    const currentMultiplier = game.multiplier;
+
+    // Apply block effect with current multiplier
+    if (playerNumber === 2) {
+      game.p2Effects.block = game.p2Effects.block.concat(
+        new Array(currentMultiplier).fill(Date.now() + 3000) // Block for 3 seconds
+      );
+    } else {
+      game.p1Effects.block = game.p1Effects.block.concat(
+        new Array(currentMultiplier).fill(Date.now() + 3000)
+      );
+    }
+    console.log(`Block effect applied with multiplier ${currentMultiplier}!`);
+
+    // Reset multiplier
+    game = doEffect("block", game, takenCard, playerNumber);
+  }
+  console.log("Updated game state:", game);
+
+  // Update last card effect for either player or bot
+  game.lastCardEffect = takenCard.effect.type;
+
+  // Update the game in activeGames map
+  activeGames.set(lobby, game);
+  console.log("Updated game state:", game);
+
+  // checks if the game is complete with the new updated hps
+  await checkWin(game);
+
+  // removes the card and replaces it with a new card
+  let replacement = await newCard(game.language);
+  game.displayCards[cardIndex] = replacement;
+  activeGames.set(lobby, { ...game });
+  console.log("new cards are now", game.displayCards);
+
+  // Always remove from processing set
+  console.log("deleted", processingCards);
+  processingCards.delete(cardKey);
 };
 
 // bot takes card
