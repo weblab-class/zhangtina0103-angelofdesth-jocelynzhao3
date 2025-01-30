@@ -197,11 +197,11 @@ const startRunningGames = (activeGames) => {
   const runGame = async (game) => {
     if (game.winner) {
       try {
+        io.emit(game.lobby, "over");
+        console.log("emitted game over");
         activeGames.delete(game.lobby);
         lobbyLogic.leaveLobby(game.lobby, game.p1); // kill the lobby after game is over
         console.log("Game ended");
-        console.log(activeGames);
-        io.emit(game.lobby, "over");
       } catch (error) {
         console.error("Error handling game end:", error);
         io.emit(game.lobby, "over");
