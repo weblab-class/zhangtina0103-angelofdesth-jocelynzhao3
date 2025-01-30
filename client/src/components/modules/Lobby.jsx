@@ -214,14 +214,22 @@ const Lobby = (props) => {
             </>
           )}
 
-          {!hasJoined && (
+          {!hasJoined && ( 
+            <>
+            { (newlobby && newlobby.p2) ? (
+              <p>Lobby Full</p>
+          ) : (
+
             <button
-              className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text"
-              onClick={handleJoinClick}
-              disabled={newlobby && newlobby.p2}
-            >
-              {newlobby && newlobby.p2 ? "Lobby Full" : "Join"}
-            </button>
+            className="u-pointer pvp-create-button button-base neon-bg neon-border neon-text"
+            onClick={handleJoinClick}
+            disabled={newlobby && newlobby.p2}
+          >
+            Join
+          </button>
+          )
+          }
+            </>
           )}
         </div>
       </div>
